@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
-import AppBar from 'material-ui/AppBar';
+import { Link } from 'react-router-dom'
+import AppBar from 'material-ui/AppBar'
 import '../style/App.css';
 
-class Header extends Component {
-  render() {
-    return (
-      <div className="App-header">
-        <header>
-          <AppBar title="Welcome to the IAR" />
-        </header>
-      </div>
-    );
-  }
-}
+// <RaisedButton label="Create Asset" href="/create" />
+const Header = () => (
+  <div className="App-header">
+    <header>
+      <AppBar
+        title="Welcome to the IAR"
+//        iconElementRight={<Link to="/create">Create Asset</Link>}
+      />
+    </header>
+  </div>
+);
 
-export default Header;
+export default Header
