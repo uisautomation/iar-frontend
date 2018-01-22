@@ -3,7 +3,7 @@ import '../style/App.css'
 
 const Form = () => (
   <div className="App-main">
-    <code>Asset Creation/Editing</code>
+    <h1>Asset Creation/Editing Form</h1>
   </div>
 );
 

@@ -3,33 +3,39 @@ import { Route, Link } from 'react-router-dom'
 import { AppBar, RaisedButton } from 'material-ui'
 import '../style/App.css';
 
-const DefaultAppBar = () => {
-  var link = <Link className='App-raised-button-link' to="/create">Create Asset</Link>;
-  return <AppBar title="Welcome to the IAR" iconElementRight={<RaisedButton children={link}/>} />
-};
+const CANCEL_LINK = <Link className='App-raised-button-link' to="/">Cancel</Link>;
+const SAVE_LINK = <Link className='App-raised-button-link' to="/">Save</Link>;
+const CREATE_LINK = <Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>;
 
-const FormAppBar = () => {
-  var cancel = <Link className='App-raised-button-link' to="/">Cancel</Link>;
-  var save = <Link className='App-raised-button-link' to="/">Save</Link>;
-  return <AppBar title="Editing: Some Resource Or Other" iconElementRight={
-    <span><RaisedButton primary={true} children={cancel}/>&nbsp;<RaisedButton children={save}/></span>
-  } />
+const TITLES = {
+  '/assets/dept': 'Assets: My department',
+  '/assets/edited': 'Assets: Edited recently',
+  '/assets/all': 'Assets: All',
+  '/static/what-is-asset': 'What is an information asset?',
+  '/static/what-i-do': 'What do I need to do?',
+  '/static/feedback': 'Feedback',
+  '/static/contact': 'Contact',
+  '/static/tcs': 'Terms & Conditions',
+  '/asset/create': 'Create new Asset',
 };
 
 const Header = () => {
-  // FIXME default routes?
   return <div className="App-header">
     <header>
-      <Route path="/" component={DefaultAppBar} exact />
-      <Route path="/edited" component={DefaultAppBar} />
-      <Route path="/all" component={DefaultAppBar} />
-      <Route path="/what-is-asset" component={DefaultAppBar} />
-      <Route path="/what-i-do" component={DefaultAppBar} />
-      <Route path="/feedback" component={DefaultAppBar} />
-      <Route path="/contact" component={DefaultAppBar} />
-      <Route path="/tcs" component={DefaultAppBar} />
-      <Route path="/create" component={FormAppBar} />
-      <Route path="/asset" component={FormAppBar} />
+      {["/assets/:filter", "/static/:page"].map(path =>
+        <Route path={path}  render={({ match }) => (
+          <AppBar title={TITLES[match.url]} iconElementRight={<RaisedButton children={CREATE_LINK}/>} />
+        )} />
+      )}
+      <Route path="/asset/:asset" render={({ match }) => (
+        <AppBar title={TITLES[match.url] ? TITLES[match.url] : "Editing: Some Resource Or Other"} iconElementRight={
+          <span>
+            <RaisedButton primary={true} children={CANCEL_LINK}/>
+            &nbsp;
+            <RaisedButton children={SAVE_LINK}/>
+          </span>
+        } />
+      )} />
     </header>
   </div>
 };

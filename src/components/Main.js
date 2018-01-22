@@ -10,21 +10,11 @@ import {
 } from 'material-ui/Table';
 import '../style/App.css';
 
-// FIXME move into appbar
-const TITLES = {
-  '/': 'My department',
-  '/edited': 'Edited recently',
-  '/all': 'All',
-};
-
 const Main = ({ match }) => (
   <div className="App-main">
 
     <Table selectable={false}>
       <TableHeader displaySelectAll={false}>
-        <TableRow>
-          <TableHeaderColumn colSpan={3}>{ TITLES[match.url] }</TableHeaderColumn>
-        </TableRow>
         <TableRow>
           <TableHeaderColumn>Name</TableHeaderColumn>
           <TableHeaderColumn>Status</TableHeaderColumn>
