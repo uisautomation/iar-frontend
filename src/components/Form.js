@@ -1,10 +1,10 @@
 import React from 'react'
 import '../style/App.css'
 
-const Create = () =>(
+const Form = () => (
   <div className="App-main">
-    <code>Create Asset</code>
+    <code>Asset Creation/Editing</code>
   </div>
 );
 
-export default Create
+export default Form
