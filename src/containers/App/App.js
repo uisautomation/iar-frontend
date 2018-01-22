@@ -7,14 +7,16 @@ import Static from '../../components/Static'
 import Form from '../../components/Form'
 import '../../style/App.css'
 
-const App = (props) => (
+const App = () => (
   <Router>
     <MuiThemeProvider>
-      <Sidebar />
-      <Route path="/" exact render={() => <Redirect to="/assets/dept"/>} />
-      <Route path="/assets/:filter" component={Main} />
-      <Route path="/static/:page" component={Static} />
-      <Route path="/asset/:asset" component={Form} />
+      <div>
+        <Sidebar />
+        <Route path="/" exact render={() => <Redirect to="/assets/dept"/>} />
+        <Route path="/assets/:filter" component={Main} />
+        <Route path="/static/:page" component={Static} />
+        <Route path="/asset/:asset" component={Form} />
+      </div>
     </MuiThemeProvider>
   </Router>
 );

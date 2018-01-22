@@ -22,7 +22,9 @@ const Main = ({ match }) => (
   <div>
     <div className="App-header">
       <AppBar title={TITLES[match.url]} iconElementRight={
-        <RaisedButton children={<Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>}/>
+        <RaisedButton>
+          <Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>
+        </RaisedButton>
       } />
     </div>
     <div className="App-main">

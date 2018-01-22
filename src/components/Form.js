@@ -6,11 +6,15 @@ import '../style/App.css'
 const Form = ({ match }) => (
   <div>
     <div className="App-header">
-      <AppBar title={match.url == '/asset/create' ? 'Create new asset' : 'Editing: Some asset'} iconElementRight={
+      <AppBar title={match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'} iconElementRight={
         <span>
-          <RaisedButton primary={true} children={<Link className='App-raised-button-link' to="/">Cancel</Link>}/>
+          <RaisedButton primary={true}>
+            <Link className='App-raised-button-link' to="/">Cancel</Link>
+          </RaisedButton>
           &nbsp;
-          <RaisedButton children={<Link className='App-raised-button-link' to="/">Save</Link>}/>
+          <RaisedButton>
+            <Link className='App-raised-button-link' to="/">Save</Link>
+          </RaisedButton>
         </span>
       } />
     </div>
