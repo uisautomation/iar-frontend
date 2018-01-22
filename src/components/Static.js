@@ -1,4 +1,5 @@
 import React from 'react';
+import { AppBar } from 'material-ui';
 import '../style/App.css';
 
 const TITLES = {
@@ -10,8 +11,13 @@ const TITLES = {
 };
 
 const Static = ({ match }) => (
-  <div className="App-main">
-    <h1>{ TITLES[match.url] }</h1>
+  <div>
+    <div className="App-header">
+      <AppBar title={TITLES[match.url]} />
+    </div>
+    <div className="App-main">
+      <h1>Copy for "{ TITLES[match.url] }"</h1>
+    </div>
   </div>
 );
 
