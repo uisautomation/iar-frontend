@@ -6,7 +6,7 @@ import '../style/App.css'
 /*
   Renders the app bar of the form for the creation/editing of an Asset.
   */
-const FormHeader = ({ title }) => (
+const AssetFormHeader = ({ title }) => (
   <div className="App-header">
     <AppBar title={ title } iconElementRight={
       <span>
@@ -25,13 +25,13 @@ const FormHeader = ({ title }) => (
 /*
   Renders the form for the creation/editing of an Asset.
   */
-const Form = ({ match }) => (
+const AssetForm = ({ match }) => (
   <div>
-    <FormHeader title={match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'} />
+    <AssetFormHeader title={match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'} />
     <div className="App-main">
       <h1>Asset Creation/Editing Form</h1>
     </div>
   </div>
 );
 
-export default Form
+export default AssetForm

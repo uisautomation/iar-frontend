@@ -3,14 +3,14 @@ import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { AppBar } from 'material-ui';
-import Main from './Main';
+import AssetList from './AssetList';
 
 test('can render /assets/dept', () => {
   const testInstance = TestRenderer.create(
     // TODO you should be able to use initialEntries/initialIndex - doesn't seem to add match property
     <MemoryRouter>
       <MuiThemeProvider>
-        <Main match={{url: '/assets/dept'}}/>
+        <AssetList match={{url: '/assets/dept'}}/>
       </MuiThemeProvider>
     </MemoryRouter>
   ).root;
@@ -23,7 +23,7 @@ test('can render /assets/edited', () => {
     // TODO you should be able to use initialEntries/initialIndex - doesn't seem to add match property
     <MemoryRouter>
       <MuiThemeProvider>
-        <Main match={{url: '/assets/edited'}}/>
+        <AssetList match={{url: '/assets/edited'}}/>
       </MuiThemeProvider>
     </MemoryRouter>
   ).root;
@@ -36,7 +36,7 @@ test('can render /assets/all', () => {
     // TODO you should be able to use initialEntries/initialIndex - doesn't seem to add match property
     <MemoryRouter>
       <MuiThemeProvider>
-        <Main match={{url: '/assets/all'}}/>
+        <AssetList match={{url: '/assets/all'}}/>
       </MuiThemeProvider>
     </MemoryRouter>
   ).root;

@@ -21,7 +21,7 @@ const TITLES = {
 /*
   Renders the app bar of the list view of Assets.
   */
-const MainHeader = ({ title }) => (
+const AssetListHeader = ({ title }) => (
   <div className="App-header">
     <AppBar title={ title } iconElementRight={
       <RaisedButton>
@@ -34,9 +34,9 @@ const MainHeader = ({ title }) => (
 /*
   Renders the list view of Assets - different filters can be applied to this view.
   */
-const Main = ({ match }) => (
+const AssetList = ({ match }) => (
   <div>
-    <MainHeader title={TITLES[match.url]} />
+    <AssetListHeader title={TITLES[match.url]} />
     <div className="App-main">
       <Table selectable={false}>
         <TableHeader displaySelectAll={false}>
@@ -74,4 +74,4 @@ const Main = ({ match }) => (
   </div>
 );
 
-export default Main;
+export default AssetList;

@@ -3,14 +3,14 @@ import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { AppBar } from 'material-ui';
-import Form from './Form';
+import AssetForm from './AssetForm';
 
 test('can render /asset/create', () => {
   const testInstance = TestRenderer.create(
     // TODO you should be able to use initialEntries/initialIndex - doesn't seem to add match property
     <MemoryRouter>
       <MuiThemeProvider>
-        <Form match={{url: '/asset/create'}}/>
+        <AssetForm match={{url: '/asset/create'}}/>
       </MuiThemeProvider>
     </MemoryRouter>
   ).root;
