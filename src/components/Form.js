@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { AppBar, RaisedButton } from 'material-ui';
 import '../style/App.css'
 
+/*
+  Renders the app bar of the form for the creation/editing of an Asset.
+  */
 const FormHeader = ({ title }) => (
   <div className="App-header">
     <AppBar title={ title } iconElementRight={
@@ -19,6 +22,9 @@ const FormHeader = ({ title }) => (
   </div>
 );
 
+/*
+  Renders the form for the creation/editing of an Asset.
+  */
 const Form = ({ match }) => (
   <div>
     <FormHeader title={match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'} />

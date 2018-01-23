@@ -18,6 +18,9 @@ const TITLES = {
   '/assets/all': 'Assets: All',
 };
 
+/*
+  Renders the app bar of the list view of Assets.
+  */
 const MainHeader = ({ title }) => (
   <div className="App-header">
     <AppBar title={ title } iconElementRight={
@@ -28,6 +31,9 @@ const MainHeader = ({ title }) => (
   </div>
 );
 
+/*
+  Renders the list view of Assets - different filters can be applied to this view.
+  */
 const Main = ({ match }) => (
   <div>
     <MainHeader title={TITLES[match.url]} />

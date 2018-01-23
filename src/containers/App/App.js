@@ -7,6 +7,9 @@ import Static from '../../components/Static'
 import Form from '../../components/Form'
 import '../../style/App.css'
 
+/*
+  IAR main app component.
+  */
 const App = () => (
   <Router>
     <MuiThemeProvider>

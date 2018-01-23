@@ -10,12 +10,18 @@ const TITLES = {
   '/static/tcs': 'Terms & Conditions',
 };
 
+/*
+  Renders the app bar of the IAR app's static pages.
+ */
 const StaticHeader = ({ title }) => (
   <div className="App-header">
     <AppBar title={ title } />
   </div>
 );
 
+/*
+  Renders the IAR app's static pages.
+ */
 const Static = ({ match }) => (
   <div>
     <StaticHeader title={ TITLES[match.url] } />

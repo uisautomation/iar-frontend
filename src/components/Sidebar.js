@@ -4,6 +4,9 @@ import Drawer from 'material-ui/Drawer'
 import logo from '../images/logo.svg'
 import '../style/App.css'
 
+/*
+  Renders the IAR application side bar.
+ */
 const Sidebar = () => (
   <Drawer open={true}>
     <img src={logo} className="App-logo" alt="logo" />
