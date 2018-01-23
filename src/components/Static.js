@@ -10,11 +10,15 @@ const TITLES = {
   '/static/tcs': 'Terms & Conditions',
 };
 
+const StaticHeader = ({ title }) => (
+  <div className="App-header">
+    <AppBar title={ title } />
+  </div>
+);
+
 const Static = ({ match }) => (
   <div>
-    <div className="App-header">
-      <AppBar title={TITLES[match.url]} />
-    </div>
+    <StaticHeader title={ TITLES[match.url] } />
     <div className="App-main">
       <h1>Copy for "{ TITLES[match.url] }"</h1>
     </div>

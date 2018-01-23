@@ -18,15 +18,19 @@ const TITLES = {
   '/assets/all': 'Assets: All',
 };
 
+const MainHeader = ({ title }) => (
+  <div className="App-header">
+    <AppBar title={ title } iconElementRight={
+      <RaisedButton>
+        <Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>
+      </RaisedButton>
+    } />
+  </div>
+);
+
 const Main = ({ match }) => (
   <div>
-    <div className="App-header">
-      <AppBar title={TITLES[match.url]} iconElementRight={
-        <RaisedButton>
-          <Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>
-        </RaisedButton>
-      } />
-    </div>
+    <MainHeader title={TITLES[match.url]} />
     <div className="App-main">
       <Table selectable={false}>
         <TableHeader displaySelectAll={false}>
