@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import {
-  AppBar,
-  RaisedButton,
   Table,
   TableBody,
   TableHeader,
@@ -10,26 +8,13 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui';
-import '../style/App.css';
+import AssetListHeader from '../components/AssetListHeader'
 
 const TITLES = {
   '/assets/dept': 'Assets: My department',
   '/assets/edited': 'Assets: Edited recently',
   '/assets/all': 'Assets: All',
 };
-
-/*
-  Renders the app bar of the list view of Assets.
-  */
-const AssetListHeader = ({ title }) => (
-  <div className="App-header">
-    <AppBar title={ title } iconElementRight={
-      <RaisedButton>
-        <Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>
-      </RaisedButton>
-    } />
-  </div>
-);
 
 /*
   Renders the list view of Assets - different filters can be applied to this view.
