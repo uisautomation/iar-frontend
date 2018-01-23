@@ -7,7 +7,7 @@ class Header extends Component {
     return (
       <div className="App-header">
         <header>
-          <AppBar title="Welcome to the IAR" />
+          <AppBar title="Assets: My department" />
         </header>
       </div>
     );

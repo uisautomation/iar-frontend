@@ -30,3 +30,14 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.Asset-table {
+  margin-left: 304px;
+  margin-right: 48px;
+}
+
+.Asset-table-body {
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 5px 10px #888888;
+}
