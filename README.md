@@ -12,3 +12,7 @@ To run locally:
 To build for production:
 
 `npm build`
+
+To run the tests:
+
+`npm test`
