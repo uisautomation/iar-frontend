@@ -1,27 +1,29 @@
-import React, { Component } from 'react';
-import Drawer from 'material-ui/Drawer';
-import logo from '../images/logo.svg';
-import '../style/App.css';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import Drawer from 'material-ui/Drawer'
+import logo from '../images/logo.svg'
+import '../style/App.css'
 
-class Sidebar extends Component {
+/*
+  Renders the IAR application side bar.
+ */
+const Sidebar = () => (
+  <Drawer open={true}>
+    <img src={logo} className="App-logo" alt="logo" />
+    <h3>Assets</h3>
+    <ul>
+      <li><Link to="/assets/dept">My department</Link></li>
+      <li><Link to="/assets/edited">Edited recently</Link></li>
+      <li><Link to="/assets/all">All</Link></li>
+      <hr/>
+      <li><Link to="/static/what-is-asset">What is an information asset?</Link></li>
+      <li><Link to="/static/what-i-do">What do I need to do?</Link></li>
+      <hr/>
+      <li><Link to="/static/feedback">Feedback</Link></li>
+      <li><Link to="/static/contact">Contact</Link></li>
+      <li><Link to="/static/tcs">Terms & Conditions</Link></li>
+    </ul>
+  </Drawer>
+);
 
-  constructor(props) {
-    super(props);
-    this.state = {open: true};
-  }
-
-  render() {
-    return (
-        <Drawer open={this.state.open}>
-          <img src={logo} className="App-logo" alt="logo" />
-          <h3>Assets</h3>
-          <ul>
-            <li><a href="">My department</a></li>
-            <li><a href="">All</a></li>
-          </ul>
-        </Drawer>
-    );
-  }
-}
-
-export default Sidebar;
+export default Sidebar

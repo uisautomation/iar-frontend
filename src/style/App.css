@@ -30,3 +30,12 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.App-raised-button-link {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: black;
+  padding: 0 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
