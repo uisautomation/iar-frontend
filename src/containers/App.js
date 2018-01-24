@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import Sidebar from '../components/Sidebar'
+import { Sidebar } from '../components'
 import AssetList from './AssetList'
 import AssetForm from './AssetForm'
 import Static from '../components/Static'

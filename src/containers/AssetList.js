@@ -8,7 +8,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui';
-import AssetListHeader from '../components/AssetListHeader'
+import { AssetListHeader } from '../components'
 
 const TITLES = {
   '/assets/dept': 'Assets: My department',
