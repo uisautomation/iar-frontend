@@ -1,0 +1,6 @@
+# Editorconfig file for cross-platform configuration of editors.
+root=true
+
+[*.{yml,yaml}]
+indent_style=space
+indent_size=2

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import AssetListItem from '../components/AssetListItem';
+import { Link } from 'react-router-dom'
 import {
   Table,
   TableBody,
@@ -7,6 +7,8 @@ import {
   TableHeaderColumn,
   TableRow,
 } from 'material-ui/Table';
+import AssetListItem from '../components/AssetListItem';
+import AssetListHeader from '../components/AssetListHeader'
 import '../style/App.css';
 
 // Mock data until we can fetch data from the api
@@ -62,11 +64,16 @@ const assetData = [
 	},
 ];
 
+const TITLES = {
+  '/assets/dept': 'Assets: My department',
+  '/assets/all': 'Assets: All',
+};
 
-class AssetList extends Component {
-  render() {
-    return (
-      	<div className="Asset-table">
+
+const AssetList = ({ match }) => (
+  	<div className="App-main">
+  		<AssetListHeader title={TITLES[match.url]} />
+  		<div className="Asset-table">
 			<Table
 			  fixedHeader={true}
 			  selectable={false}
@@ -89,21 +96,21 @@ class AssetList extends Component {
 			    className="Asset-table-body"
 			  >
 			    {assetData.map( (asset, index) => (
-			    	<AssetListItem
-				    	index={asset.index}
-				    	name={asset.name}
-				    	status={asset.status}
-				    	department={asset.department}
-				    	private={asset.private}
-				    	lastedited={asset.lastedited}
-			    	/>
+			    	
+				    	<AssetListItem
+					    	index={asset.index}
+					    	name={asset.name}
+					    	status={asset.status}
+					    	department={asset.department}
+					    	private={asset.private}
+					    	lastedited={asset.lastedited}
+				    	/>
+			    	
 			      ))}
 			  </TableBody>
 			</Table>
-        </div>
-    );
-  }
-}
-
+		</div>
+    </div>
+);
 
 export default AssetList;
