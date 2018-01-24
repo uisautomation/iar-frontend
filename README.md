@@ -1,4 +1,6 @@
 # iar-frontend
+[![Build Status](https://travis-ci.org/uisautomation/iar-frontend.svg?branch=master)](https://travis-ci.org/uisautomation/iar-frontend)
+
 Frontend for IAR web application. Bootstrapped with Create React App.
 
 To install dependencies:
