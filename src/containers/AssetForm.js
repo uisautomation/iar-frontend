@@ -77,10 +77,32 @@ class AssetForm extends Component {
     this.setState(state);
   };
 
+  handleSave() {
+    fetch('http://localhost:8000/assets/', {
+      method: 'post',
+      body: JSON.stringify(this.state),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(response => {
+      // FIXME test for error
+      return response.json();
+    }).then(function(data) {
+      console.log(data);
+      // FIXME snackbar required
+      window.location.href = '/'
+    }).catch(error => {
+      console.error('Error:', error)
+    });
+  }
+
   render() {
     return (
       <div>
-        <AssetFormHeader title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'} />
+        <AssetFormHeader
+          onClick={() => this.handleSave()}
+          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'}
+        />
 
         <div className="App-main">
 
@@ -372,52 +394,52 @@ class AssetForm extends Component {
 
           <span>What are the risks of holding this information asset?</span>
           <Checkbox
-            label="Locked filing cabinet"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('locked_cabinet') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'locked_cabinet')}
-          />
-          <Checkbox
-            label="Safe"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('safe') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'safe')}
-          />
-          <Checkbox
-            label="Locked room"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('locked_room') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'locked_room')}
-          />
-          <Checkbox
-            label="Locked building"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('locked_building') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'locked_building')}
-          />
-          <Checkbox
             label="Password controls"
-            disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('pwd_controls') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'pwd_controls')}
+            disabled={this.state.storage_format.indexOf("digital") === -1}
+            checked={this.state.digital_storage_security.indexOf('pwd_controls') !== -1}
+            onCheck={() => this.updateCheck('digital_storage_security', 'pwd_controls')}
           />
           <Checkbox
             label="Access control lists"
-            disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('acl') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'acl')}
+            disabled={this.state.storage_format.indexOf("digital") === -1}
+            checked={this.state.digital_storage_security.indexOf('acl') !== -1}
+            onCheck={() => this.updateCheck('digital_storage_security', 'acl')}
           />
           <Checkbox
             label="Backup"
-            disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('backup') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'backup')}
+            disabled={this.state.storage_format.indexOf("digital") === -1}
+            checked={this.state.digital_storage_security.indexOf('backup') !== -1}
+            onCheck={() => this.updateCheck('digital_storage_security', 'backup')}
           />
           <Checkbox
             label="Encryption"
+            disabled={this.state.storage_format.indexOf("digital") === -1}
+            checked={this.state.digital_storage_security.indexOf('encryption') !== -1}
+            onCheck={() => this.updateCheck('digital_storage_security', 'encryption')}
+          />
+          <Checkbox
+            label="Locked filing cabinet"
             disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('encryption') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'encryption')}
+            checked={this.state.paper_storage_security.indexOf('locked_cabinet') !== -1}
+            onCheck={() => this.updateCheck('paper_storage_security', 'locked_cabinet')}
+          />
+          <Checkbox
+            label="Safe"
+            disabled={this.state.storage_format.indexOf("paper") === -1}
+            checked={this.state.paper_storage_security.indexOf('safe') !== -1}
+            onCheck={() => this.updateCheck('paper_storage_security', 'safe')}
+          />
+          <Checkbox
+            label="Locked room"
+            disabled={this.state.storage_format.indexOf("paper") === -1}
+            checked={this.state.paper_storage_security.indexOf('locked_room') !== -1}
+            onCheck={() => this.updateCheck('paper_storage_security', 'locked_room')}
+          />
+          <Checkbox
+            label="Locked building"
+            disabled={this.state.storage_format.indexOf("paper") === -1}
+            checked={this.state.paper_storage_security.indexOf('locked_building') !== -1}
+            onCheck={() => this.updateCheck('paper_storage_security', 'locked_building')}
           />
         </div>
       </div>
