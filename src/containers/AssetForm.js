@@ -29,6 +29,8 @@ const fruit = [
   'Watermelon',
 ];
 
+const ENDPOINT = 'http://localhost:8000/assets/';
+
 /*
   Renders the form for the creation/editing of an Asset.
   */
@@ -58,14 +60,28 @@ class AssetForm extends Component {
     };
   }
 
-  handleChange = (name, value) => {
+  componentDidMount() {
+    let self = this;
+    if (this.props.match.url !== '/asset/create') {
+      fetch(ENDPOINT + this.props.match.params.asset + '/').then(
+        response => response.json()
+      ).then(
+        data => {self.setState(data)}
+      ).catch(
+        // FIXME handle error
+        error => console.error('error:', error)
+      );
+    }
+  }
+
+  handleChange(name, value) {
     console.log(this.state);
     let state = {};
     state[name] = value;
     this.setState(state);
-  };
+  }
 
-  updateCheck = (name, value) => {
+  updateCheck(name, value) {
     let index = this.state[name].indexOf(value);
     if (index === -1) {
       this.state[name].push(value);
@@ -75,11 +91,17 @@ class AssetForm extends Component {
     let state = {};
     state[name] = this.state[name];
     this.setState(state);
-  };
+  }
 
   handleSave() {
-    fetch('http://localhost:8000/assets/', {
-      method: 'post',
+    let method = 'post';
+    let endpoint = ENDPOINT;
+    if (this.props.match.url !== '/asset/create') {
+      method = 'put';
+      endpoint = ENDPOINT + this.props.match.params.asset + '/';
+    }
+    fetch(endpoint, {
+      method: method,
       body: JSON.stringify(this.state),
       headers: new Headers({
         'Content-Type': 'application/json'
@@ -133,7 +155,7 @@ class AssetForm extends Component {
           <span>Is this for research purposes?</span>
           <RadioButtonGroup
             name="research"
-            defaultSelected={this.state.research}
+            valueSelected={this.state.research}
             onChange={(e, value) => this.handleChange('research', value)}
             style={{ display: 'flex' }}
           >
@@ -153,7 +175,7 @@ class AssetForm extends Component {
           <span>Is this data private to the department?</span>
           <RadioButtonGroup
             name="private"
-            defaultSelected={this.state.private}
+            valueSelected={this.state.private}
             onChange={(e, value) => this.handleChange('private', value)}
             style={{ display: 'flex' }}
           >
@@ -166,7 +188,7 @@ class AssetForm extends Component {
           <span>Does this asset hold any Personal Data?</span>
           <RadioButtonGroup
             name="personal_data"
-            defaultSelected={this.state.personal_data}
+            valueSelected={this.state.personal_data}
             onChange={(e, value) => this.handleChange('personal_data', value)}
             style={{ display: 'flex' }}
           >
@@ -324,7 +346,7 @@ class AssetForm extends Component {
           <span>How long will this asset be retained for?</span>
           <RadioButtonGroup
             name="retention"
-            defaultSelected={this.state.retention}
+            valueSelected={this.state.retention}
             onChange={(e, value) => this.handleChange('retention', value)}
           >
             <RadioButton value="<=1" label="Less than 1 year"/>
@@ -383,7 +405,7 @@ class AssetForm extends Component {
           <span>What format is the asset stored in?</span>
           <RadioButtonGroup
             name="storage_format"
-            defaultSelected={this.state.storage_format.sort().toString()}
+            valueSelected={this.state.storage_format.sort().toString()}
             onChange={(event, value) => this.setState({storage_format: value.split(',')})}
             style={{ display: 'flex' }}
           >
