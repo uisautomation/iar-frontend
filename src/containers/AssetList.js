@@ -65,50 +65,50 @@ const assetData = [
 ];
 
 const TITLES = {
-	'/assets/dept': 'Assets: My department',
-	'/assets/all': 'Assets: All',
+  '/assets/dept': 'Assets: My department',
+  '/assets/all': 'Assets: All',
 };
 
 
 const AssetList = ({ match }) => (
-	<div className="App-main">
-		<AssetListHeader title={TITLES[match.url]} />
-		<div className="Asset-table">
-			<Table
-				fixedHeader={true}
-				selectable={false}
-			>
-				<TableHeader
-					displaySelectAll={false}
-					adjustForCheckbox={false}
-				>
-					<TableRow>           
-						<TableHeaderColumn>Name</TableHeaderColumn>
-						<TableHeaderColumn>Status</TableHeaderColumn>
-						<TableHeaderColumn>Department</TableHeaderColumn>
-						<TableHeaderColumn>Private</TableHeaderColumn>
-						<TableHeaderColumn>Last edited</TableHeaderColumn>
-					</TableRow>
-				</TableHeader>
-				<TableBody
-					showRowHover={true}
-					displayRowCheckbox={false}
-					className="Asset-table-body"
-				>
-					{assetData.map( (asset, index) => (
-						<AssetListItem
-							index={asset.index}
-							name={asset.name}
-							status={asset.status}
-							department={asset.department}
-							private={asset.private}
-							lastedited={asset.lastedited}
-						/>
-					))}
-				</TableBody>
-			</Table>
-		</div>
-	</div>
+  <div className="App-main">
+    <AssetListHeader title={TITLES[match.url]} />
+    <div className="Asset-table">
+      <Table
+      	fixedHeader={true}
+      	selectable={false}
+      >
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}
+        >
+          <TableRow>           
+            <TableHeaderColumn>Name</TableHeaderColumn>
+            <TableHeaderColumn>Status</TableHeaderColumn>
+            <TableHeaderColumn>Department</TableHeaderColumn>
+            <TableHeaderColumn>Private</TableHeaderColumn>
+            <TableHeaderColumn>Last edited</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody
+          showRowHover={true}
+          displayRowCheckbox={false}
+          className="Asset-table-body"
+        >
+          {assetData.map( (asset, index) => (
+            <AssetListItem
+              index={asset.index}
+              name={asset.name}
+              status={asset.status}
+              department={asset.department}
+              private={asset.private}
+              lastedited={asset.lastedited}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  </div>
 );
 
 export default AssetList;
