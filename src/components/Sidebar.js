@@ -13,7 +13,6 @@ const Sidebar = () => (
     <h3>Assets</h3>
     <ul>
       <li><Link to="/assets/dept">My department</Link></li>
-      <li><Link to="/assets/edited">Edited recently</Link></li>
       <li><Link to="/assets/all">All</Link></li>
       <hr/>
       <li><Link to="/static/what-is-asset">What is an information asset?</Link></li>

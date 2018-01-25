@@ -21,4 +21,4 @@ const AssetFormHeader = ({ title }) => (
   </div>
 );
 
-export default AssetFormHeader
+export default AssetFormHeader;
