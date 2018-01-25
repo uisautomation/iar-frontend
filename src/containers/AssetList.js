@@ -97,7 +97,7 @@ const AssetList = ({ match }) => (
         >
           {assetData.map( (asset, index) => (
             <AssetListItem
-              index={asset.index}
+              key={index}
               name={asset.name}
               status={asset.status}
               department={asset.department}
