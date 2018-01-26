@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AssetFormHeader } from '../components'
+import { AssetFormHeader, CheckboxGroup } from '../components'
 import { AutoComplete, Checkbox, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import _ from 'underscore'
 
@@ -10,6 +10,58 @@ const ENDPOINT_SEARCH = 'http://localhost:8080/search';
 const ENDPOINT_PEOPLE = 'http://localhost:8080/people/crsid/';
 
 const ACCESS_TOKEN = '5d4hVDHqpfddZSdmLK5qmk111rWqEJ_jZZyTslqROEI.vKZ5iO5_5_yz7dwdHTZH4riBfXbJWEfa8bWmUqxZ8tE';
+
+const DATA_SUBJECT_LABELS = [
+  {value: "staff", label: "Staff & applicants"},
+  {value: "students", label: "Students & applicants"},
+  {value: "alumni", label: "Alumni"},
+  {value: "research", label: "Research participants"},
+  {value: "patients", label: "Patients"},
+  {value: "supplier", label: "Suppliers"},
+  {value: "public", label: "Members of the public"},
+];
+
+const DATA_CATEGORY_LABELS = [
+  {value: 'education', label: "Education"},
+  {value: 'racial', label: "Racial or ethnic origin"},
+  {value: 'employment', label: "Employment"},
+  {value: 'political', label: "Political opinions"},
+  {value: 'financial', label: "Financial"},
+  {value: 'unions', label: "Trade union membership"},
+  {value: 'social', label: "Lifestyle and social circumstances"},
+  {value: 'religious', label: "Religious or similar beliefs"},
+  {value: 'visual', label: "Visual images"},
+  {value: 'health', label: "Physical or mental health details"},
+  {value: 'research', label: "Research data"},
+  {value: 'sexual', label: "Sexual life and orientation"},
+  {value: 'medical', label: "Medical records"},
+  {value: 'genetic', label: "Genetic information"},
+  {value: 'children', label: "Data about children 16"},
+  {value: 'biometric', label: "Biometric information"},
+  {value: 'criminal', label: "Criminal proceedings"},
+];
+
+const RISK_TYPE_LABELS = [
+  {value: 'financial', label: "The University would be exposed to financial loss by disclosing this information"},
+  {value: 'operational', label: "Damage or loss of this information would impact core day-to-day operations."},
+  {value: 'safety', label: "Staff or students would be exposed to personal danger if this information was disclosed."},
+  {value: 'compliance', label: "The University would be compliant with all the necessary laws and regulations related to holding this information."},
+  {value: 'reputational', label: "The University would receive significant negative publicity"},
+];
+
+const DIGITAL_STORAGE_SECURITY_LABELS = [
+  {value: 'pwd_controls', label: "Password controls"},
+  {value: 'acl', label: "Access control lists"},
+  {value: 'backup', label: "Backup"},
+  {value: 'encryption', label: "Encryption"},
+];
+
+const PAPER_STORAGE_SECURITY_LABELS = [
+  {value: 'locked_cabinet', label: "Locked filing cabinet"},
+  {value: 'safe', label: "Safe"},
+  {value: 'locked_room', label: "Locked room"},
+  {value: 'locked_building', label: "Locked building"},
+];
 
 /*
   Renders the form for the creation/editing of an Asset.
@@ -40,7 +92,7 @@ class AssetForm extends Component {
       storage_format: [""],
       paper_storage_security: [],
       digital_storage_security: [],
-
+      // non-asset state
       lookup_results: [],
       owner_name: ""
     }
@@ -185,6 +237,7 @@ class AssetForm extends Component {
             <RadioButton value={true} label="yes" style={{ paddingRight: "20px", width: 'auto' }} />
             <RadioButton value={false} label="no" style={{ width: 'auto' }} />
           </RadioButtonGroup>
+          {/*
           <AutoComplete
             disabled={!this.state.research}
             hintText="Principle Investigator"
@@ -194,7 +247,7 @@ class AssetForm extends Component {
             dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
             onUpdateInput={(searchText) => this.handleUpdateInput(searchText)}
             onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
-          />
+          />*/}
 
           <br/><br/>
 
@@ -225,129 +278,19 @@ class AssetForm extends Component {
           <br/>
 
           <span>Who does this Personal Data belong to?</span>
-          <Checkbox
-            label="Staff & applicants"
-            checked={this.state.data_subject.indexOf('staff') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'staff')}
-          />
-          <Checkbox
-            label="Students & applicants"
-            checked={this.state.data_subject.indexOf('students') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'students')}
-          />
-          <Checkbox
-            label="Alumni"
-            checked={this.state.data_subject.indexOf('alumni') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'alumni')}
-          />
-          <Checkbox
-            label="Research participants"
-            checked={this.state.data_subject.indexOf('research') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'research')}
-          />
-          <Checkbox
-            label="Patients"
-            checked={this.state.data_subject.indexOf('patients') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'patients')}
-          />
-          <Checkbox
-            label="Suppliers"
-            checked={this.state.data_subject.indexOf('supplier') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'supplier')}
-          />
-          <Checkbox
-            label="Members of the public"
-            checked={this.state.data_subject.indexOf('public') !== -1}
-            onCheck={() => this.updateCheck('data_subject', 'public')}
+          <CheckboxGroup
+            labels={DATA_SUBJECT_LABELS}
+            values={this.state.data_subject}
+            onChange={(value) => this.handleChange('data_subject', value)}
           />
 
           <br/>
 
           <span>What kind of personal data is held?</span>
-          <Checkbox
-            label="Education"
-            checked={this.state.data_category.indexOf('education') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'education')}
-          />
-          <Checkbox
-            label="Racial or ethnic origin"
-            checked={this.state.data_category.indexOf('racial') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'racial')}
-          />
-          <Checkbox
-            label="Employment"
-            checked={this.state.data_category.indexOf('employment') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'employment')}
-          />
-          <Checkbox
-            label="Political opinions"
-            checked={this.state.data_category.indexOf('political') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'political')}
-          />
-          <Checkbox
-            label="Financial"
-            checked={this.state.data_category.indexOf('financial') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'financial')}
-          />
-          <Checkbox
-            label="Trade union membership"
-            checked={this.state.data_category.indexOf('unions') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'unions')}
-          />
-          <Checkbox
-            label="Lifestyle and social circumstances"
-            checked={this.state.data_category.indexOf('social') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'social')}
-          />
-          <Checkbox
-            label="Religious or similar beliefs"
-            checked={this.state.data_category.indexOf('religious') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'religious')}
-          />
-          <Checkbox
-            label="Visual images"
-            checked={this.state.data_category.indexOf('visual') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'visual')}
-          />
-          <Checkbox
-            label="Physical or mental health details"
-            checked={this.state.data_category.indexOf('health') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'health')}
-          />
-          <Checkbox
-            label="Research data"
-            checked={this.state.data_category.indexOf('research') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'research')}
-          />
-          <Checkbox
-            label="Sexual life and orientation"
-            checked={this.state.data_category.indexOf('sexual') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'sexual')}
-          />
-          <Checkbox
-            label="Medical records"
-            checked={this.state.data_category.indexOf('medical') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'medical')}
-          />
-          <Checkbox
-            label="Genetic information"
-            checked={this.state.data_category.indexOf('genetic') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'genetic')}
-          />
-          <Checkbox
-            label="Data about children 16"
-            checked={this.state.data_category.indexOf('children') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'children')}
-          />
-          <Checkbox
-            label="Biometric information"
-            checked={this.state.data_category.indexOf('biometric') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'biometric')}
-          />
-          <Checkbox
-            label="Criminal proceedings, outcomes and sentences"
-            checked={this.state.data_category.indexOf('criminal') !== -1}
-            onCheck={() => this.updateCheck('data_category', 'criminal')}
+          <CheckboxGroup
+            labels={DATA_CATEGORY_LABELS}
+            values={this.state.data_category}
+            onChange={(value) => this.handleChange('data_category', value)}
           />
 
           <br/>
@@ -392,30 +335,10 @@ class AssetForm extends Component {
           <br/><br/>
 
           <span>What are the risks of holding this information asset?</span>
-          <Checkbox
-            label="The University would be exposed to financial loss by disclosing this information, and/or activities relating to it."
-            checked={this.state.risk_type.indexOf('financial') !== -1}
-            onCheck={() => this.updateCheck('risk_type', 'financial')}
-          />
-          <Checkbox
-            label="Damage or loss of this information would impact core day-to-day operations."
-            checked={this.state.risk_type.indexOf('operational') !== -1}
-            onCheck={() => this.updateCheck('risk_type', 'operational')}
-          />
-          <Checkbox
-            label="Staff or students would be exposed to personal danger if this information was disclosed."
-            checked={this.state.risk_type.indexOf('safety') !== -1}
-            onCheck={() => this.updateCheck('risk_type', 'safety')}
-          />
-          <Checkbox
-            label="The University would be compliant with all the necessary laws and regulations related to holding this information."
-            checked={this.state.risk_type.indexOf('compliance') !== -1}
-            onCheck={() => this.updateCheck('risk_type', 'compliance')}
-          />
-          <Checkbox
-            label="The University would receive significant negative publicity, high-profile criticism or be exposed to a lawsuit if this information became public."
-            checked={this.state.risk_type.indexOf('reputational') !== -1}
-            onCheck={() => this.updateCheck('risk_type', 'reputational')}
+          <CheckboxGroup
+            labels={RISK_TYPE_LABELS}
+            values={this.state.risk_type}
+            onChange={(value) => this.handleChange('risk_type', value)}
           />
 
           <br/>
@@ -441,53 +364,17 @@ class AssetForm extends Component {
           </RadioButtonGroup>
 
           <span>What are the risks of holding this information asset?</span>
-          <Checkbox
-            label="Password controls"
+          <CheckboxGroup
+            labels={DIGITAL_STORAGE_SECURITY_LABELS}
+            values={this.state.digital_storage_security}
+            onChange={(value) => this.handleChange('digital_storage_security', value)}
             disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('pwd_controls') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'pwd_controls')}
           />
-          <Checkbox
-            label="Access control lists"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('acl') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'acl')}
-          />
-          <Checkbox
-            label="Backup"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('backup') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'backup')}
-          />
-          <Checkbox
-            label="Encryption"
-            disabled={this.state.storage_format.indexOf("digital") === -1}
-            checked={this.state.digital_storage_security.indexOf('encryption') !== -1}
-            onCheck={() => this.updateCheck('digital_storage_security', 'encryption')}
-          />
-          <Checkbox
-            label="Locked filing cabinet"
+          <CheckboxGroup
+            labels={PAPER_STORAGE_SECURITY_LABELS}
+            values={this.state.paper_storage_security}
+            onChange={(value) => this.handleChange('paper_storage_security', value)}
             disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('locked_cabinet') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'locked_cabinet')}
-          />
-          <Checkbox
-            label="Safe"
-            disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('safe') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'safe')}
-          />
-          <Checkbox
-            label="Locked room"
-            disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('locked_room') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'locked_room')}
-          />
-          <Checkbox
-            label="Locked building"
-            disabled={this.state.storage_format.indexOf("paper") === -1}
-            checked={this.state.paper_storage_security.indexOf('locked_building') !== -1}
-            onCheck={() => this.updateCheck('paper_storage_security', 'locked_building')}
           />
         </div>
       </div>
