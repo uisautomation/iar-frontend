@@ -35,7 +35,7 @@ const AssetList = ({ match }) => (
         <TableBody displayRowCheckbox={false}>
           <TableRow>
             <TableRowColumn>
-              <Link to="/asset/6477365c-ff58-11e7-8be5-0ed5f89f718b">
+              <Link to="/asset/113e7968-c239-4efb-82cd-c7276e425e66">
                 HR Records - Staff and Salaries
               </Link>
             </TableRowColumn>

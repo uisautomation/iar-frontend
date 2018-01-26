@@ -1,35 +1,15 @@
 import React, { Component } from 'react'
 import { AssetFormHeader } from '../components'
 import { AutoComplete, Checkbox, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
+import _ from 'underscore'
 
-const fruit = [
-  'Apple', 'Apricot', 'Avocado',
-  'Banana', 'Bilberry', 'Blackberry', 'Blackcurrant', 'Blueberry',
-  'Boysenberry', 'Blood Orange',
-  'Cantaloupe', 'Currant', 'Cherry', 'Cherimoya', 'Cloudberry',
-  'Coconut', 'Cranberry', 'Clementine',
-  'Damson', 'Date', 'Dragonfruit', 'Durian',
-  'Elderberry',
-  'Feijoa', 'Fig',
-  'Goji berry', 'Gooseberry', 'Grape', 'Grapefruit', 'Guava',
-  'Honeydew', 'Huckleberry',
-  'Jabouticaba', 'Jackfruit', 'Jambul', 'Jujube', 'Juniper berry',
-  'Kiwi fruit', 'Kumquat',
-  'Lemon', 'Lime', 'Loquat', 'Lychee',
-  'Nectarine',
-  'Mango', 'Marion berry', 'Melon', 'Miracle fruit', 'Mulberry', 'Mandarine',
-  'Olive', 'Orange',
-  'Papaya', 'Passionfruit', 'Peach', 'Pear', 'Persimmon', 'Physalis', 'Plum', 'Pineapple',
-  'Pumpkin', 'Pomegranate', 'Pomelo', 'Purple Mangosteen',
-  'Quince',
-  'Raspberry', 'Raisin', 'Rambutan', 'Redcurrant',
-  'Salal berry', 'Satsuma', 'Star fruit', 'Strawberry', 'Squash', 'Salmonberry',
-  'Tamarillo', 'Tamarind', 'Tomato', 'Tangerine',
-  'Ugli fruit',
-  'Watermelon',
-];
+const ENDPOINT_ASSETS = 'http://localhost:8000/assets/';
 
-const ENDPOINT = 'http://localhost:8000/assets/';
+const ENDPOINT_SEARCH = 'http://localhost:8080/search';
+
+const ENDPOINT_PEOPLE = 'http://localhost:8080/people/crsid/';
+
+const ACCESS_TOKEN = '5d4hVDHqpfddZSdmLK5qmk111rWqEJ_jZZyTslqROEI.vKZ5iO5_5_yz7dwdHTZH4riBfXbJWEfa8bWmUqxZ8tE';
 
 /*
   Renders the form for the creation/editing of an Asset.
@@ -38,12 +18,15 @@ class AssetForm extends Component {
 
   constructor() {
     super();
+
+    this.lookup = _.debounce(this.lookup, 200);
+
     this.state = {
       name: "",
       department: "",
       purpose: "",
       research: null,
-      owner: null, // map
+      owner: null,
       private: null,
       personal_data: null,
       data_subject: [],
@@ -57,17 +40,34 @@ class AssetForm extends Component {
       storage_format: [""],
       paper_storage_security: [],
       digital_storage_security: [],
-    };
+
+      lookup_results: [],
+      owner_name: ""
+    }
   }
 
   componentDidMount() {
-    let self = this;
     if (this.props.match.url !== '/asset/create') {
-      fetch(ENDPOINT + this.props.match.params.asset + '/').then(
+      let self = this;
+      fetch(ENDPOINT_ASSETS + this.props.match.params.asset + '/').then(
         response => response.json()
-      ).then(
-        data => {self.setState(data)}
-      ).catch(
+      ).then(data => {
+        self.setState(data);
+        if (self.state.owner) {
+          fetch(ENDPOINT_PEOPLE + self.state.owner, {
+            headers: new Headers({
+            'Authorization': 'Bearer ' + ACCESS_TOKEN
+            })
+          }).then(
+            response => response.json()
+          ).then(data => {
+            self.setState({owner_name: data.visibleName})
+          }).catch(
+            // FIXME handle error
+            error => console.error('error:', error)
+          );
+        }
+      }).catch(
         // FIXME handle error
         error => console.error('error:', error)
       );
@@ -75,7 +75,6 @@ class AssetForm extends Component {
   }
 
   handleChange(name, value) {
-    console.log(this.state);
     let state = {};
     state[name] = value;
     this.setState(state);
@@ -95,10 +94,10 @@ class AssetForm extends Component {
 
   handleSave() {
     let method = 'post';
-    let endpoint = ENDPOINT;
+    let endpoint = ENDPOINT_ASSETS;
     if (this.props.match.url !== '/asset/create') {
       method = 'put';
-      endpoint = ENDPOINT + this.props.match.params.asset + '/';
+      endpoint += this.props.match.params.asset + '/';
     }
     fetch(endpoint, {
       method: method,
@@ -118,12 +117,36 @@ class AssetForm extends Component {
     });
   }
 
+  handleUpdateInput(searchText) {
+    this.setState({
+      owner_name: searchText
+    });
+    this.lookup(searchText);
+  }
+
+  // FIXME (include CRSID in display name)
+  lookup(searchText) {
+    let self = this;
+    fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
+      headers: new Headers({
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+      })
+    }).then(
+      response => response.json()
+    ).then(
+      data => {self.setState({lookup_results: data.results})}
+    ).catch(
+      // FIXME handle error
+      error => console.error('error:', error)
+    );
+  }
+
   render() {
     return (
       <div>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: Some asset'}
+          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + this.state.name}
         />
 
         <div className="App-main">
@@ -165,9 +188,12 @@ class AssetForm extends Component {
           <AutoComplete
             disabled={!this.state.research}
             hintText="Principle Investigator"
-            filter={AutoComplete.fuzzyFilter}
-            dataSource={fruit}
-            maxSearchResults={5}
+            searchText={this.state.owner_name}
+            filter={AutoComplete.noFilter}
+            dataSource={this.state.lookup_results}
+            dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
+            onUpdateInput={(searchText) => this.handleUpdateInput(searchText)}
+            onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
           />
 
           <br/><br/>
