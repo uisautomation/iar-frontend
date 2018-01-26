@@ -6,10 +6,6 @@ import { Checkbox } from 'material-ui';
   */
 class CheckboxGroup extends Component {
 
-  constructor() {
-    super();
-  }
-
   updateCheck(value) {
     let index = this.props.values.indexOf(value);
     if (index === -1) {

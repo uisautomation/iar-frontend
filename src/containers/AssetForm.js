@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { AssetFormHeader, CheckboxGroup } from '../components'
-import { AutoComplete, Checkbox, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
+import { AssetFormHeader, CheckboxGroup, YesNoChoice } from '../components'
+import { AutoComplete, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import _ from 'underscore'
 
 const ENDPOINT_ASSETS = 'http://localhost:8000/assets/';
@@ -9,7 +9,7 @@ const ENDPOINT_SEARCH = 'http://localhost:8080/search';
 
 const ENDPOINT_PEOPLE = 'http://localhost:8080/people/crsid/';
 
-const ACCESS_TOKEN = '5d4hVDHqpfddZSdmLK5qmk111rWqEJ_jZZyTslqROEI.vKZ5iO5_5_yz7dwdHTZH4riBfXbJWEfa8bWmUqxZ8tE';
+const ACCESS_TOKEN = '7dOZExW3pPqJ1hDhm1wCFdmX7Vj0-YKB2g-OYqHoXDc.E7hINEPpCM_Er8M7DAZrsGUOkvBbVZ9iiE-4qAxs1ZI';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -72,6 +72,7 @@ class AssetForm extends Component {
     super();
 
     this.lookup = _.debounce(this.lookup, 200);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
       name: "",
@@ -98,49 +99,44 @@ class AssetForm extends Component {
     }
   }
 
+  fetch(url, options, cb) {
+    fetch(url, options).then(response => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        // FIXME handle error
+      }
+    }).then(cb.bind(this)).catch(
+      // FIXME handle error
+      error => console.error('error:', error)
+    );
+  }
+
+  fetchOwnerName() {
+    this.fetch(ENDPOINT_PEOPLE + this.state.owner, {
+      headers: new Headers({
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+      })
+    }, data => {
+      data && this.setState({owner_name: data.visibleName})
+    });
+  }
+
   componentDidMount() {
     if (this.props.match.url !== '/asset/create') {
-      let self = this;
-      fetch(ENDPOINT_ASSETS + this.props.match.params.asset + '/').then(
-        response => response.json()
-      ).then(data => {
-        self.setState(data);
-        if (self.state.owner) {
-          fetch(ENDPOINT_PEOPLE + self.state.owner, {
-            headers: new Headers({
-            'Authorization': 'Bearer ' + ACCESS_TOKEN
-            })
-          }).then(
-            response => response.json()
-          ).then(data => {
-            self.setState({owner_name: data.visibleName})
-          }).catch(
-            // FIXME handle error
-            error => console.error('error:', error)
-          );
+      this.fetch(ENDPOINT_ASSETS + this.props.match.params.asset + '/', {}, data => {
+        this.setState(data);
+        if (this.state.owner) {
+          this.fetchOwnerName();
         }
-      }).catch(
-        // FIXME handle error
-        error => console.error('error:', error)
-      );
+      });
     }
   }
 
   handleChange(name, value) {
+    // FIXME can't remove owner
     let state = {};
     state[name] = value;
-    this.setState(state);
-  }
-
-  updateCheck(name, value) {
-    let index = this.state[name].indexOf(value);
-    if (index === -1) {
-      this.state[name].push(value);
-    } else {
-      this.state[name].splice(index, 1);
-    }
-    let state = {};
-    state[name] = this.state[name];
     this.setState(state);
   }
 
@@ -151,21 +147,16 @@ class AssetForm extends Component {
       method = 'put';
       endpoint += this.props.match.params.asset + '/';
     }
-    fetch(endpoint, {
+    this.fetch(endpoint, {
       method: method,
       body: JSON.stringify(this.state),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(response => {
-      // FIXME test for error
-      return response.json();
-    }).then(function(data) {
+    }, (data) => {
       console.log(data);
       // FIXME snackbar required
       window.location.href = '/'
-    }).catch(error => {
-      console.error('Error:', error)
     });
   }
 
@@ -179,18 +170,11 @@ class AssetForm extends Component {
   // FIXME (include CRSID in display name)
   lookup(searchText) {
     let self = this;
-    fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
+    this.fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
       headers: new Headers({
         'Authorization': 'Bearer ' + ACCESS_TOKEN
       })
-    }).then(
-      response => response.json()
-    ).then(
-      data => {self.setState({lookup_results: data.results})}
-    ).catch(
-      // FIXME handle error
-      error => console.error('error:', error)
-    );
+    }, data => {self.setState({lookup_results: data.results})});
   }
 
   render() {
@@ -228,16 +212,7 @@ class AssetForm extends Component {
           <br/><br/>
 
           <span>Is this for research purposes?</span>
-          <RadioButtonGroup
-            name="research"
-            valueSelected={this.state.research}
-            onChange={(e, value) => this.handleChange('research', value)}
-            style={{ display: 'flex' }}
-          >
-            <RadioButton value={true} label="yes" style={{ paddingRight: "20px", width: 'auto' }} />
-            <RadioButton value={false} label="no" style={{ width: 'auto' }} />
-          </RadioButtonGroup>
-          {/*
+          <YesNoChoice name="research" value={this.state.research} onChange={this.handleChange} />
           <AutoComplete
             disabled={!this.state.research}
             hintText="Principle Investigator"
@@ -247,33 +222,17 @@ class AssetForm extends Component {
             dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
             onUpdateInput={(searchText) => this.handleUpdateInput(searchText)}
             onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
-          />*/}
+          />
 
           <br/><br/>
 
           <span>Is this data private to the department?</span>
-          <RadioButtonGroup
-            name="private"
-            valueSelected={this.state.private}
-            onChange={(e, value) => this.handleChange('private', value)}
-            style={{ display: 'flex' }}
-          >
-            <RadioButton value={true} label="yes" style={{ paddingRight: "20px", width: 'auto' }} />
-            <RadioButton value={false} label="no" style={{ width: 'auto' }} />
-          </RadioButtonGroup>
+          <YesNoChoice name="private" value={this.state.private} onChange={this.handleChange} />
 
           <br/>
 
           <span>Does this asset hold any Personal Data?</span>
-          <RadioButtonGroup
-            name="personal_data"
-            valueSelected={this.state.personal_data}
-            onChange={(e, value) => this.handleChange('personal_data', value)}
-            style={{ display: 'flex' }}
-          >
-            <RadioButton value={true} label="yes" style={{ width: 'auto', paddingRight: "20px" }} />
-            <RadioButton value={false} label="no" style={{ width: 'auto' }} />
-          </RadioButtonGroup>
+          <YesNoChoice name="personal_data" value={this.state.personal_data} onChange={this.handleChange} />
 
           <br/>
 
