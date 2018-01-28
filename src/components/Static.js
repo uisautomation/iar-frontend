@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppBar } from 'material-ui';
 import '../style/App.css';
+import Page from '../containers/Page';
 
 const TITLES = {
   '/static/what-is-asset': 'What is an information asset?',
@@ -23,12 +24,14 @@ const StaticHeader = ({ title }) => (
   Renders the IAR app's static pages.
  */
 const Static = ({ match }) => (
-  <div className="App-main">
-    <StaticHeader title={ TITLES[match.url] } />
+  <Page>
     <div>
-      <h1>Copy for "{ TITLES[match.url] }"</h1>
+      <StaticHeader title={ TITLES[match.url] } />
+      <div>
+        <h1>Copy for "{ TITLES[match.url] }"</h1>
+      </div>
     </div>
-  </div>
+  </Page>
 );
 
 export default Static;

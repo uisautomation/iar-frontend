@@ -1,27 +1,36 @@
-import React from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import Sidebar from '../components/Sidebar'
-import AssetList from './AssetList'
-import AssetForm from './AssetForm'
-import Static from '../components/Static'
-import '../style/App.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import LoginRequiredRoute from '../components/LoginRequiredRoute';
 
-/*
-  IAR main app component.
-  */
-const App = () => (
-  <Router>
-    <MuiThemeProvider>
-      <div>
-        <Sidebar />
-        <Route path="/" exact render={() => <Redirect to="/assets/dept"/>} />
-        <Route path="/assets/:filter" component={AssetList} />
-        <Route path="/static/:page" component={Static} />
-        <Route path="/asset/:asset" component={AssetForm} />
-      </div>
-    </MuiThemeProvider>
-  </Router>
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AssetList from './AssetList';
+import AssetForm from './AssetForm';
+import Static from '../components/Static';
+
+import '../style/App.css';
+
+/**
+ * IAR main application component.
+ */
+const App = ({ store }) => (
+  <Provider store={ store }>
+    <Router>
+      <MuiThemeProvider>
+        <Switch>
+          <Route path="/" exact render={() => <Redirect to="/assets/dept"/>} />
+          <LoginRequiredRoute path="/assets/:filter" component={AssetList} />
+          <LoginRequiredRoute path="/static/:page" component={Static} />
+          <LoginRequiredRoute path="/asset/:asset" component={AssetForm} />
+        </Switch>
+      </MuiThemeProvider>
+    </Router>
+  </Provider>
 );
 
-export default App
+App.propTypes = {
+  store: PropTypes.object.isRequired
+};
+
+export default App;

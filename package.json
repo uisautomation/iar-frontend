@@ -6,16 +6,25 @@
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "4.2.2",
     "react-scripts": "1.1.0",
-    "react-router-dom": "4.2.2"
+    "redux": "^3.7.2",
+    "redux-implicit-oauth2": "^1.2.1",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
-    "react-test-renderer": "16"
+    "mock-local-storage": "^1.0.5",
+    "react-styleguidist": "^6.2.0",
+    "react-test-renderer": "16",
+    "redux-mock-store": "^1.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom --coverage",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build"
   }
 }

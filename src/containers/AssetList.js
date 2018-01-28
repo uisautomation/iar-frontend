@@ -10,58 +10,59 @@ import {
 import AssetListItem from '../components/AssetListItem';
 import AssetListHeader from '../components/AssetListHeader'
 import '../style/App.css';
+import Page from '../containers/Page';
 
 // Mock data until we can fetch data from the api
 const assetData = [
-	{
-		name: 'Asset #1',
-		status: 'In-progress',
-		department: 'UIS',
-		private: true,
-		lastedited: 'today'
-	},
-	{
-		name: 'Asset #2',
-		status: 'In-progress',
-		department: 'UIS',
-		private: true,
-		lastedited: 'today'
-	},
-	{
-		name: 'Asset #3',
-		status: 'Complete',
-		department: 'UIS',
-		private: true,
-		lastedited: 'today'
-	},
-	{
-		name: 'Asset #4',
-		status: 'In-progress',
-		department: 'UIS',
-		private: false,
-		lastedited: 'today'
-	},
-	{
-		name: 'Asset #5',
-		status: 'Complete',
-		department: 'UIS',
-		private: true,
-		lastedited: 'today'
-	},
-	{
-		name: 'Asset #6',
-		status: 'In-progress',
-		department: 'UIS',
-		private: true,
-		lastedited: 'today'
-	},
-	{
-		name: 'Asset #7',
-		status: 'In-progress',
-		department: 'UIS',
-		private: false,
-		lastedited: 'today'
-	},
+  {
+    name: 'Asset #1',
+    status: 'In-progress',
+    department: 'UIS',
+    private: true,
+    lastedited: 'today'
+  },
+  {
+    name: 'Asset #2',
+    status: 'In-progress',
+    department: 'UIS',
+    private: true,
+    lastedited: 'today'
+  },
+  {
+    name: 'Asset #3',
+    status: 'Complete',
+    department: 'UIS',
+    private: true,
+    lastedited: 'today'
+  },
+  {
+    name: 'Asset #4',
+    status: 'In-progress',
+    department: 'UIS',
+    private: false,
+    lastedited: 'today'
+  },
+  {
+    name: 'Asset #5',
+    status: 'Complete',
+    department: 'UIS',
+    private: true,
+    lastedited: 'today'
+  },
+  {
+    name: 'Asset #6',
+    status: 'In-progress',
+    department: 'UIS',
+    private: true,
+    lastedited: 'today'
+  },
+  {
+    name: 'Asset #7',
+    status: 'In-progress',
+    department: 'UIS',
+    private: false,
+    lastedited: 'today'
+  },
 ];
 
 const TITLES = {
@@ -71,12 +72,12 @@ const TITLES = {
 
 
 const AssetList = ({ match }) => (
-  <div className="App-main">
+  <Page>
     <AssetListHeader title={TITLES[match.url]} />
     <div className="Asset-table">
       <Table
-      	fixedHeader={true}
-      	selectable={false}
+        fixedHeader={true}
+        selectable={false}
       >
         <TableHeader
           displaySelectAll={false}
@@ -108,7 +109,7 @@ const AssetList = ({ match }) => (
         </TableBody>
       </Table>
     </div>
-  </div>
+  </Page>
 );
 
 export default AssetList;

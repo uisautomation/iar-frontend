@@ -18,3 +18,7 @@ To build for production:
 To run the tests:
 
 `npm test`
+
+To serve some documentation on the components
+
+`npm run styleguide`
