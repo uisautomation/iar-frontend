@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { AssetFormHeader, CheckboxGroup, YesNoChoice } from '../components'
-import { AutoComplete, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import _ from 'underscore'
+import { AutoComplete, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
+import config from '../config';
+import { AssetFormHeader, CheckboxGroup, YesNoChoice } from '../components'
 
-const ENDPOINT_ASSETS = 'http://localhost:8000/assets/';
+const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
 
-const ENDPOINT_SEARCH = 'http://localhost:8080/search';
-
-const ENDPOINT_PEOPLE = 'http://localhost:8080/people/crsid/';
+const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
 
 const ACCESS_TOKEN = '7dOZExW3pPqJ1hDhm1wCFdmX7Vj0-YKB2g-OYqHoXDc.E7hINEPpCM_Er8M7DAZrsGUOkvBbVZ9iiE-4qAxs1ZI';
 
@@ -123,7 +122,7 @@ class AssetForm extends Component {
 
   componentDidMount() {
     if (this.props.match.url !== '/asset/create') {
-      this.fetch(ENDPOINT_ASSETS + this.props.match.params.asset + '/', {}, data => {
+      this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.asset + '/', {}, data => {
         this.setState(data);
         if (this.state.owner) {
           this.fetchOwnerName();
@@ -141,7 +140,7 @@ class AssetForm extends Component {
 
   handleSave() {
     let method = 'post';
-    let endpoint = ENDPOINT_ASSETS;
+    let endpoint = config.ENDPOINT_ASSETS;
     if (this.props.match.url !== '/asset/create') {
       method = 'put';
       endpoint += this.props.match.params.asset + '/';
