@@ -45,7 +45,7 @@ const AssetList = ({ match }) => (
           </TableRow>
           <TableRow>
             <TableRowColumn>
-              <Link to="/asset/8f35d858-ff58-11e7-8be5-0ed5f89f718b">
+              <Link to="/asset/272e1a57-3a9a-4970-9d53-87cc4fac98c6">
                 User behaviour for Research Dashboard
               </Link>
             </TableRowColumn>

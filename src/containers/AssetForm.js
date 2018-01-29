@@ -75,22 +75,22 @@ class AssetForm extends Component {
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
-      name: "",
-      department: "",
-      purpose: "",
+      name: null,
+      department: null,
+      purpose: null,
       research: null,
       owner: null,
       private: null,
       personal_data: null,
       data_subject: [],
       data_category: [],
-      recipients_category: "",
-      recipients_outside_eea: "",
+      recipients_category: null,
+      recipients_outside_eea: null,
       retention: null,
-      retention_other: "",
+      retention_other: null,
       risk_type: [],
-      storage_location: "",
-      storage_format: [""],
+      storage_location: null,
+      storage_format: [],
       paper_storage_security: [],
       digital_storage_security: [],
       // non-asset state
@@ -135,7 +135,7 @@ class AssetForm extends Component {
   handleChange(name, value) {
     // FIXME can't remove owner
     let state = {};
-    state[name] = value;
+    state[name] = value === "" ? null : value;
     this.setState(state);
   }
 
@@ -187,7 +187,7 @@ class AssetForm extends Component {
 
           <TextField
             hintText="Asset name"
-            value={this.state.name}
+            value={this.state.name === null ? "" : this.state.name}
             onChange={(e, value) => this.handleChange('name', value)}
           />
 
@@ -195,7 +195,7 @@ class AssetForm extends Component {
 
           <TextField
             hintText="Asset department"
-            value={this.state.department}
+            value={this.state.department === null ? "" : this.state.department}
             onChange={(e, value) => this.handleChange('department', value)}
           />
 
@@ -203,7 +203,7 @@ class AssetForm extends Component {
 
           <TextField
             hintText="Purpose of holding this asset"
-            value={this.state.purpose}
+            value={this.state.purpose === null ? "" : this.state.purpose}
             onChange={(e, value) => this.handleChange('purpose', value)}
           />
 
@@ -254,7 +254,7 @@ class AssetForm extends Component {
 
           <TextField
             hintText="Who is the asset shared with?"
-            value={this.state.recipients_category}
+            value={this.state.recipients_category === null ? "" : this.state.recipients_category}
             onChange={(e, value) => this.handleChange('recipients_category', value)}
           />
 
@@ -262,7 +262,7 @@ class AssetForm extends Component {
 
           <TextField
             hintText="Is the asset shared outside of the EEA? If so, to whom?"
-            value={this.state.recipients_outside_eea}
+            value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
             onChange={(e, value) => this.handleChange('recipients_outside_eea', value)}
             style={{ width: 400 }}
           />
@@ -285,7 +285,7 @@ class AssetForm extends Component {
           <TextField
             hintText="Other retention period"
             disabled={this.state.retention !== 'other'}
-            value={this.state.retention_other}
+            value={this.state.retention_other === null ? "" : this.state.retention_other}
             onChange={(e, value) => this.handleChange('retention_other', value)}
           />
 
@@ -302,7 +302,7 @@ class AssetForm extends Component {
 
           <TextField
             hintText="Where is the asset stored?"
-            value={this.state.storage_location}
+            value={this.state.storage_location === null ? "" : this.state.storage_location}
             onChange={(e, value) => this.handleChange('storage_location', value)}
           />
 
