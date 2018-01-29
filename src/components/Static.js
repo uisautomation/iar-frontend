@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route } from 'react-router-dom'
 import { AppBar } from 'material-ui';
 import '../style/App.css';
 
@@ -31,4 +32,8 @@ const Static = ({ match }) => (
   </div>
 );
 
-export default Static;
+const RoutedStatic = () => (
+  <Route path="/static/:page" component={Static}/>
+);
+
+export default RoutedStatic;

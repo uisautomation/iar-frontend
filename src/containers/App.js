@@ -42,9 +42,9 @@ class App extends Component {
             <div>
               <Sidebar/>
               <Route path="/" exact render={() => <Redirect to="/assets/dept"/>}/>
-              <Route path="/assets/:filter" component={AssetList}/>
-              <Route path="/static/:page" component={Static}/>
-              <Route path="/asset/:asset" render={(props) => <AssetForm handleMessage={this.handleMessage.bind(this)} {...props}/>} />
+              <AssetList/>
+              <Static/>
+              <AssetForm handleMessage={this.handleMessage.bind(this)} />
               <Snackbar
                 open={this.state.snackOpen}
                 message={this.state.message}

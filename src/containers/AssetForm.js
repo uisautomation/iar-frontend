@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import _ from 'underscore'
+import { Route } from 'react-router-dom'
 import { AutoComplete, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
+import _ from 'underscore'
 import config from '../config';
 import { AssetFormHeader, CheckboxGroup, YesNoChoice } from '../components'
 
@@ -8,7 +9,7 @@ const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
 
 const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
 
-const ACCESS_TOKEN = '7dOZExW3pPqJ1hDhm1wCFdmX7Vj0-YKB2g-OYqHoXDc.E7hINEPpCM_Er8M7DAZrsGUOkvBbVZ9iiE-4qAxs1ZI';
+const ACCESS_TOKEN = 'P9FvKfO--eH4_RST3Go4DIrYcjejlL9AU977FThvyMs.sgVg-pvX7osqaMyQNPb5jPnMPW-Xtsfyp3re7lsl5Xk';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -105,7 +106,7 @@ class AssetForm extends Component {
       } else {
         this.props.handleMessage('Network Error: ' + response.statusText)
       }
-    }).then(cb.bind(this)).catch(
+    }).then(data => data && cb(data)).catch(
         error => this.props.handleMessage('Network Error: ' + error)
     );
   }
@@ -116,7 +117,7 @@ class AssetForm extends Component {
         'Authorization': 'Bearer ' + ACCESS_TOKEN
       })
     }, data => {
-      data && this.setState({owner_name: data.visibleName})
+      this.setState({owner_name: data.visibleName})
     });
   }
 
@@ -171,7 +172,7 @@ class AssetForm extends Component {
       headers: new Headers({
         'Authorization': 'Bearer ' + ACCESS_TOKEN
       })
-    }, data => {self.setState({lookup_results: data.results})});
+    }, data => self.setState({lookup_results: data.results}));
   }
 
   render() {
@@ -338,4 +339,9 @@ class AssetForm extends Component {
   }
 }
 
-export default AssetForm
+const RoutedAssetForm = (props) => (
+  <Route path="/asset/:asset"
+         render={(routeProps) => <AssetForm handleMessage={props.handleMessage.bind(this)} {...routeProps}/>} />
+);
+
+export default RoutedAssetForm

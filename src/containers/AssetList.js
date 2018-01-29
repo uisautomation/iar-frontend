@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import {
   Table,
   TableBody,
@@ -59,4 +59,8 @@ const AssetList = ({ match }) => (
   </div>
 );
 
-export default AssetList;
+const RoutedAssetList = () => (
+  <Route path="/assets/:filter" component={AssetList}/>
+);
+
+export default RoutedAssetList;
