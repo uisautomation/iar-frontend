@@ -104,11 +104,10 @@ class AssetForm extends Component {
       if (response.ok) {
         return response.json()
       } else {
-        // FIXME handle error
+        this.props.handleMessage('Network Error: ' + response.statusText)
       }
     }).then(cb.bind(this)).catch(
-      // FIXME handle error
-      error => console.error('error:', error)
+        error => this.props.handleMessage('Network Error: ' + error)
     );
   }
 
@@ -154,9 +153,8 @@ class AssetForm extends Component {
         'Content-Type': 'application/json'
       })
     }, (data) => {
-      console.log(data);
-      // FIXME snackbar required
-      window.location.href = '/'
+      this.props.handleMessage('"' + data.name + '" saved.');
+      this.props.history.push("/")
     });
   }
 

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { Snackbar } from 'material-ui';
 import { Sidebar } from '../components'
 import AssetList from './AssetList'
 import AssetForm from './AssetForm'
@@ -10,18 +11,52 @@ import '../style/App.css'
 /*
   IAR main app component.
   */
-const App = () => (
-  <Router>
-    <MuiThemeProvider>
+class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      snackOpen: false,
+      message: "",
+    }
+  }
+
+  handleRequestClose() {
+    this.setState({
+      snackOpen: false,
+    });
+  };
+
+  handleMessage(message) {
+    this.setState({
+      message: message,
+      snackOpen: true
+    });
+  };
+
+  render() {
+    return (
       <div>
-        <Sidebar />
-        <Route path="/" exact render={() => <Redirect to="/assets/dept"/>} />
-        <Route path="/assets/:filter" component={AssetList} />
-        <Route path="/static/:page" component={Static} />
-        <Route path="/asset/:asset" component={AssetForm} />
+        <Router>
+          <MuiThemeProvider>
+            <div>
+              <Sidebar/>
+              <Route path="/" exact render={() => <Redirect to="/assets/dept"/>}/>
+              <Route path="/assets/:filter" component={AssetList}/>
+              <Route path="/static/:page" component={Static}/>
+              <Route path="/asset/:asset" render={(props) => <AssetForm handleMessage={this.handleMessage.bind(this)} {...props}/>} />
+              <Snackbar
+                open={this.state.snackOpen}
+                message={this.state.message}
+                autoHideDuration={3000}
+                onRequestClose={this.handleRequestClose.bind(this)}
+              />
+            </div>
+          </MuiThemeProvider>
+        </Router>
       </div>
-    </MuiThemeProvider>
-  </Router>
-);
+    );
+  }
+}
 
 export default App
