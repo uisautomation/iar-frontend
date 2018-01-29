@@ -1,67 +1,12 @@
-// eslint-disable-next-line
 import React from 'react'; // used implicitly by JSX
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-} from 'material-ui/Table';
-import { AssetListHeader, AssetListItem } from '../components'
+import PropTypes from 'prop-types';
+import AssetListHeader from '../components/AssetListHeader';
+import AssetTable from '../components/AssetTable';
 import Page from '../containers/Page';
+import { connect } from 'react-redux';
+import { getMoreAssets } from '../redux/actions/assetRegisterApi';
 
-// Mock data until we can fetch data from the api
-const assetData = [
-  {
-    name: 'Asset #1',
-    status: 'In-progress',
-    department: 'UIS',
-    private: true,
-    lastedited: 'today'
-  },
-  {
-    name: 'Asset #2',
-    status: 'In-progress',
-    department: 'UIS',
-    private: true,
-    lastedited: 'today'
-  },
-  {
-    name: 'Asset #3',
-    status: 'Complete',
-    department: 'UIS',
-    private: true,
-    lastedited: 'today'
-  },
-  {
-    name: 'Asset #4',
-    status: 'In-progress',
-    department: 'UIS',
-    private: false,
-    lastedited: 'today'
-  },
-  {
-    name: 'Asset #5',
-    status: 'Complete',
-    department: 'UIS',
-    private: true,
-    lastedited: 'today'
-  },
-  {
-    name: 'Asset #6',
-    status: 'In-progress',
-    department: 'UIS',
-    private: true,
-    lastedited: 'today'
-  },
-  {
-    name: 'Asset #7',
-    status: 'In-progress',
-    department: 'UIS',
-    private: false,
-    lastedited: 'today'
-  },
-];
+import '../style/App.css';
 
 const TITLES = {
   '/assets/dept': 'Assets: My department',
@@ -69,45 +14,28 @@ const TITLES = {
 };
 
 
-const AssetList = ({ match }) => (
-  <Page>
-    <AssetListHeader title={TITLES[match.url]} />
-    <div className="Asset-table">
-      <Table
-        fixedHeader={true}
-        selectable={false}
-      >
-        <TableHeader
-          displaySelectAll={false}
-          adjustForCheckbox={false}
-        >
-          <TableRow>           
-            <TableHeaderColumn>Name</TableHeaderColumn>
-            <TableHeaderColumn>Status</TableHeaderColumn>
-            <TableHeaderColumn>Department</TableHeaderColumn>
-            <TableHeaderColumn>Private</TableHeaderColumn>
-            <TableHeaderColumn>Last edited</TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody
-          showRowHover={true}
-          displayRowCheckbox={false}
-          className="Asset-table-body"
-        >
-          {assetData.map( (asset, index) => (
-            <AssetListItem
-              key={index}
-              name={asset.name}
-              status={asset.status}
-              department={asset.department}
-              private={asset.private}
-              lastedited={asset.lastedited}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  </Page>
-);
+class AssetList extends React.Component {
+  componentDidMount() {
+    this.props.getMoreAssets(this.props.nextUrl);
+  }
 
-export default AssetList;
+  render() { return (
+    <Page>
+      <AssetListHeader title={TITLES[this.props.match.url]} />
+      <AssetTable />
+    </Page>);
+  }
+};
+
+AssetList.propTypes = {
+  getMoreAssets: PropTypes.func.isRequired,
+};
+
+// Export unconnected version of component to aid testing.
+export const UnconnectedAssetList = AssetList;
+
+const mapStateToProps = ({ assets }) => ({ nextUrl: assets.next });
+
+const mapDispatchToProps = { getMoreAssets };
+
+export default connect(mapStateToProps, mapDispatchToProps)(AssetList);

@@ -39,6 +39,10 @@ const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 fetch_mock.get(ASSET_FIXTURE_URL, ASSET_FIXTURE);
 
+fetch_mock.get('http://localhost:8000/assets/', {
+  next: null, previous: null, results: [ ASSET_FIXTURE ],
+});
+
 fetch_mock.get('http://localhost:8080/people/crsid/mb2174', {
   url: "http://localhost:8080/people/crsid/mb2174",
   identifier: {"scheme": "crsid", "value": "mb2174"},

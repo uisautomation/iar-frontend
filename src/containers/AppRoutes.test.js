@@ -1,3 +1,6 @@
+// mock any components which are troublesome in our test suite
+import '../test/mocks';
+
 import React from 'react';
 import { AppBar } from 'material-ui';
 import { render } from '../testutils';

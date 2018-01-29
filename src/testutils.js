@@ -1,16 +1,19 @@
+import './test/mock-localstorage.js';
+
 import React from 'react';
 import { Provider } from 'react-redux';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import configureMockStore from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store';
+import { middlewares } from './redux/enhancer';
+import { initialState as assetsInitialState } from './redux/reducers/assetRegisterApi';
 
-import './test/mock-localstorage.js';
-
-export const mockStore = configureMockStore([]);
+export const mockStore = configureMockStore(middlewares);
 
 export const DEFAULT_INITIAL_STATE = {
   auth: { isLoggedIn: true },
+  assets: assetsInitialState,
 };
 
 /*
