@@ -1,3 +1,4 @@
 import { login, logout } from './auth';
+import { assetsList } from './assetRegisterApi';
 
-export { login, logout };
+export { login, logout, assetsList };
