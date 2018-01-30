@@ -28,6 +28,7 @@ class AssetList extends React.Component {
         this.props.iarApi.assets.map( asset => (
           <AssetListItem
             key={asset.url}
+            url={asset.url}
             name={asset.name}
             status={asset.status}
             department={asset.department}

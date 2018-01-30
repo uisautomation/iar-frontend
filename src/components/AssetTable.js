@@ -24,6 +24,7 @@ const AssetTable = ({ children }) => (
           <TableHeaderColumn>Department</TableHeaderColumn>
           <TableHeaderColumn>Private</TableHeaderColumn>
           <TableHeaderColumn>Last edited</TableHeaderColumn>
+          <TableHeaderColumn>&nbsp;</TableHeaderColumn>
         </TableRow>
       </TableHeader>
       <TableBody
