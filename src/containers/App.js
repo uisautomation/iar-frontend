@@ -23,6 +23,7 @@ const App = ({ store }) => (
           <LoginRequiredRoute path="/assets/:filter" component={AssetList} />
           <LoginRequiredRoute path="/static/:page" component={Static} />
           <LoginRequiredRoute path="/asset/:asset" component={AssetForm} />
+          <Route path="/oauth2-callback" exact render={() => <div />} />
         </Switch>
       </MuiThemeProvider>
     </Router>
