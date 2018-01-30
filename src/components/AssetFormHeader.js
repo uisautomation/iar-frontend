@@ -9,9 +9,9 @@ const AssetFormHeader = (props) => (
   <div className="App-header">
     <AppBar title={ props.title } iconElementRight={
       <span>
-        <RaisedButton primary={true}>
-          <Link className='App-raised-button-link' to="/">Cancel</Link>
-        </RaisedButton>
+        <Link className='App-raised-button-link' to="/">
+          <RaisedButton primary={true} label="Cancel"/>
+        </Link>
         &nbsp;
         <RaisedButton label="Save" onClick={props.onClick}/>
       </span>
