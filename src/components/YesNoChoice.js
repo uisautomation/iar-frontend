@@ -15,7 +15,7 @@ const buttonStyle = {
 };
 
 /*
-  FIXME
+  A component implementing a yes/no choice.
   */
 const YesNoChoice = (props) => (
   <RadioButtonGroup

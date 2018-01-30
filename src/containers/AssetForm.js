@@ -9,7 +9,7 @@ const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
 
 const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
 
-const ACCESS_TOKEN = '9zu27Kdb2PNg8miwO2FkykVe_0mPklBFw7hRQ34X3P4.0OSk4zqicutTuoXNOH92WfWumIBVl4TSqe0pxMRgsN4';
+const ACCESS_TOKEN = 'wbOW5yWtnai6jBAsh96gsh2hE8izRQ2H00JAEV3wros.nSRqnbU7NX3uZaf3sZVVOxKTv9TEBKDGHoTWLCY3Fpk';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -83,7 +83,6 @@ const storageFormatButtonStyle = {
   padding: "10px 20px"
 };
 
-
 /*
   Renders the form for the creation/editing of an Asset.
   */
@@ -92,10 +91,11 @@ class AssetForm extends Component {
   constructor() {
     super();
 
-    this.lookup = _.debounce(this.lookup, 200);
+    this.fetchMatchingUsers = _.debounce(this.fetchMatchingUsers, 200);
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
+      // asset state
       name: null,
       department: null,
       purpose: null,
@@ -114,12 +114,19 @@ class AssetForm extends Component {
       storage_format: [],
       paper_storage_security: [],
       digital_storage_security: [],
+
       // non-asset state
-      lookup_results: [],
-      owner_name: ""
+
+      // the list of matching users returned from lookup
+      matchingUsers: [],
+      // the selected owner's full name
+      ownerName: ""
     }
   }
 
+  /*
+  Wrapper for fetch() that handles errors / unmarshalls JSON
+   */
   fetch(url, options, cb) {
     fetch(url, options).then(response => {
       if (response.ok) {
@@ -132,16 +139,9 @@ class AssetForm extends Component {
     );
   }
 
-  fetchOwnerName() {
-    this.fetch(ENDPOINT_PEOPLE + this.state.owner, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + ACCESS_TOKEN
-      })
-    }, data => {
-      this.setState({owner_name: data.visibleName})
-    });
-  }
-
+  /*
+  If the form is in edit mode - fetch the asset (and the owner's name - if there is one)
+   */
   componentDidMount() {
     if (this.props.match.url !== '/asset/create') {
       this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.asset + '/', {}, data => {
@@ -153,12 +153,61 @@ class AssetForm extends Component {
     }
   }
 
+  /*
+  Fetch the owners name for the lookup API.
+   */
+  fetchOwnerName() {
+    this.fetch(ENDPOINT_PEOPLE + this.state.owner, {
+      headers: new Headers({
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+      })
+    }, data => {
+      this.setState({ownerName: data.visibleName})
+    });
+  }
+
+  /*
+  As the user types into the owner AutoComplete the ownerName is updated and a list of users
+  matching the searchText is fetched.
+  Deleting all text is detected and the owner field is cleared to allow the deleting of an owner.
+   */
+  handleOwnerUpdateInput(searchText) {
+    let newState = {
+      ownerName: searchText
+    };
+    if (!searchText) {
+      newState['owner'] = null;
+    }
+    this.setState(newState);
+    this.fetchMatchingUsers(searchText);
+  }
+
+  /*
+  Fetches a list of users matching the searchText from the lookup api.
+  This function is debounced to reduce the number of remote calls.
+   */
+  fetchMatchingUsers(searchText) {
+    // TODO (include CRSID in display name)
+    let self = this;
+    this.fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
+      headers: new Headers({
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+      })
+    }, data => self.setState({matchingUsers: data.results}));
+  }
+
+  /*
+  Function trigger by the onChange of most inputs - updates state.
+   */
   handleChange(name, value) {
     let state = {};
     state[name] = value === "" ? null : value;
     this.setState(state);
   }
 
+  /*
+  Either creates a new asset or updates an existing one depending on the mode of the form.
+   */
   handleSave() {
     let method = 'post';
     let endpoint = config.ENDPOINT_ASSETS;
@@ -176,27 +225,6 @@ class AssetForm extends Component {
       this.props.handleMessage('"' + data.name + '" saved.');
       this.props.history.push("/")
     });
-  }
-
-  handleUpdateInput(searchText) {
-    let newState = {
-      owner_name: searchText
-    };
-    if (!searchText) {
-      newState['owner'] = null;
-    }
-    this.setState(newState);
-    this.lookup(searchText);
-  }
-
-  // TODO (include CRSID in display name)
-  lookup(searchText) {
-    let self = this;
-    this.fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + ACCESS_TOKEN
-      })
-    }, data => self.setState({lookup_results: data.results}));
   }
 
   render() {
@@ -242,11 +270,11 @@ class AssetForm extends Component {
               <AutoComplete
                 disabled={!this.state.research}
                 hintText="Principle Investigator"
-                searchText={this.state.owner_name}
+                searchText={this.state.ownerName}
                 filter={AutoComplete.noFilter}
-                dataSource={this.state.lookup_results}
+                dataSource={this.state.matchingUsers}
                 dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
-                onUpdateInput={(searchText) => this.handleUpdateInput(searchText)}
+                onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
                 onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
               />
             </div>

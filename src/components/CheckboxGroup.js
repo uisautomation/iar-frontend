@@ -16,7 +16,9 @@ const titleStyle = {
 };
 
 /*
-  FIXME
+  A component implementing a group of Checkbox selections. The expects a labels property (a list of value/label objects)
+  and a values property (the initially selected values). As a Checkbox is checked/unchecked the values property is
+  updated and the parents onChange method is called to update the state.
   */
 class CheckboxGroup extends Component {
 

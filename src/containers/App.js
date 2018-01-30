@@ -21,12 +21,18 @@ class App extends Component {
     }
   }
 
+  /*
+  Clears the Snackbar.
+   */
   handleRequestClose() {
     this.setState({
       snackOpen: false,
     });
   };
 
+  /*
+  Called by all components to message the user via a Snackbar.
+   */
   handleMessage(message) {
     this.setState({
       message: message,
