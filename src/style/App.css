@@ -39,3 +39,20 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+.App-grid-container {
+  display: grid;
+  max-width: 800px;
+}
+
+.App-grid-1 {
+  grid-template-columns: auto;
+}
+
+.App-grid-2 {
+  grid-template-columns: auto auto;
+}
+
+.App-grid-item {
+  padding: 20px;
+}

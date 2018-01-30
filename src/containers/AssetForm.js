@@ -9,7 +9,7 @@ const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
 
 const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
 
-const ACCESS_TOKEN = 'P9FvKfO--eH4_RST3Go4DIrYcjejlL9AU977FThvyMs.sgVg-pvX7osqaMyQNPb5jPnMPW-Xtsfyp3re7lsl5Xk';
+const ACCESS_TOKEN = '9zu27Kdb2PNg8miwO2FkykVe_0mPklBFw7hRQ34X3P4.0OSk4zqicutTuoXNOH92WfWumIBVl4TSqe0pxMRgsN4';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -62,6 +62,27 @@ const PAPER_STORAGE_SECURITY_LABELS = [
   {value: 'locked_room', label: "Locked room"},
   {value: 'locked_building', label: "Locked building"},
 ];
+
+const retentionStyle = {
+  borderWidth: '1px 1px 0',
+  borderStyle: 'solid',
+  borderColor: '#d1d1d1',
+  padding: '10px 20px'
+};
+
+const storageFormatGroupStyle = {
+  display: 'flex',
+  borderLeft: '1px solid #d1d1d1'
+};
+
+const storageFormatButtonStyle = {
+  width: 'auto',
+  borderWidth: '1px 1px 1px 0',
+  borderStyle: 'solid',
+  borderColor: '#d1d1d1',
+  padding: "10px 20px"
+};
+
 
 /*
   Renders the form for the creation/editing of an Asset.
@@ -133,7 +154,6 @@ class AssetForm extends Component {
   }
 
   handleChange(name, value) {
-    // FIXME can't remove owner
     let state = {};
     state[name] = value === "" ? null : value;
     this.setState(state);
@@ -159,13 +179,17 @@ class AssetForm extends Component {
   }
 
   handleUpdateInput(searchText) {
-    this.setState({
+    let newState = {
       owner_name: searchText
-    });
+    };
+    if (!searchText) {
+      newState['owner'] = null;
+    }
+    this.setState(newState);
     this.lookup(searchText);
   }
 
-  // FIXME (include CRSID in display name)
+  // TODO (include CRSID in display name)
   lookup(searchText) {
     let self = this;
     this.fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
@@ -185,143 +209,160 @@ class AssetForm extends Component {
 
         <div className="App-main">
 
-          <TextField
-            hintText="Asset name"
-            value={this.state.name === null ? "" : this.state.name}
-            onChange={(e, value) => this.handleChange('name', value)}
-          />
+          <div class="App-grid-container App-grid-2">
+            <div class="App-grid-item">
+              <TextField
+                hintText="Asset name"
+                value={this.state.name === null ? "" : this.state.name}
+                onChange={(e, value) => this.handleChange('name', value)}
+              />
+            </div>
+            <div class="App-grid-item">
+              <TextField
+                hintText="Asset department"
+                value={this.state.department === null ? "" : this.state.department}
+                onChange={(e, value) => this.handleChange('department', value)}
+              />
+            </div>
+            <div class="App-grid-item">
+              <TextField
+                hintText="Purpose of holding this asset"
+                value={this.state.purpose === null ? "" : this.state.purpose}
+                onChange={(e, value) => this.handleChange('purpose', value)}
+              />
+            </div>
+            <div class="App-grid-item"/>
+            <div class="App-grid-item">
+              Is this for research purposes?
+            </div>
+            <div class="App-grid-item">
+              <YesNoChoice name="research" value={this.state.research} onChange={this.handleChange} />
+            </div>
+            <div class="App-grid-item">
+              <AutoComplete
+                disabled={!this.state.research}
+                hintText="Principle Investigator"
+                searchText={this.state.owner_name}
+                filter={AutoComplete.noFilter}
+                dataSource={this.state.lookup_results}
+                dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
+                onUpdateInput={(searchText) => this.handleUpdateInput(searchText)}
+                onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
+              />
+            </div>
+            <div class="App-grid-item"/>
+            <div class="App-grid-item">
+              Is this data private to the department?
+            </div>
+            <div class="App-grid-item">
+              <YesNoChoice name="private" value={this.state.private} onChange={this.handleChange} />
+            </div>
+            <div class="App-grid-item">
+              Does this asset hold any Personal Data?
+            </div>
+            <div class="App-grid-item">
+              <YesNoChoice name="personal_data" value={this.state.personal_data} onChange={this.handleChange} />
+            </div>
+          </div>
 
-          <br/>
-
-          <TextField
-            hintText="Asset department"
-            value={this.state.department === null ? "" : this.state.department}
-            onChange={(e, value) => this.handleChange('department', value)}
-          />
-
-          <br/>
-
-          <TextField
-            hintText="Purpose of holding this asset"
-            value={this.state.purpose === null ? "" : this.state.purpose}
-            onChange={(e, value) => this.handleChange('purpose', value)}
-          />
-
-          <br/><br/>
-
-          <span>Is this for research purposes?</span>
-          <YesNoChoice name="research" value={this.state.research} onChange={this.handleChange} />
-          <AutoComplete
-            disabled={!this.state.research}
-            hintText="Principle Investigator"
-            searchText={this.state.owner_name}
-            filter={AutoComplete.noFilter}
-            dataSource={this.state.lookup_results}
-            dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
-            onUpdateInput={(searchText) => this.handleUpdateInput(searchText)}
-            onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
-          />
-
-          <br/><br/>
-
-          <span>Is this data private to the department?</span>
-          <YesNoChoice name="private" value={this.state.private} onChange={this.handleChange} />
-
-          <br/>
-
-          <span>Does this asset hold any Personal Data?</span>
-          <YesNoChoice name="personal_data" value={this.state.personal_data} onChange={this.handleChange} />
-
-          <br/>
-
-          <span>Who does this Personal Data belong to?</span>
           <CheckboxGroup
+            title='Who does this Personal Data belong to?'
             labels={DATA_SUBJECT_LABELS}
             values={this.state.data_subject}
             onChange={(value) => this.handleChange('data_subject', value)}
+
           />
 
-          <br/>
-
-          <span>What kind of personal data is held?</span>
           <CheckboxGroup
+            title='What kind of personal data is held?'
             labels={DATA_CATEGORY_LABELS}
             values={this.state.data_category}
             onChange={(value) => this.handleChange('data_category', value)}
+            columns="2"
           />
 
-          <br/>
+          <div class="App-grid-container App-grid-2">
+            <div class="App-grid-item">
+              <TextField
+                hintText="Who is the asset shared with?"
+                value={this.state.recipients_category === null ? "" : this.state.recipients_category}
+                onChange={(e, value) => this.handleChange('recipients_category', value)}
+              />
+            </div>
+            <div class="App-grid-item">
+              <TextField
+                hintText="Is the asset shared outside of the EEA? If so, to whom?"
+                value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
+                onChange={(e, value) => this.handleChange('recipients_outside_eea', value)}
+                style={{ width: 400 }}
+              />
+            </div>
+          </div>
 
-          <TextField
-            hintText="Who is the asset shared with?"
-            value={this.state.recipients_category === null ? "" : this.state.recipients_category}
-            onChange={(e, value) => this.handleChange('recipients_category', value)}
-          />
+          <div style={{padding: '20px 0'}}>How long will this asset be retained for?</div>
+          <div class="App-grid-container App-grid-1">
+            <RadioButtonGroup
+              name="retention"
+              valueSelected={this.state.retention}
+              onChange={(e, value) => this.handleChange('retention', value)}
+            >
+              <RadioButton value="<=1" label="Less than 1 year" style={retentionStyle} />
+              <RadioButton value=">1,<=5" label="1 - 5 years" style={retentionStyle} />
+              <RadioButton value=">5,<=10" label="6 - 10 years" style={retentionStyle} />
+              <RadioButton value=">10,<=75" label="10 - 75 years" style={retentionStyle} />
+              <RadioButton value="forever" label="Forever" style={retentionStyle} />
+              <RadioButton value="other" label="Other" style={{...retentionStyle, borderWidth: '1px'}} />
+            </RadioButtonGroup>
+          </div>
 
-          <br/>
+          <div class="App-grid-container App-grid-1">
+            <div class="App-grid-item">
+              <TextField
+                hintText="Other retention period"
+                disabled={this.state.retention !== 'other'}
+                value={this.state.retention_other === null ? "" : this.state.retention_other}
+                onChange={(e, value) => this.handleChange('retention_other', value)}
+              />
+            </div>
+          </div>
 
-          <TextField
-            hintText="Is the asset shared outside of the EEA? If so, to whom?"
-            value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
-            onChange={(e, value) => this.handleChange('recipients_outside_eea', value)}
-            style={{ width: 400 }}
-          />
-
-          <br/><br/>
-
-          <span>How long will this asset be retained for?</span>
-          <RadioButtonGroup
-            name="retention"
-            valueSelected={this.state.retention}
-            onChange={(e, value) => this.handleChange('retention', value)}
-          >
-            <RadioButton value="<=1" label="Less than 1 year"/>
-            <RadioButton value=">1,<=5" label="1 - 5 years"/>
-            <RadioButton value=">5,<=10" label="6 - 10 years"/>
-            <RadioButton value=">10,<=75" label="10 - 75 years"/>
-            <RadioButton value="forever" label="Forever"/>
-            <RadioButton value="other" label="Other"/>
-          </RadioButtonGroup>
-          <TextField
-            hintText="Other retention period"
-            disabled={this.state.retention !== 'other'}
-            value={this.state.retention_other === null ? "" : this.state.retention_other}
-            onChange={(e, value) => this.handleChange('retention_other', value)}
-          />
-
-          <br/><br/>
-
-          <span>What are the risks of holding this information asset?</span>
           <CheckboxGroup
+            title='What are the risks of holding this information asset?'
             labels={RISK_TYPE_LABELS}
             values={this.state.risk_type}
             onChange={(value) => this.handleChange('risk_type', value)}
           />
 
-          <br/>
+          <div class="App-grid-container App-grid-1">
+            <div class="App-grid-item">
+              <TextField
+                hintText="Where is the asset stored?"
+                value={this.state.storage_location === null ? "" : this.state.storage_location}
+                onChange={(e, value) => this.handleChange('storage_location', value)}
+              />
+            </div>
+          </div>
 
-          <TextField
-            hintText="Where is the asset stored?"
-            value={this.state.storage_location === null ? "" : this.state.storage_location}
-            onChange={(e, value) => this.handleChange('storage_location', value)}
-          />
+          <div class="App-grid-container App-grid-2">
+            <div class="App-grid-item">
+              What format is the asset stored in?
+            </div>
+            <div class="App-grid-item">
+              <RadioButtonGroup
+                name="storage_format"
+                valueSelected={this.state.storage_format.sort().toString()}
+                onChange={(event, value) => this.setState({storage_format: value.split(',')})}
+                style={storageFormatGroupStyle}
+              >
+                <RadioButton value="digital" label="Digital" style={storageFormatButtonStyle} />
+                <RadioButton value="paper" label="Paper" style={storageFormatButtonStyle} />
+                <RadioButton value="digital,paper" label="Both" style={storageFormatButtonStyle} />
+              </RadioButtonGroup>
+            </div>
+          </div>
 
-          <br/><br/>
-
-          <span>What format is the asset stored in?</span>
-          <RadioButtonGroup
-            name="storage_format"
-            valueSelected={this.state.storage_format.sort().toString()}
-            onChange={(event, value) => this.setState({storage_format: value.split(',')})}
-            style={{ display: 'flex' }}
-          >
-            <RadioButton value="digital" label="Digital" style={{ paddingRight: "20px", width: 'auto' }} />
-            <RadioButton value="paper" label="Paper" style={{ paddingRight: "20px", width: 'auto' }} />
-            <RadioButton value="digital,paper" label="Both" style={{ width: 'auto' }} />
-          </RadioButtonGroup>
-
-          <span>What are the risks of holding this information asset?</span>
           <CheckboxGroup
+            title='What are the risks of holding this information asset?'
             labels={DIGITAL_STORAGE_SECURITY_LABELS}
             values={this.state.digital_storage_security}
             onChange={(value) => this.handleChange('digital_storage_security', value)}

@@ -1,6 +1,19 @@
 import React from 'react'
 import { RadioButtonGroup, RadioButton } from 'material-ui';
 
+const groupStyle = {
+  display: 'flex',
+  borderLeft: '1px solid #d1d1d1'
+};
+
+const buttonStyle = {
+  width: 'auto',
+  borderWidth: '1px 1px 1px 0',
+  borderStyle: 'solid',
+  borderColor: '#d1d1d1',
+  padding: "10px 20px"
+};
+
 /*
   FIXME
   */
@@ -9,10 +22,10 @@ const YesNoChoice = (props) => (
     name={props.name}
     valueSelected={props.value}
     onChange={(e, value) => props.onChange(props.name, value)}
-    style={{ display: 'flex' }}
+    style={groupStyle}
   >
-    <RadioButton value={true} label="yes" style={{ paddingRight: "20px", width: 'auto' }} />
-    <RadioButton value={false} label="no" style={{ width: 'auto' }} />
+    <RadioButton value={true} label="yes" style={buttonStyle} />
+    <RadioButton value={false} label="no" style={buttonStyle} />
   </RadioButtonGroup>
 );
 
