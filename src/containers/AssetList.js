@@ -1,58 +1,110 @@
-import React from 'react';
-import { Route, Link } from 'react-router-dom'
+// eslint-disable-next-line
+import React, {Component} from 'react'; // used implicitly by JSX
 import {
   Table,
   TableBody,
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn,
-} from 'material-ui';
-import { AssetListHeader } from '../components'
+} from 'material-ui/Table';
+import AssetListItem from '../components/AssetListItem';
+import AssetListHeader from '../components/AssetListHeader'
+import '../style/App.css';
+
+// Mock data until we can fetch data from the api
+const assetData = [
+	{
+		name: 'Asset #1',
+		status: 'In-progress',
+		department: 'UIS',
+		private: true,
+		lastedited: 'today'
+	},
+	{
+		name: 'Asset #2',
+		status: 'In-progress',
+		department: 'UIS',
+		private: true,
+		lastedited: 'today'
+	},
+	{
+		name: 'Asset #3',
+		status: 'Complete',
+		department: 'UIS',
+		private: true,
+		lastedited: 'today'
+	},
+	{
+		name: 'Asset #4',
+		status: 'In-progress',
+		department: 'UIS',
+		private: false,
+		lastedited: 'today'
+	},
+	{
+		name: 'Asset #5',
+		status: 'Complete',
+		department: 'UIS',
+		private: true,
+		lastedited: 'today'
+	},
+	{
+		name: 'Asset #6',
+		status: 'In-progress',
+		department: 'UIS',
+		private: true,
+		lastedited: 'today'
+	},
+	{
+		name: 'Asset #7',
+		status: 'In-progress',
+		department: 'UIS',
+		private: false,
+		lastedited: 'today'
+	},
+];
 
 const TITLES = {
   '/assets/dept': 'Assets: My department',
-  '/assets/edited': 'Assets: Edited recently',
   '/assets/all': 'Assets: All',
 };
 
-/*
-  Renders the list view of Assets - different filters can be applied to this view.
-  */
+
 const AssetList = ({ match }) => (
-  <div>
+  <div className="App-main">
     <AssetListHeader title={TITLES[match.url]} />
-    <div className="App-main">
-      <Table selectable={false}>
-        <TableHeader displaySelectAll={false}>
-          <TableRow>
+    <div className="Asset-table">
+      <Table
+      	fixedHeader={true}
+      	selectable={false}
+      >
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}
+        >
+          <TableRow>           
             <TableHeaderColumn>Name</TableHeaderColumn>
             <TableHeaderColumn>Status</TableHeaderColumn>
             <TableHeaderColumn>Department</TableHeaderColumn>
+            <TableHeaderColumn>Private</TableHeaderColumn>
             <TableHeaderColumn>Last edited</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody displayRowCheckbox={false}>
-          <TableRow>
-            <TableRowColumn>
-              <Link to="/asset/113e7968-c239-4efb-82cd-c7276e425e66">
-                HR Records - Staff and Salaries
-              </Link>
-            </TableRowColumn>
-            <TableRowColumn>In-progress</TableRowColumn>
-            <TableRowColumn>University Information Services (UIS)</TableRowColumn>
-            <TableRowColumn>11/01/2018</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>
-              <Link to="/asset/272e1a57-3a9a-4970-9d53-87cc4fac98c6">
-                User behaviour for Research Dashboard
-              </Link>
-            </TableRowColumn>
-            <TableRowColumn>Complete</TableRowColumn>
-            <TableRowColumn>University Information Services (UIS)</TableRowColumn>
-            <TableRowColumn>11/01/2018</TableRowColumn>
-          </TableRow>
+        <TableBody
+          showRowHover={true}
+          displayRowCheckbox={false}
+          className="Asset-table-body"
+        >
+          {assetData.map( (asset, index) => (
+            <AssetListItem
+              key={index}
+              name={asset.name}
+              status={asset.status}
+              department={asset.department}
+              private={asset.private}
+              lastedited={asset.lastedited}
+            />
+          ))}
         </TableBody>
       </Table>
     </div>

@@ -11,7 +11,6 @@
   height: 100px;
   padding: 0px;
   color: white;
-  margin-left: 256px;
 }
 
 .App-main { 
@@ -31,6 +30,15 @@
   to { transform: rotate(360deg); }
 }
 
+.Asset-table {
+  margin: 0px 120px;
+}
+
+.Asset-table-body {
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 5px 10px #888888;
+}
 .App-raised-button-link {
   text-decoration: none;
   text-transform: uppercase;

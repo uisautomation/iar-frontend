@@ -229,13 +229,13 @@ class AssetForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="App-main">
         <AssetFormHeader
           onClick={() => this.handleSave()}
           title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + this.state.name}
         />
 
-        <div className="App-main">
+        <div>
 
           <div class="App-grid-container App-grid-2">
             <div class="App-grid-item">

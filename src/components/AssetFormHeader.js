@@ -19,4 +19,4 @@ const AssetFormHeader = (props) => (
   </div>
 );
 
-export default AssetFormHeader
+export default AssetFormHeader;

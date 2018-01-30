@@ -24,9 +24,9 @@ const StaticHeader = ({ title }) => (
   Renders the IAR app's static pages.
  */
 const Static = ({ match }) => (
-  <div>
+  <div className="App-main">
     <StaticHeader title={ TITLES[match.url] } />
-    <div className="App-main">
+    <div>
       <h1>Copy for "{ TITLES[match.url] }"</h1>
     </div>
   </div>
