@@ -16,13 +16,14 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import TickIcon from 'material-ui/svg-icons/action/done';
 
 // Hack id from url
-const getAssetIdFrom = (url) => {
-  return url.slice(29);
+const getAssetIdRouteFrom = (url) => {
+  const id = url.slice(29);
+  return "/asset/" + id;
 };
 
 const AssetListItem = ({assetDelete, ...props}) => (
   <TableRow hoverable={true}>
-    <TableRowColumn><Link to={getAssetIdFrom(props.url)}>{props.name}</Link></TableRowColumn>
+    <TableRowColumn><Link to={getAssetIdRouteFrom(props.url)}>{props.name}</Link></TableRowColumn>
     <TableRowColumn>{props.status}</TableRowColumn>
     <TableRowColumn>{props.department}</TableRowColumn>
     <TableRowColumn>{props.private ? <TickIcon/> : ""}</TableRowColumn>
