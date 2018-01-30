@@ -29,7 +29,6 @@ const AssetListItem = ({assetDelete, ...props}) => (
     <TableRowColumn>{props.private ? <TickIcon/> : ""}</TableRowColumn>
     <TableRowColumn>{props.lastedited}</TableRowColumn>
     <TableRowColumn>
-    // TODO: Change RaisedButton into Icon Menu
     <RaisedButton onClick={() => assetDelete(props.url)}>Delete</RaisedButton>
     </TableRowColumn>
   </TableRow>
