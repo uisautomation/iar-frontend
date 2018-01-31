@@ -299,7 +299,7 @@ class AssetForm extends Component {
             labels={DATA_SUBJECT_LABELS}
             values={this.state.data_subject}
             onChange={(value) => this.handleChange('data_subject', value)}
-
+            disabled={!this.state.personal_data}
           />
 
           <CheckboxGroup
@@ -308,6 +308,7 @@ class AssetForm extends Component {
             values={this.state.data_category}
             onChange={(value) => this.handleChange('data_category', value)}
             columns="2"
+            disabled={!this.state.personal_data}
           />
 
           <div className="App-grid-container App-grid-2">
@@ -316,6 +317,7 @@ class AssetForm extends Component {
                 hintText="Who is the asset shared with?"
                 value={this.state.recipients_category === null ? "" : this.state.recipients_category}
                 onChange={(e, value) => this.handleChange('recipients_category', value)}
+                disabled={!this.state.personal_data}
               />
             </div>
             <div className="App-grid-item">
@@ -323,6 +325,7 @@ class AssetForm extends Component {
                 hintText="Is the asset shared outside of the EEA? If so, to whom?"
                 value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
                 onChange={(e, value) => this.handleChange('recipients_outside_eea', value)}
+                disabled={!this.state.personal_data}
                 style={{ width: 400 }}
               />
             </div>
@@ -335,12 +338,18 @@ class AssetForm extends Component {
               valueSelected={this.state.retention}
               onChange={(e, value) => this.handleChange('retention', value)}
             >
-              <RadioButton value="<=1" label="Less than 1 year" style={retentionStyle} />
-              <RadioButton value=">1,<=5" label="1 - 5 years" style={retentionStyle} />
-              <RadioButton value=">5,<=10" label="6 - 10 years" style={retentionStyle} />
-              <RadioButton value=">10,<=75" label="10 - 75 years" style={retentionStyle} />
-              <RadioButton value="forever" label="Forever" style={retentionStyle} />
-              <RadioButton value="other" label="Other" style={{...retentionStyle, borderWidth: '1px'}} />
+              <RadioButton disabled={!this.state.personal_data} style={retentionStyle}
+                           value="<=1" label="Less than 1 year" />
+              <RadioButton disabled={!this.state.personal_data} style={retentionStyle}
+                           value=">1,<=5" label="1 - 5 years" />
+              <RadioButton disabled={!this.state.personal_data} style={retentionStyle}
+                           value=">5,<=10" label="6 - 10 years" />
+              <RadioButton disabled={!this.state.personal_data} style={retentionStyle}
+                           value=">10,<=75" label="10 - 75 years" />
+              <RadioButton disabled={!this.state.personal_data} style={retentionStyle}
+                           value="forever" label="Forever" />
+              <RadioButton disabled={!this.state.personal_data} style={{...retentionStyle, borderWidth: '1px'}}
+                           value="other" label="Other"  />
             </RadioButtonGroup>
           </div>
 
