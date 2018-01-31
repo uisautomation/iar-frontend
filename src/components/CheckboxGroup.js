@@ -34,13 +34,12 @@ class CheckboxGroup extends Component {
 
   render() {
     var checkboxes = this.props.labels.map((item) => {
-      return <div className='App-grid-item' style={itemStyle}>
+      return <div key={item.value} className='App-grid-item' style={itemStyle}>
           <Checkbox
           label={item.label}
           disabled={this.props.disabled}
           checked={this.props.values.indexOf(item.value) !== -1}
           onCheck={() => this.updateCheck(item.value)}
-          key={item.value}
           />
         </div>
     });

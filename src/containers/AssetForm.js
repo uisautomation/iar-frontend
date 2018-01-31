@@ -237,36 +237,36 @@ class AssetForm extends Component {
 
         <div>
 
-          <div class="App-grid-container App-grid-2">
-            <div class="App-grid-item">
+          <div className="App-grid-container App-grid-2">
+            <div className="App-grid-item">
               <TextField
                 hintText="Asset name"
                 value={this.state.name === null ? "" : this.state.name}
                 onChange={(e, value) => this.handleChange('name', value)}
               />
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <TextField
                 hintText="Asset department"
                 value={this.state.department === null ? "" : this.state.department}
                 onChange={(e, value) => this.handleChange('department', value)}
               />
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <TextField
                 hintText="Purpose of holding this asset"
                 value={this.state.purpose === null ? "" : this.state.purpose}
                 onChange={(e, value) => this.handleChange('purpose', value)}
               />
             </div>
-            <div class="App-grid-item"/>
-            <div class="App-grid-item">
+            <div className="App-grid-item"/>
+            <div className="App-grid-item">
               Is this for research purposes?
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <YesNoChoice name="research" value={this.state.research} onChange={this.handleChange} />
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <AutoComplete
                 disabled={!this.state.research}
                 hintText="Principle Investigator"
@@ -278,17 +278,17 @@ class AssetForm extends Component {
                 onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
               />
             </div>
-            <div class="App-grid-item"/>
-            <div class="App-grid-item">
+            <div className="App-grid-item"/>
+            <div className="App-grid-item">
               Is this data private to the department?
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <YesNoChoice name="private" value={this.state.private} onChange={this.handleChange} />
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               Does this asset hold any Personal Data?
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <YesNoChoice name="personal_data" value={this.state.personal_data} onChange={this.handleChange} />
             </div>
           </div>
@@ -309,15 +309,15 @@ class AssetForm extends Component {
             columns="2"
           />
 
-          <div class="App-grid-container App-grid-2">
-            <div class="App-grid-item">
+          <div className="App-grid-container App-grid-2">
+            <div className="App-grid-item">
               <TextField
                 hintText="Who is the asset shared with?"
                 value={this.state.recipients_category === null ? "" : this.state.recipients_category}
                 onChange={(e, value) => this.handleChange('recipients_category', value)}
               />
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <TextField
                 hintText="Is the asset shared outside of the EEA? If so, to whom?"
                 value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
@@ -328,7 +328,7 @@ class AssetForm extends Component {
           </div>
 
           <div style={{padding: '20px 0'}}>How long will this asset be retained for?</div>
-          <div class="App-grid-container App-grid-1">
+          <div className="App-grid-container App-grid-1">
             <RadioButtonGroup
               name="retention"
               valueSelected={this.state.retention}
@@ -343,8 +343,8 @@ class AssetForm extends Component {
             </RadioButtonGroup>
           </div>
 
-          <div class="App-grid-container App-grid-1">
-            <div class="App-grid-item">
+          <div className="App-grid-container App-grid-1">
+            <div className="App-grid-item">
               <TextField
                 hintText="Other retention period"
                 disabled={this.state.retention !== 'other'}
@@ -361,8 +361,8 @@ class AssetForm extends Component {
             onChange={(value) => this.handleChange('risk_type', value)}
           />
 
-          <div class="App-grid-container App-grid-1">
-            <div class="App-grid-item">
+          <div className="App-grid-container App-grid-1">
+            <div className="App-grid-item">
               <TextField
                 hintText="Where is the asset stored?"
                 value={this.state.storage_location === null ? "" : this.state.storage_location}
@@ -371,11 +371,11 @@ class AssetForm extends Component {
             </div>
           </div>
 
-          <div class="App-grid-container App-grid-2">
-            <div class="App-grid-item">
+          <div className="App-grid-container App-grid-2">
+            <div className="App-grid-item">
               What format is the asset stored in?
             </div>
-            <div class="App-grid-item">
+            <div className="App-grid-item">
               <RadioButtonGroup
                 name="storage_format"
                 valueSelected={this.state.storage_format.sort().toString()}
