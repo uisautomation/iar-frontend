@@ -11,8 +11,9 @@ export default (state = initialState, action) => {
         assets: action.payload.results
       });
     case ASSETS_DELETE_SUCCESS:
-      return state;
-      // return state minus deleted asset
+      return {...state, assets: state.assets.filter((asset) => {
+        return asset.url !== action.meta;
+      })};
     default:
       return state;
   }

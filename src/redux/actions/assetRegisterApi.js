@@ -20,6 +20,9 @@ export const assetDelete = (url) => ({
   [RSAA]: {
     endpoint: url,
     method: 'DELETE',
-    types: [ASSETS_DELETE_REQUEST, ASSETS_DELETE_SUCCESS, ASSETS_DELETE_FAILURE]
+    types: [
+      ASSETS_DELETE_REQUEST,
+      { type: ASSETS_DELETE_SUCCESS, meta: url},
+      ASSETS_DELETE_FAILURE]
   }
 });
