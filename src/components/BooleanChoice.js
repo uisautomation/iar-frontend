@@ -15,9 +15,9 @@ const buttonStyle = {
 };
 
 /*
-  A component implementing a yes/no choice.
+  A component implementing a yes/no choice and updating a boolean in state.
   */
-const YesNoChoice = (props) => (
+const BooleanChoice = (props) => (
   <RadioButtonGroup
     name={props.name}
     valueSelected={props.value}
@@ -29,4 +29,4 @@ const YesNoChoice = (props) => (
   </RadioButtonGroup>
 );
 
-export default YesNoChoice
+export default BooleanChoice

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom'
 import { AppBar } from 'material-ui';
-import '../style/App.css';
 
 const TITLES = {
   '/static/what-is-asset': 'What is an information asset?',
@@ -32,8 +30,4 @@ const Static = ({ match }) => (
   </div>
 );
 
-const RoutedStatic = () => (
-  <Route path="/static/:page" component={Static}/>
-);
-
-export default RoutedStatic;
+export default Static;

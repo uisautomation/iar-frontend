@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Drawer from 'material-ui/Drawer'
 import logo from '../images/logo.svg'
-import '../style/App.css'
 
 /*
   Renders the IAR application side bar.

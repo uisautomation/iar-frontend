@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Snackbar } from 'material-ui';
 import { Sidebar } from '../components'
-import AssetList from './AssetList'
-import AssetForm from './AssetForm'
-import Static from '../components/Static'
+import RoutedAssetList from './RoutedAssetList'
+import RoutedAssetForm from './RoutedAssetForm'
+import RoutedStatic from './RoutedStatic'
 import '../style/App.css'
 
 /*
@@ -48,9 +48,9 @@ class App extends Component {
             <div>
               <Sidebar/>
               <Route path="/" exact render={() => <Redirect to="/assets/dept"/>}/>
-              <AssetList/>
-              <Static/>
-              <AssetForm handleMessage={this.handleMessage.bind(this)} />
+              <RoutedAssetList/>
+              <RoutedStatic/>
+              <RoutedAssetForm handleMessage={this.handleMessage.bind(this)} />
               <Snackbar
                 open={this.state.snackOpen}
                 message={this.state.message}

@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
 import { AutoComplete, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import _ from 'underscore'
 import config from '../config';
-import { AssetFormHeader, CheckboxGroup, YesNoChoice } from '../components'
+import { AssetFormHeader, CheckboxGroup, BooleanChoice } from '../components'
 
 const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
 
 const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
 
-const ACCESS_TOKEN = 'wbOW5yWtnai6jBAsh96gsh2hE8izRQ2H00JAEV3wros.nSRqnbU7NX3uZaf3sZVVOxKTv9TEBKDGHoTWLCY3Fpk';
+const ACCESS_TOKEN = 'THIS IS JUST A PLACEHOLDER';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -128,6 +127,13 @@ class AssetForm extends Component {
   Wrapper for fetch() that handles errors / unmarshalls JSON
    */
   fetch(url, options, cb) {
+    if (options.headers) {
+      options.headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
+    } else {
+      options['headers'] = new Headers({
+        'Authorization': 'Bearer ' + ACCESS_TOKEN
+      });
+    }
     fetch(url, options).then(response => {
       if (response.ok) {
         return response.json()
@@ -154,14 +160,10 @@ class AssetForm extends Component {
   }
 
   /*
-  Fetch the owners name for the lookup API.
+  Fetch the owner's name for the lookup API.
    */
   fetchOwnerName() {
-    this.fetch(ENDPOINT_PEOPLE + this.state.owner, {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + ACCESS_TOKEN
-      })
-    }, data => {
+    this.fetch(ENDPOINT_PEOPLE + this.state.owner, {}, data => {
       this.setState({ownerName: data.visibleName})
     });
   }
@@ -189,11 +191,10 @@ class AssetForm extends Component {
   fetchMatchingUsers(searchText) {
     // TODO (include CRSID in display name)
     let self = this;
-    this.fetch(ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {
-      headers: new Headers({
-        'Authorization': 'Bearer ' + ACCESS_TOKEN
-      })
-    }, data => self.setState({matchingUsers: data.results}));
+    this.fetch(
+      ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {},
+      data => self.setState({matchingUsers: data.results})
+    );
   }
 
   /*
@@ -264,7 +265,7 @@ class AssetForm extends Component {
               Is this for research purposes?
             </div>
             <div className="App-grid-item">
-              <YesNoChoice name="research" value={this.state.research} onChange={this.handleChange} />
+              <BooleanChoice name="research" value={this.state.research} onChange={this.handleChange} />
             </div>
             <div className="App-grid-item">
               <AutoComplete
@@ -283,13 +284,13 @@ class AssetForm extends Component {
               Is this data private to the department?
             </div>
             <div className="App-grid-item">
-              <YesNoChoice name="private" value={this.state.private} onChange={this.handleChange} />
+              <BooleanChoice name="private" value={this.state.private} onChange={this.handleChange} />
             </div>
             <div className="App-grid-item">
               Does this asset hold any Personal Data?
             </div>
             <div className="App-grid-item">
-              <YesNoChoice name="personal_data" value={this.state.personal_data} onChange={this.handleChange} />
+              <BooleanChoice name="personal_data" value={this.state.personal_data} onChange={this.handleChange} />
             </div>
           </div>
 
@@ -408,9 +409,4 @@ class AssetForm extends Component {
   }
 }
 
-const RoutedAssetForm = (props) => (
-  <Route path="/asset/:asset"
-         render={(routeProps) => <AssetForm handleMessage={props.handleMessage.bind(this)} {...routeProps}/>} />
-);
-
-export default RoutedAssetForm
+export default AssetForm

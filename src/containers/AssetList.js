@@ -1,6 +1,5 @@
 // eslint-disable-next-line
-import React, {Component} from 'react'; // used implicitly by JSX
-import { Route } from 'react-router-dom'
+import React from 'react'; // used implicitly by JSX
 import {
   Table,
   TableBody,
@@ -8,9 +7,7 @@ import {
   TableHeaderColumn,
   TableRow,
 } from 'material-ui/Table';
-import AssetListItem from '../components/AssetListItem';
-import AssetListHeader from '../components/AssetListHeader'
-import '../style/App.css';
+import { AssetListHeader, AssetListItem } from '../components'
 
 // Mock data until we can fetch data from the api
 const assetData = [
@@ -112,8 +109,4 @@ const AssetList = ({ match }) => (
   </div>
 );
 
-const RoutedAssetList = () => (
-  <Route path="/assets/:filter" component={AssetList}/>
-);
-
-export default RoutedAssetList;
+export default AssetList;
