@@ -4,7 +4,7 @@ import AssetForm from './AssetForm';
 
 const RoutedAssetForm = (props) => (
   <Route path="/asset/:asset"
-         render={(routeProps) => <AssetForm handleMessage={props.handleMessage.bind(this)} {...routeProps}/>} />
+         render={(routeProps) => <AssetForm handleMessage={props.handleMessage && props.handleMessage.bind(this)} {...routeProps}/>} />
 );
 
 export default RoutedAssetForm
