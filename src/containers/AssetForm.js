@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
-import { AutoComplete, RadioButton, RadioButtonGroup, TextField } from 'material-ui';
-import _ from 'underscore'
+import { RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import config from '../config';
-import { AssetFormHeader, CheckboxGroup, BooleanChoice } from '../components'
-
-const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
-
-const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
+import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../components'
 
 const ACCESS_TOKEN = 'THIS IS JUST A PLACEHOLDER';
 
@@ -90,7 +85,6 @@ class AssetForm extends Component {
   constructor() {
     super();
 
-    this.fetchMatchingUsers = _.debounce(this.fetchMatchingUsers, 200);
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
@@ -113,13 +107,6 @@ class AssetForm extends Component {
       storage_format: [],
       paper_storage_security: [],
       digital_storage_security: [],
-
-      // non-asset state
-
-      // the list of matching users returned from lookup
-      matchingUsers: [],
-      // the selected owner's full name
-      ownerName: ""
     }
   }
 
@@ -146,55 +133,14 @@ class AssetForm extends Component {
   }
 
   /*
-  If the form is in edit mode - fetch the asset (and the owner's name - if there is one)
+  If the form is in edit mode - fetch the asset
    */
   componentDidMount() {
     if (this.props.match.url !== '/asset/create') {
       this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.asset + '/', {}, data => {
         this.setState(data);
-        if (this.state.owner) {
-          this.fetchOwnerName();
-        }
       });
     }
-  }
-
-  /*
-  Fetch the owner's name for the lookup API.
-   */
-  fetchOwnerName() {
-    this.fetch(ENDPOINT_PEOPLE + this.state.owner, {}, data => {
-      this.setState({ownerName: data.visibleName})
-    });
-  }
-
-  /*
-  As the user types into the owner AutoComplete the ownerName is updated and a list of users
-  matching the searchText is fetched.
-  Deleting all text is detected and the owner field is cleared to allow the deleting of an owner.
-   */
-  handleOwnerUpdateInput(searchText) {
-    let newState = {
-      ownerName: searchText
-    };
-    if (!searchText) {
-      newState['owner'] = null;
-    }
-    this.setState(newState);
-    this.fetchMatchingUsers(searchText);
-  }
-
-  /*
-  Fetches a list of users matching the searchText from the lookup api.
-  This function is debounced to reduce the number of remote calls.
-   */
-  fetchMatchingUsers(searchText) {
-    // TODO (include CRSID in display name)
-    let self = this;
-    this.fetch(
-      ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {},
-      data => self.setState({matchingUsers: data.results})
-    );
   }
 
   /*
@@ -271,15 +217,13 @@ class AssetForm extends Component {
               <BooleanChoice name="research" value={this.state.research} onChange={this.handleChange} />
             </div>
             <div className="App-grid-item">
-              <AutoComplete
+              <Lookup
                 disabled={!this.state.research}
                 hintText="Principle Investigator"
-                searchText={this.state.ownerName}
-                filter={AutoComplete.noFilter}
-                dataSource={this.state.matchingUsers}
-                dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
-                onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
-                onNewRequest={(chosenRequest, index) => this.setState({owner: chosenRequest.identifier.value})}
+                name="owner"
+                value={this.state.owner}
+                onChange={this.handleChange}
+                fetch={this.fetch}
               />
             </div>
             <div className="App-grid-item"/>

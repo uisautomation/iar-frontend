@@ -1,8 +1,8 @@
 import React from 'react';
 import fetch_mock from 'fetch-mock';
 import { render, condition } from '../testutils';
-import { AppBar, AutoComplete, RadioButtonGroup, TextField } from 'material-ui';
-import { BooleanChoice, CheckboxGroup } from '../components'
+import { AppBar, RadioButtonGroup, TextField } from 'material-ui';
+import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
 
 // need to mock the material-ui checkbox as we get 'TypeError: Cannot read property 'checked' of undefined'
 // when rendered with react-test-renderer. see
@@ -42,7 +42,7 @@ test('can render a blank form', () => {
 
   expect(testInstance.findByProps({name: "research"}).type).toBe(BooleanChoice);
 
-  expect(testInstance.findByProps({hintText: 'Principle Investigator'}).type).toBe(AutoComplete);
+  expect(testInstance.findByProps({name: 'owner'}).type).toBe(Lookup);
 
   expect(testInstance.findByProps({name: "private"}).type).toBe(BooleanChoice);
 
@@ -101,7 +101,7 @@ test('can populate a form with data', async () => {
     visibleName:"M. Bamford",
   });
 
-  const testInstance = render(<RoutedAssetForm/>, '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97');
+  const testInstance = render(<RoutedAssetForm />, '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97');
 
   // waits for the title to be populated.
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -114,8 +114,7 @@ test('can populate a form with data', async () => {
 
   expect(testInstance.findByProps({name: "research"}).props.value).toBeTruthy();
 
-  // FIXME
-//  expect(testInstance.findByProps({hintText: 'Principle Investigator'}).props.value).toBe("mb2174");
+  expect(testInstance.findByProps({name: 'owner'}).props.value).toBe("mb2174");
 
   expect(testInstance.findByProps({name: "private"}).props.value).toBeTruthy();
 
