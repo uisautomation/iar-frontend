@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Snackbar } from 'material-ui';
 import RoutedAssetList from './RoutedAssetList'
@@ -46,7 +46,7 @@ class App extends Component {
       <Provider store={ this.props.store }>
         <Router>
           <MuiThemeProvider>
-            <Switch>
+            <div>
               <Route path="/" exact render={() => <Redirect to="/assets/dept"/>}/>
               <RoutedAssetList/>
               <RoutedStatic/>
@@ -58,7 +58,7 @@ class App extends Component {
                 autoHideDuration={3000}
                 onRequestClose={this.handleRequestClose.bind(this)}
               />
-            </Switch>
+            </div>
           </MuiThemeProvider>
         </Router>
       </Provider>

@@ -50,7 +50,7 @@ fetch_mock.get('http://localhost:8080/people/crsid/mb2174', {
  */
 test("can't route /where/dat", () => {
 
-  const testInstance = render(<RoutedAssetForm/>, '/where/dat');
+  const testInstance = render(<RoutedAssetForm/>, {url: '/where/dat'});
 
   expect(testInstance.findByType(Route).children).toEqual([])
 });
@@ -60,7 +60,7 @@ test("can't route /where/dat", () => {
  */
 test('can route /asset/create', () => {
 
-  const testInstance = render(<RoutedAssetForm/>, '/asset/create');
+  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/create'});
 
   expect(testInstance.findByType(AppBar).props.title).toBe('Create new asset')
 });
@@ -70,7 +70,7 @@ test('can route /asset/create', () => {
  */
 test('can route /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', async () => {
 
-  const testInstance = render(<RoutedAssetForm handleMessage={(msg) => {console.log(msg)}}/>, '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97');
+  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated. TODO better way to do this?
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -83,7 +83,7 @@ test('can route /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', async () => {
  */
 test('can render a blank form', () => {
 
-  const testInstance = render(<RoutedAssetForm/>, '/asset/create');
+  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/create'});
 
   expect(testInstance.findByProps({name: 'name'}).type).toBe(TextField);
   expect(testInstance.findByProps({name: 'department'}).type).toBe(TextField);
@@ -110,7 +110,7 @@ test('can render a blank form', () => {
  */
 test('can populate a form with data', async () => {
 
-  const testInstance = render(<RoutedAssetForm/>, '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97');
+  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated.
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -144,7 +144,7 @@ test('check fetch errors are reports', async () => {
 
   let message = null;
 
-  render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, '/asset/NO-ASSETS-HERE');
+  render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, {url: '/asset/NO-ASSETS-HERE'});
 
   await condition(() => message);
 
@@ -164,7 +164,7 @@ test('can save a new asset', async () => {
 
   let message = null;
 
-  const testInstance = render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, '/asset/create');
+  const testInstance = render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, {url: '/asset/create'});
 
   setDataOnInput(testInstance, 'name', 'Super Secret Medical Data');
   setDataOnInput(testInstance, 'department', "Medicine");
@@ -206,7 +206,7 @@ test('can update an asset', async () => {
 
   let message = null;
 
-  const testInstance = render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97');
+  const testInstance = render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated.
   await condition(() => testInstance.findByType(AppBar).props.title);

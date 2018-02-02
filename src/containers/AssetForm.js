@@ -184,7 +184,6 @@ class AssetForm extends Component {
         />
 
         <div>
-
           <div className="App-grid-container App-grid-2">
             <div className="App-grid-item">
               <TextField

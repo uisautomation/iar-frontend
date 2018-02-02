@@ -2,7 +2,7 @@
  * Top-level page for IAR containing sidebar and content.
  */
 import React from 'react';
-import Sidebar from '../components/Sidebar';
+import { Sidebar } from '../components';
 
 export default ({ children }) => (
   <div>
