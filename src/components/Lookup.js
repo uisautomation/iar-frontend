@@ -8,7 +8,9 @@ const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
 const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
 
 /*
-  FIXME
+  A component implementing an auto-complete that search's for a user either by name or CRSID and returns a list of
+  possible matches for the user to select. The CRSID is set as the selected value. Also an initial CRSID is looked up
+  and the full name is displayed as the selected value.
   */
 class Lookup extends Component {
 
@@ -72,7 +74,7 @@ class Lookup extends Component {
         dataSource={this.state.matchingUsers}
         dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
         onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
-        onNewRequest={(chosenRequest, index) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
+        onNewRequest={(chosenRequest) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
       />
     )
   };

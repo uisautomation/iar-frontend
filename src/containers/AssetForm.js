@@ -137,7 +137,7 @@ class AssetForm extends Component {
    */
   componentDidMount() {
     if (this.props.match.url !== '/asset/create') {
-      this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.asset + '/', {}, data => {
+      this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.assetId + '/', {}, data => {
         this.setState(data);
       });
     }
@@ -160,7 +160,7 @@ class AssetForm extends Component {
     let endpoint = config.ENDPOINT_ASSETS;
     if (this.props.match.url !== '/asset/create') {
       method = 'put';
-      endpoint += this.props.match.params.asset + '/';
+      endpoint += this.props.match.params.assetId + '/';
     }
     this.fetch(endpoint, {
       method: method,
