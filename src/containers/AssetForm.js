@@ -200,9 +200,9 @@ class AssetForm extends Component {
   /*
   Function trigger by the onChange of most inputs - updates state.
    */
-  handleChange(name, value) {
+  handleChange(event, value) {
     let state = {};
-    state[name] = value === "" ? null : value;
+    state[event.target.name] = value === "" ? null : value;
     this.setState(state);
   }
 
@@ -242,22 +242,25 @@ class AssetForm extends Component {
             <div className="App-grid-item">
               <TextField
                 hintText="Asset name"
+                name='name'
                 value={this.state.name === null ? "" : this.state.name}
-                onChange={(e, value) => this.handleChange('name', value)}
+                onChange={this.handleChange}
               />
             </div>
             <div className="App-grid-item">
               <TextField
                 hintText="Asset department"
+                name='department'
                 value={this.state.department === null ? "" : this.state.department}
-                onChange={(e, value) => this.handleChange('department', value)}
+                onChange={this.handleChange}
               />
             </div>
             <div className="App-grid-item">
               <TextField
                 hintText="Purpose of holding this asset"
+                name='purpose'
                 value={this.state.purpose === null ? "" : this.state.purpose}
-                onChange={(e, value) => this.handleChange('purpose', value)}
+                onChange={this.handleChange}
               />
             </div>
             <div className="App-grid-item"/>
@@ -296,17 +299,19 @@ class AssetForm extends Component {
 
           <CheckboxGroup
             title='Who does this Personal Data belong to?'
+            name='data_subject'
             labels={DATA_SUBJECT_LABELS}
             values={this.state.data_subject}
-            onChange={(value) => this.handleChange('data_subject', value)}
+            onChange={this.handleChange}
             disabled={!this.state.personal_data}
           />
 
           <CheckboxGroup
             title='What kind of personal data is held?'
+            name='data_category'
             labels={DATA_CATEGORY_LABELS}
             values={this.state.data_category}
-            onChange={(value) => this.handleChange('data_category', value)}
+            onChange={this.handleChange}
             columns="2"
             disabled={!this.state.personal_data}
           />
@@ -315,16 +320,18 @@ class AssetForm extends Component {
             <div className="App-grid-item">
               <TextField
                 hintText="Who is the asset shared with?"
+                name='recipients_category'
                 value={this.state.recipients_category === null ? "" : this.state.recipients_category}
-                onChange={(e, value) => this.handleChange('recipients_category', value)}
+                onChange={this.handleChange}
                 disabled={!this.state.personal_data}
               />
             </div>
             <div className="App-grid-item">
               <TextField
                 hintText="Is the asset shared outside of the EEA? If so, to whom?"
+                name='recipients_outside_eea'
                 value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
-                onChange={(e, value) => this.handleChange('recipients_outside_eea', value)}
+                onChange={this.handleChange}
                 disabled={!this.state.personal_data}
                 style={{ width: 400 }}
               />
@@ -336,7 +343,7 @@ class AssetForm extends Component {
             <RadioButtonGroup
               name="retention"
               valueSelected={this.state.retention}
-              onChange={(e, value) => this.handleChange('retention', value)}
+              onChange={this.handleChange}
             >
               <RadioButton disabled={!this.state.personal_data} style={retentionStyle}
                            value="<=1" label="Less than 1 year" />
@@ -357,26 +364,29 @@ class AssetForm extends Component {
             <div className="App-grid-item">
               <TextField
                 hintText="Other retention period"
+                name="retention_other"
                 disabled={this.state.retention !== 'other'}
                 value={this.state.retention_other === null ? "" : this.state.retention_other}
-                onChange={(e, value) => this.handleChange('retention_other', value)}
+                onChange={this.handleChange}
               />
             </div>
           </div>
 
           <CheckboxGroup
             title='What are the risks of holding this information asset?'
+            name="risk_type"
             labels={RISK_TYPE_LABELS}
             values={this.state.risk_type}
-            onChange={(value) => this.handleChange('risk_type', value)}
+            onChange={this.handleChange}
           />
 
           <div className="App-grid-container App-grid-1">
             <div className="App-grid-item">
               <TextField
                 hintText="Where is the asset stored?"
+                name="storage_location"
                 value={this.state.storage_location === null ? "" : this.state.storage_location}
-                onChange={(e, value) => this.handleChange('storage_location', value)}
+                onChange={this.handleChange}
               />
             </div>
           </div>
@@ -402,14 +412,16 @@ class AssetForm extends Component {
           <CheckboxGroup
             title='What are the risks of holding this information asset?'
             labels={DIGITAL_STORAGE_SECURITY_LABELS}
+            name="digital_storage_security"
             values={this.state.digital_storage_security}
-            onChange={(value) => this.handleChange('digital_storage_security', value)}
+            onChange={this.handleChange}
             disabled={this.state.storage_format.indexOf("digital") === -1}
           />
           <CheckboxGroup
             labels={PAPER_STORAGE_SECURITY_LABELS}
+            name="paper_storage_security"
             values={this.state.paper_storage_security}
-            onChange={(value) => this.handleChange('paper_storage_security', value)}
+            onChange={this.handleChange}
             disabled={this.state.storage_format.indexOf("paper") === -1}
           />
         </div>

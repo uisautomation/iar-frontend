@@ -21,7 +21,7 @@ const BooleanChoice = (props) => (
   <RadioButtonGroup
     name={props.name}
     valueSelected={props.value}
-    onChange={(e, value) => props.onChange(props.name, value)}
+    onChange={props.onChange}
     style={groupStyle}
   >
     <RadioButton value={true} label="yes" style={buttonStyle} />

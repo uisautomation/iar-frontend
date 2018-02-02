@@ -22,14 +22,14 @@ const titleStyle = {
   */
 class CheckboxGroup extends Component {
 
-  updateCheck(value) {
+  updateCheck(event, value) {
     let index = this.props.values.indexOf(value);
     if (index === -1) {
       this.props.values.push(value);
     } else {
       this.props.values.splice(index, 1);
     }
-    this.props.onChange(this.props.values);
+    this.props.onChange(event, this.props.values);
   }
 
   render() {
@@ -37,9 +37,10 @@ class CheckboxGroup extends Component {
       return <div key={item.value} className='App-grid-item' style={itemStyle}>
           <Checkbox
           label={item.label}
+          name={this.props.name}
           disabled={this.props.disabled}
           checked={this.props.values.indexOf(item.value) !== -1}
-          onCheck={() => this.updateCheck(item.value)}
+          onCheck={(event) => this.updateCheck(event, item.value)}
           />
         </div>
     });

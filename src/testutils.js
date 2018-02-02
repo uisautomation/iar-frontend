@@ -8,13 +8,30 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
   TestInstance for checking.
  */
 const render = (component, url) => {
-  return TestRenderer.create(
-    <MemoryRouter initialEntries={[url]}>
-      <MuiThemeProvider>
-        { component }
-      </MuiThemeProvider>
-    </MemoryRouter>
-  ).root;
+  let wrapped_component = <MuiThemeProvider>{ component }</MuiThemeProvider>;
+  if (url) {
+    wrapped_component = <MemoryRouter initialEntries={[url]}>{ wrapped_component }</MemoryRouter>;
+  }
+  return TestRenderer.create(wrapped_component).root;
 };
 
-export { render }
+/*
+  Helper function that creates a promise that polls for a condition to be true, for up to a second and rejects
+  if that condition is never met.
+ */
+const condition = (cb) => {
+  let counter = 0;
+  return new Promise((resolve, reject) => {
+    let interval = setInterval(function () {
+      if (cb()) {
+        clearInterval(interval);
+        resolve(true);
+      } else if (counter ++ == 20) {
+        clearInterval(interval);
+        reject(false);
+      }
+    }, 50);
+  })
+};
+
+export { render, condition }
