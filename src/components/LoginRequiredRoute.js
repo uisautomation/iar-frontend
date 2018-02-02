@@ -19,13 +19,10 @@ const LoginRequiredRoute = ({
   componentIfLoggedOut = DEFAULT_IF_LOGGED_OUT,
   ...rest
 }) => (
-  <Route {...rest} render={props => (
-    isLoggedIn ? (
-      <Component {...props} />
-    ) : (
-      DEFAULT_IF_LOGGED_OUT
-    )
-  )}/>
+  <Route
+    {...rest}
+    render={ props => isLoggedIn ? <Component {...props} /> : componentIfLoggedOut }
+  />
 );
 
 LoginRequiredRoute.propTypes = {
