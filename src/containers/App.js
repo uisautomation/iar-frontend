@@ -1,13 +1,11 @@
 import React, {Component} from 'react'
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Snackbar } from 'material-ui';
-import RoutedAssetList from './RoutedAssetList'
-import RoutedAssetForm from './RoutedAssetForm'
-import RoutedStatic from './RoutedStatic'
 import PropTypes from 'prop-types';
-import '../style/App.css'
+import AppRoutes from './AppRoutes';
+import '../style/App.css';
 
 /*
   IAR main app component.
@@ -44,23 +42,19 @@ class App extends Component {
   render() {
     return (
       <Provider store={ this.props.store }>
-        <Router>
-          <MuiThemeProvider>
-            <div>
-              <Route path="/" exact render={() => <Redirect to="/assets/dept"/>}/>
-              <RoutedAssetList/>
-              <RoutedStatic/>
-              <RoutedAssetForm handleMessage={this.handleMessage.bind(this)} />
-              <Route path="/oauth2-callback" exact render={() => <div />} />
-              <Snackbar
-                open={this.state.snackOpen}
-                message={this.state.message}
-                autoHideDuration={3000}
-                onRequestClose={this.handleRequestClose.bind(this)}
-              />
-            </div>
-          </MuiThemeProvider>
-        </Router>
+        <MuiThemeProvider>
+          <div>
+            <Router>
+              <AppRoutes handleMessage={ message => this.handleMessage(message) } />
+            </Router>
+            <Snackbar
+              open={this.state.snackOpen}
+              message={this.state.message}
+              autoHideDuration={3000}
+              onRequestClose={this.handleRequestClose.bind(this)}
+            />
+          </div>
+        </MuiThemeProvider>
       </Provider>
     );
   }
