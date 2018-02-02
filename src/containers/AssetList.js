@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React from 'react'; // used implicitly by JSX
+import React, {Component} from 'react'; // used implicitly by JSX
 import {
   Table,
   TableBody,
@@ -7,7 +7,9 @@ import {
   TableHeaderColumn,
   TableRow,
 } from 'material-ui/Table';
-import { AssetListHeader, AssetListItem } from '../components'
+import AssetListItem from '../components/AssetListItem';
+import AssetListHeader from '../components/AssetListHeader'
+import '../style/App.css';
 import Page from '../containers/Page';
 
 // Mock data until we can fetch data from the api

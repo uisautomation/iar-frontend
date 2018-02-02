@@ -8,5 +8,5 @@ install:
   - npm install
 
 script:
-  - npm run coverage
+  - npm test
   - codecov

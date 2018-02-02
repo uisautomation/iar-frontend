@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppBar } from 'material-ui';
+import '../style/App.css';
 import Page from '../containers/Page';
 
 const TITLES = {

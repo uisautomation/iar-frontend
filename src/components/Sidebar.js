@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Drawer from 'material-ui/Drawer'
 import logo from '../images/logo.svg'
-import LogoutLink from './LogoutLink'
+import '../style/App.css'
+import LogoutLink from './LogoutLink';
 
 /*
   Renders the IAR application side bar.

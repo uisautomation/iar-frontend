@@ -62,6 +62,3 @@ typings/
 # PyCharm
 .idea
 coverage/
-
-# build files
-/build

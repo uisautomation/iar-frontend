@@ -5,15 +5,17 @@ import { AppBar, RaisedButton } from 'material-ui';
 /*
   Renders the app bar of the form for the creation/editing of an Asset.
   */
-const AssetFormHeader = (props) => (
+const AssetFormHeader = ({ title }) => (
   <div className="App-header">
-    <AppBar title={ props.title } iconElementRight={
+    <AppBar title={ title } iconElementRight={
       <span>
-        <Link className='App-raised-button-link' to="/">
-          <RaisedButton primary={true} label="Cancel"/>
-        </Link>
+        <RaisedButton primary={true}>
+          <Link className='App-raised-button-link' to="/">Cancel</Link>
+        </RaisedButton>
         &nbsp;
-        <RaisedButton label="Save" onClick={props.onClick}/>
+        <RaisedButton>
+          <Link className='App-raised-button-link' to="/">Save</Link>
+        </RaisedButton>
       </span>
     } />
   </div>
