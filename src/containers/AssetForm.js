@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import config from '../config';
 import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../components'
+import Page from '../containers/Page';
 
 const ACCESS_TOKEN = 'THIS IS JUST A PLACEHOLDER';
 
@@ -176,7 +177,7 @@ class AssetForm extends Component {
 
   render() {
     return (
-      <div className="App-main">
+      <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
           title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + this.state.name}
@@ -369,7 +370,7 @@ class AssetForm extends Component {
             disabled={this.state.storage_format.indexOf("paper") === -1}
           />
         </div>
-      </div>
+      </Page>
     )
   }
 }

@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Snackbar } from 'material-ui';
-import { Sidebar } from '../components'
 import RoutedAssetList from './RoutedAssetList'
 import RoutedAssetForm from './RoutedAssetForm'
 import RoutedStatic from './RoutedStatic'
+import PropTypes from 'prop-types';
 import '../style/App.css'
 
 /*
@@ -42,27 +43,31 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <Provider store={ this.props.store }>
         <Router>
           <MuiThemeProvider>
-            <div>
-              <Sidebar/>
+            <Switch>
               <Route path="/" exact render={() => <Redirect to="/assets/dept"/>}/>
               <RoutedAssetList/>
               <RoutedStatic/>
               <RoutedAssetForm handleMessage={this.handleMessage.bind(this)} />
+              <Route path="/oauth2-callback" exact render={() => <div />} />
               <Snackbar
                 open={this.state.snackOpen}
                 message={this.state.message}
                 autoHideDuration={3000}
                 onRequestClose={this.handleRequestClose.bind(this)}
               />
-            </div>
+            </Switch>
           </MuiThemeProvider>
         </Router>
-      </div>
+      </Provider>
     );
   }
 }
 
-export default App
+App.propTypes = {
+  store: PropTypes.object.isRequired
+};
+
+export default App;

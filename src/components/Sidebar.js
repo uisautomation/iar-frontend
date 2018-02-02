@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Drawer from 'material-ui/Drawer'
 import logo from '../images/logo.svg'
+import LogoutLink from './LogoutLink'
 
 /*
   Renders the IAR application side bar.
@@ -20,6 +21,7 @@ const Sidebar = () => (
       <li><Link to="/static/feedback">Feedback</Link></li>
       <li><Link to="/static/contact">Contact</Link></li>
       <li><Link to="/static/tcs">Terms & Conditions</Link></li>
+      <li><LogoutLink>Sign out</LogoutLink></li>
     </ul>
   </Drawer>
 );
