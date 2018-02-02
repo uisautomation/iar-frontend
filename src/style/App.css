@@ -8,13 +8,13 @@
 }
 
 .App-header {
-  height: 150px;
+  height: 100px;
   padding: 0px;
   color: white;
 }
 
 .App-main { 
-  margin-left: 256px;
+  margin-left: 276px;
 }
 
 .App-title {
@@ -46,4 +46,21 @@
   padding: 0 15px;
   font-size: 14px;
   font-weight: 500;
+}
+
+.App-grid-container {
+  display: grid;
+  max-width: 800px;
+}
+
+.App-grid-1 {
+  grid-template-columns: auto;
+}
+
+.App-grid-2 {
+  grid-template-columns: auto auto;
+}
+
+.App-grid-item {
+  padding: 20px;
 }
