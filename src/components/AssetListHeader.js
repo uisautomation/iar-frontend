@@ -8,9 +8,9 @@ import { AppBar, RaisedButton } from 'material-ui';
 const AssetListHeader = ({ title }) => (
   <div className="App-header">
     <AppBar title={ title } iconElementRight={
-      <RaisedButton>
-        <Link className='App-raised-button-link' to="/asset/create">Create Asset</Link>
-      </RaisedButton>
+      <Link className='App-raised-button-link' to="/asset/create">
+        <RaisedButton label="Create Asset"/>
+      </Link>
     } />
   </div>
 );

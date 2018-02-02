@@ -5,3 +5,4 @@ import LoginPage from './LoginPage';
 test('can render LoginPage component', () => {
   const testInstance = render(<LoginPage />);
 });
+{url:'asdsda'}
