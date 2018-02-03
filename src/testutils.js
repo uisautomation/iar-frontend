@@ -8,12 +8,14 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import configureMockStore from 'redux-mock-store';
 import { middlewares } from './redux/enhancer';
 import { initialState as assetsInitialState } from './redux/reducers/assetRegisterApi';
+import { initialState as deleteConfirmationInitialState } from './redux/reducers/deleteConfirmation';
 
 export const mockStore = configureMockStore(middlewares);
 
 export const DEFAULT_INITIAL_STATE = {
   auth: { isLoggedIn: true },
   assets: assetsInitialState,
+  deleteConfirmation: deleteConfirmationInitialState,
 };
 
 /*

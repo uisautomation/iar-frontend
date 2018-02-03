@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { deleteAsset } from '../redux/actions/assetRegisterApi';
+import { confirmDelete } from '../redux/actions/deleteConfirmation';
 
 import {TableRow, TableRowColumn} from 'material-ui/Table';
 import { RaisedButton } from 'material-ui';
 import TickIcon from 'material-ui/svg-icons/action/done';
 
-const AssetListItem = ({deleteAsset, asset}) => (
+const AssetListItem = ({confirmDelete, asset}) => (
   <TableRow hoverable={true}>
     <TableRowColumn><Link to={'/asset/' + asset.id}>{asset.name}</Link></TableRowColumn>
     <TableRowColumn>{asset.is_complete ? 'Complete' : 'In Progress'}</TableRowColumn>
@@ -18,7 +18,7 @@ const AssetListItem = ({deleteAsset, asset}) => (
     <TableRowColumn>{asset.private ? <TickIcon/> : ""}</TableRowColumn>
     <TableRowColumn>{asset.updated_at}</TableRowColumn>
     <TableRowColumn>
-      <RaisedButton onClick={() => deleteAsset(asset.url)}>Delete</RaisedButton>
+      <RaisedButton onClick={() => confirmDelete(asset.url)}>Delete</RaisedButton>
     </TableRowColumn>
   </TableRow>
 );
@@ -26,7 +26,7 @@ const AssetListItem = ({deleteAsset, asset}) => (
 AssetListItem.propTypes = {
   asset: PropTypes.object.isRequired,
   assetUrl: PropTypes.string.isRequired,
-  deleteAsset: PropTypes.func.isRequired,
+  confirmDelete: PropTypes.func.isRequired,
 };
 
 // Export unconnected version of component to aid testing.
@@ -36,6 +36,6 @@ const mapStateToProps = ({ assets }, { assetUrl }) => ({
   asset: assets.assetsByUrl.get(assetUrl)
 });
 
-const mapDispatchToProps = { deleteAsset };
+const mapDispatchToProps = { confirmDelete };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetListItem);

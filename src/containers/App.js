@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { Snackbar } from 'material-ui';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
+import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import '../style/App.css';
 
 /*
@@ -47,6 +48,7 @@ class App extends Component {
             <Router>
               <AppRoutes handleMessage={ message => this.handleMessage(message) } />
             </Router>
+            <DeleteConfirmationDialog />
             <Snackbar
               open={this.state.snackOpen}
               message={this.state.message}
