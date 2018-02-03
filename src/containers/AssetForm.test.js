@@ -1,15 +1,12 @@
+// mock any components which are troublesome in our test suite
+import '../test/mocks';
+
 import React from 'react';
 import { Route } from 'react-router-dom'
 import fetch_mock from 'fetch-mock';
 import { AppBar, RadioButtonGroup, TextField } from 'material-ui';
 import { render, condition } from '../testutils';
 import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
-
-// need to mock the material-ui checkbox as we get 'TypeError: Cannot read property 'checked' of undefined'
-// when rendered with react-test-renderer. see
-// https://stackoverflow.com/questions/48465807/why-is-my-renderer-failing-when-using-material-ui-using-jest-and-react-test-rend
-jest.mock('material-ui/Checkbox', () => () => <input type='check' />);
-
 import AppRoutes from './AppRoutes';
 
 const NEW_ASSET_FIXTURE = {
