@@ -10,13 +10,13 @@ const mockAssets = [
 ];
 
 test('can render /assets/dept', () => {
-  const testInstance = render(<AssetList assets={mockAssets} match={{url: '/assets/dept'}}/>);
+  const testInstance = render(<AssetList assetList={mockAssets} match={{url: '/assets/dept'}}/>);
 
   expect(testInstance.findByType(AppBar).props.title).toBe('Assets: My department')
 });
 
 test('can render /assets/all', () => {
-  const testInstance = render(<AssetList assets={mockAssets} match={{url: '/assets/all'}}/>);
+  const testInstance = render(<AssetList assetList={mockAssets} match={{url: '/assets/all'}}/>);
 
   expect(testInstance.findByType(AppBar).props.title).toBe('Assets: All')
 });

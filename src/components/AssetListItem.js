@@ -18,7 +18,7 @@ const AssetListItem = ({deleteAsset, asset, ...props}) => (
     <TableRowColumn>{asset.private ? <TickIcon/> : ""}</TableRowColumn>
     <TableRowColumn>{asset.updated_at}</TableRowColumn>
     <TableRowColumn>
-    <RaisedButton onClick={() => deleteAsset(asset.url)}>Delete</RaisedButton>
+      <RaisedButton onClick={() => deleteAsset(asset.id)}>Delete</RaisedButton>
     </TableRowColumn>
   </TableRow>
 );

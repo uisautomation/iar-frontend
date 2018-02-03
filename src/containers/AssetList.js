@@ -25,7 +25,7 @@ class AssetList extends React.Component {
     <Page>
       <AssetListHeader title={TITLES[this.props.match.url]} />
       <AssetTable>{
-        this.props.assets.map( asset => (
+        this.props.assetList.map( asset => (
           <AssetListItem key={asset.url} asset={asset} />
         ))
       }
@@ -35,11 +35,13 @@ class AssetList extends React.Component {
 };
 
 AssetList.propTypes = {
-  assets: PropTypes.arrayOf(PropTypes.object).isRequired,
+  assetList: PropTypes.arrayOf(PropTypes.object).isRequired,
   getAssetList: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ iarApi }) => ({ assets: iarApi.assets });
+const mapStateToProps = ({ iarApi }) => ({
+  assetList: iarApi.assets.results
+});
 
 const mapDispatchToProps = { getAssetList };
 

@@ -6,6 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import localStorage from 'mock-local-storage';
 import configureMockStore from 'redux-mock-store';
 import { middlewares } from './redux/enhancer';
+import { initialState as iarApiInitialState } from './redux/reducers/assetRegisterApi';
 
 import './test/mock-localstorage.js';
 
@@ -13,7 +14,7 @@ export const mockStore = configureMockStore(middlewares);
 
 export const DEFAULT_INITIAL_STATE = {
   auth: { isLoggedIn: true },
-  iarApi: { assets: [] },
+  iarApi: iarApiInitialState,
 };
 
 /*
