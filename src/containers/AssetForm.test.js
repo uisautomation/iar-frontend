@@ -8,6 +8,8 @@ import { AppBar, RadioButtonGroup, TextField } from 'material-ui';
 import { render, condition } from '../testutils';
 import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
 import AppRoutes from './AppRoutes';
+import { createMockStore } from '../testutils';
+import { SNACKBAR_OPEN } from '../redux/actions/snackbar';
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -133,11 +135,13 @@ test('check fetch errors are reports', async () => {
 
   fetch_mock.get('http://localhost:8000/assets/NO-ASSETS-HERE/', 404);
 
-  let message = null;
+  const store = createMockStore();
+  render(<AppRoutes />, {store, url: '/asset/NO-ASSETS-HERE'});
 
-  render(<AppRoutes handleMessage={(message_) => {message = message_}}/>, {url: '/asset/NO-ASSETS-HERE'});
+  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
 
-  await condition(() => message);
+  const [ { payload: { message } } ] =
+    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
 
   expect(message).toEqual('Network Error: Not Found');
 });
@@ -153,9 +157,8 @@ test('can save a new asset', async () => {
     return true;
   }, ASSET_FIXTURE);
 
-  let message = null;
-
-  const testInstance = render(<AppRoutes handleMessage={(message_) => {message = message_}}/>, {url: '/asset/create'});
+  const store = createMockStore();
+  const testInstance = render(<AppRoutes />, {store, url: '/asset/create'});
 
   setDataOnInput(testInstance, 'name', 'Super Secret Medical Data');
   setDataOnInput(testInstance, 'department', "Medicine");
@@ -178,7 +181,10 @@ test('can save a new asset', async () => {
 
   // "click" the save button and wair for the response
   testInstance.findByProps({label: 'Save'}).props.onClick();
-  await condition(() => message);
+  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
+
+  const [ { payload: { message } } ] =
+    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
 
   expect(message).toEqual('"Super Secret Medical Data" saved.');
 });
@@ -195,9 +201,8 @@ test('can update an asset', async () => {
     return true;
   }, ASSET_FIXTURE);
 
-  let message = null;
-
-  const testInstance = render(<AppRoutes handleMessage={(message_) => {message = message_}}/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
+  const store = createMockStore();
+  const testInstance = render(<AppRoutes />, {store, url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated.
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -206,7 +211,10 @@ test('can update an asset', async () => {
 
   // "click" the save button and wair for the response
   testInstance.findByProps({label: 'Save'}).props.onClick();
-  await condition(() => message);
+  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
+
+  const [ { payload: { message } } ] =
+    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
 
   expect(message).toEqual('"Super Secret Medical Data" saved.');
 });
