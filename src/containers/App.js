@@ -6,6 +6,7 @@ import Snackbar from '../components/Snackbar';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
+import ScrollToTop from '../components/ScrollToTop';
 import '../style/App.css';
 
 /*
@@ -16,7 +17,9 @@ const App = ({ store }) => (
     <MuiThemeProvider>
       <div>
         <Router>
-          <AppRoutes />
+          <ScrollToTop>
+            <AppRoutes />
+          </ScrollToTop>
         </Router>
         <DeleteConfirmationDialog />
         <Snackbar />
