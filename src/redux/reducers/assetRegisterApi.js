@@ -1,6 +1,7 @@
 import {
   ASSETS_LIST_REQUEST, ASSETS_LIST_SUCCESS, ASSETS_LIST_FAILURE,
-  ASSETS_DELETE_SUCCESS
+  ASSETS_DELETE_SUCCESS,
+  ASSET_GET_REQUEST, ASSET_GET_SUCCESS, ASSET_GET_FAILURE
 } from '../actions/assetRegisterApi';
 
 // Initial endpoint used to fetch assets. This is the default "next" field.
@@ -33,8 +34,19 @@ export const initialState = {
   // full asset. Can be used as a key in assetsByUrl.
   summaries: [ ],
 
-  // A Map of asset URLs to the full asset resource. This may contain more assets than referenced
-  // in the asset summaries.
+  // A Map of asset URLs to the asset resource records. This may contain more assets than
+  // referenced in the asset summaries.
+  //
+  // An asset resource record is an object of the following form:
+  //
+  //  {
+  //    asset: <asset resource>,
+  //    isLoading?: <optional boolean indicating if the asset if currently being loaded?
+  //    fetchedAt?: <optional date object with the last time this asset was fetched>
+  //  }
+  //
+  // The asset resource may be a "summary" resource with only the url field set if the asset is
+  // currently being loaded.
   assetsByUrl: new Map(),
 }
 
@@ -65,7 +77,7 @@ export default (state = initialState, action) => {
         ...state.assetsByUrl,
 
         // and then iterate over the list of new objects
-        ...results.map(asset => [asset.url, asset]),
+        ...results.map(asset => [asset.url, { asset, fetchedAt: new Date() }]),
       ]);
 
       return {...state, url, next, previous, summaries, assetsByUrl, isLoading: false };
@@ -80,6 +92,31 @@ export default (state = initialState, action) => {
       return {
         ...state, summaries: state.summaries.filter(asset => asset.url !== action.meta.url)
       };
+
+    case ASSET_GET_REQUEST: {
+      // Mark the requested asset as loading
+      const { url } = action.meta;
+      const assetsByUrl = new Map([...state.assetsByUrl, [url, { asset: { url }, isLoading: true }]]);
+      return { ...state, assetsByUrl };
+    }
+
+    case ASSET_GET_SUCCESS: {
+      // Add the asset to the assetsByUrl map
+      const asset = action.payload;
+      const assetsByUrl = new Map([
+        ...state.assetsByUrl,
+        [asset.url, { asset, fetchedAt: new Date() }]
+      ]);
+      return { ...state, assetsByUrl };
+    }
+
+    case ASSET_GET_FAILURE: {
+      // Remove the asset which was being requested from assetsByUrl.
+      const { url } = action.meta;
+      const assetsByUrl = new Map([...state.assetsByUrl]);
+      assetsByUrl.delete(url);
+      return { ...state, assetsByUrl };
+    }
 
     default:
       return state;

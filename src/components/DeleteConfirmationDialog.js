@@ -11,16 +11,16 @@ import { handleConfirmDelete } from '../redux/actions/deleteConfirmation';
  *
  * The dialogue box is "open" when the URL of the asset being considered for deletion is truthy.
  */
-const DeleteConfirmationDialog = ({ asset = {}, deleteAsset, handleConfirmDelete }) => {
+const DeleteConfirmationDialog = ({ url, name, deleteAsset, handleConfirmDelete }) => {
   const actions = [
     <FlatButton label="Cancel" primary={false}
-      onClick={() => handleConfirmDelete(asset.url)} />,
+      onClick={() => handleConfirmDelete(url)} />,
     <FlatButton label="Delete" primary={true}
-      onClick={() => { deleteAsset(asset.url); handleConfirmDelete(asset.url); }} />,
+      onClick={() => { deleteAsset(url); handleConfirmDelete(url); }} />,
   ];
   return (
-    <Dialog modal={true} open={!!asset.url} actions={actions}>
-      Delete <strong>"{ asset.name }"</strong>?
+    <Dialog modal={true} open={!!url} actions={actions}>
+      Delete <strong>"{ name }"</strong>?
     </Dialog>
   );
 };
@@ -31,10 +31,12 @@ DeleteConfirmationDialog.propTypes = {
   handleConfirmDelete: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ assets: { assetsByUrl }, deleteConfirmation: { url } }) => ({
+const mapStateToProps = ({ assets: { assetsByUrl }, deleteConfirmation: { url } }) => {
   // The asset which is being considered for deletion.
-  asset: assetsByUrl.get(url),
-});
+  const assetRecord= assetsByUrl.get(url);
+  const { name } = assetRecord ? assetRecord.asset : { };
+  return { url, name };
+};
 
 const mapDispatchToProps = { deleteAsset, handleConfirmDelete };
 

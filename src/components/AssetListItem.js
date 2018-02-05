@@ -32,8 +32,8 @@ AssetListItem.propTypes = {
 // Export unconnected version of component to aid testing.
 export const UnconnectedAssetListItem = AssetListItem;
 
-const mapStateToProps = ({ assets }, { assetUrl }) => ({
-  asset: assets.assetsByUrl.get(assetUrl)
+const mapStateToProps = ({ assets: { assetsByUrl } }, { assetUrl }) => ({
+  asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
 });
 
 const mapDispatchToProps = { confirmDelete };

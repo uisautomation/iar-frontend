@@ -14,7 +14,7 @@ const config = {
   url: "https://experimental-oauth2.gcloud.automation.uis.cam.ac.uk/oauth2/auth",
   client: "iar-frontend-local",
   redirect: window.location.origin + '/oauth2-callback',  // HACK: get the base URL of the website
-  scope: "assetregister",
+  scope: "assetregister lookup:anonymous",
   width: 500, // Width (in pixels) of login popup window. Optional, default: 400
   height: 400 // Height (in pixels) of login popup window. Optional, default: 400
 };

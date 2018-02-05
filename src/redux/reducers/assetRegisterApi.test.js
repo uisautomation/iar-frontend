@@ -9,8 +9,8 @@ test('asset list response updates replaces list if url does not match next or pr
   expect(nextState.next).toBe('xxx');
   expect(nextState.previous).toBe('yyy');
   expect(nextState.summaries).toEqual([{url: 'a'}, {url: 'b'}]);
-  expect(nextState.assetsByUrl.get('a')).toEqual({url: 'a', x: 1});
-  expect(nextState.assetsByUrl.get('b')).toEqual({url: 'b', x: 2});
+  expect(nextState.assetsByUrl.get('a').asset).toEqual({url: 'a', x: 1});
+  expect(nextState.assetsByUrl.get('b').asset).toEqual({url: 'b', x: 2});
 });
 
 test('asset delete response deletes asset', () => {
