@@ -6,6 +6,7 @@ import { Snackbar } from 'material-ui';
 import RoutedAssetList from './RoutedAssetList'
 import RoutedAssetForm from './RoutedAssetForm'
 import RoutedStatic from './RoutedStatic'
+import ScrollToTop from '../components/ScrollToTop';
 import PropTypes from 'prop-types';
 import '../style/App.css'
 
@@ -60,6 +61,7 @@ class App extends Component {
               />
             </div>
           </MuiThemeProvider>
+          <ScrollToTop />
         </Router>
       </Provider>
     );
