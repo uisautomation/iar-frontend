@@ -7,8 +7,11 @@ import { connect } from 'react-redux';
 import { confirmDelete } from '../redux/actions/deleteConfirmation';
 
 import {TableRow, TableRowColumn} from 'material-ui/Table';
-import { RaisedButton } from 'material-ui';
 import TickIcon from 'material-ui/svg-icons/action/done';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 const AssetListItem = ({confirmDelete, asset}) => (
   <TableRow hoverable={true}>
@@ -18,7 +21,13 @@ const AssetListItem = ({confirmDelete, asset}) => (
     <TableRowColumn>{asset.private ? <TickIcon/> : ""}</TableRowColumn>
     <TableRowColumn>{asset.updated_at}</TableRowColumn>
     <TableRowColumn>
-      <RaisedButton onClick={() => confirmDelete(asset.url)}>Delete</RaisedButton>
+      <IconMenu
+        iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+      >
+        <MenuItem primaryText="Delete" onClick={() => confirmDelete(asset.url)} />
+      </IconMenu>
     </TableRowColumn>
   </TableRow>
 );
