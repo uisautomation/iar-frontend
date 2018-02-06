@@ -5,6 +5,7 @@ import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../compon
 import Page from '../containers/Page';
 import { connect } from 'react-redux';
 import { snackbarOpen } from '../redux/actions/snackbar';
+import { getAsset } from '../redux/actions/assetRegisterApi';
 
 const ACCESS_TOKEN = 'THIS IS A PLACEHOLDER';
 
@@ -89,6 +90,7 @@ class AssetForm extends Component {
     super();
 
     this.handleChange = this.handleChange.bind(this);
+    this.fetch = this.fetch.bind(this);
 
     this.state = {
       // asset state
@@ -131,8 +133,7 @@ class AssetForm extends Component {
         this.props.handleMessage('Network Error: ' + response.statusText)
       }
     }).then(data => data && cb(data)).catch(
-      console.error
-        //error => this.props.handleMessage('Network Error: ' + error)
+        error => this.props.handleMessage('Network Error: ' + error)
     );
   }
 
@@ -140,10 +141,17 @@ class AssetForm extends Component {
   If the form is in edit mode - fetch the asset
    */
   componentDidMount() {
-    if (this.props.match.url !== '/asset/create') {
-      this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.assetId + '/', {}, data => {
-        this.setState(data);
-      });
+    if (this.props.url) {
+      this.props.getAsset(this.props.url);
+    }
+  }
+
+  /*
+  FIXME
+   */
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.asset.isLoading) {
+      this.setState(nextProps.asset.asset);
     }
   }
 
@@ -377,6 +385,13 @@ class AssetForm extends Component {
   }
 }
 
-const mapDispatchToProps = { handleMessage: snackbarOpen };
+const mapDispatchToProps = {
+  handleMessage: snackbarOpen,
+  getAsset: getAsset
+};
 
-export default connect(null, mapDispatchToProps)(AssetForm);
+const mapStateToProps = (state, props) => {
+  return { asset: state.assets.assetsByUrl.get(props.url) };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AssetForm);

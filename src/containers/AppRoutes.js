@@ -16,9 +16,8 @@ const AppRoutes = () => (
   <Switch>
     <LoginRequiredRoute path="/static/:page" exact component={Static}/>
     <LoginRequiredRoute path="/assets/:filter" exact component={AssetList}/>
-    <LoginRequiredRoute
-       path="/asset/create" exact
-       component={routeProps => <AssetForm assetId='create' {...routeProps} />} />
+    <LoginRequiredRoute path="/asset/create" exact component={AssetForm} />
+    {/* FIXME refactor to use assetId */}
     <LoginRequiredRoute
        path="/asset/:assetId" exact
        component={routeProps => <AssetForm
