@@ -4,9 +4,6 @@ import {
   ASSET_GET_REQUEST, ASSET_GET_SUCCESS, ASSET_GET_FAILURE
 } from '../actions/assetRegisterApi';
 
-// Initial endpoint used to fetch assets. This is the default "next" field.
-import { ENDPOINT_ASSETS } from '../../config';
-
 /**
  * State managed by the asset API reducers.
  *
@@ -19,16 +16,32 @@ export const initialState = {
   // they do not modify the next or previous URLs.
   isLoading: false,
 
+  // A JavaScript Date object with the last time a fetch resulted in this state being updated.
+  fetchedAt: null,
+
   // If not-null, this is the URL of the response which last updated this state.
   url: null,
 
   // If not-null, this URL should be used to fetch results to add to the end of the current asset
   // list in order to extend it.
-  next: ENDPOINT_ASSETS,
+  next: null,
 
   // If not-null, this URL should be used to fetch results to add to the beginning of the current
   // asset list in order to extend it.
   previous: null,
+
+  query: {
+    // Field and direction which list is currently sorted by. The field is a string and the
+    // direction is Direction.ascending or Direction.descending from the assetRegisterApi actions
+    // module.
+    sort: { field: null, direction: null },
+
+    // Field names and values which correspond to the current filter.
+    filter: { },
+
+    // Current search, if any
+    search: null,
+  },
 
   // List of asset summaries. An asset summary is imply an object containing the 'url' field of the
   // full asset. Can be used as a key in assetsByUrl.
@@ -52,15 +65,18 @@ export const initialState = {
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case ASSETS_LIST_REQUEST:
-      return { ...state, isLoading: true };
+    case ASSETS_LIST_REQUEST: {
+      // Extract url and query used to fetch this request from action metadata
+      const { url, query } = action.meta;
+      return { ...state, ...query ? { query } : { }, url, isLoading: true };
+    }
 
     case ASSETS_LIST_SUCCESS: {
       // Extract next, previous and result list from request payload
       const { next, previous, results } = action.payload;
 
-      // Extract url used to fetch this request from action metadata
-      const { url } = action.meta;
+      // Extract url and query used to fetch this request from action metadata
+      const { url, query } = action.meta;
 
       // By default, replace summaries with summaries from payload. The summary is just an object
       // with the url extracted. If the URL matches next or previous, append the previous sumary
@@ -80,7 +96,11 @@ export default (state = initialState, action) => {
         ...results.map(asset => [asset.url, { asset, fetchedAt: new Date() }]),
       ]);
 
-      return {...state, url, next, previous, summaries, assetsByUrl, isLoading: false };
+      return {
+        ...state, ...query ? { query } : { },
+        isLoading: false, fetchedAt: new Date(),
+        url, next, previous, summaries, assetsByUrl,
+      };
     }
 
     case ASSETS_LIST_FAILURE:
