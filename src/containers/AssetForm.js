@@ -5,9 +5,7 @@ import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../compon
 import Page from '../containers/Page';
 import { connect } from 'react-redux';
 import { snackbarOpen } from '../redux/actions/snackbar';
-import { getAsset } from '../redux/actions/assetRegisterApi';
-
-const ACCESS_TOKEN = 'THIS IS A PLACEHOLDER';
+import { getAsset, createAsset, updateAsset } from '../redux/actions/assetRegisterApi';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -81,39 +79,33 @@ const storageFormatButtonStyle = {
   padding: "10px 20px"
 };
 
+export const NEW_ASSET = {
+  name: null,
+  department: null,
+  purpose: null,
+  research: null,
+  owner: null,
+  private: null,
+  personal_data: null,
+  data_subject: [],
+  data_category: [],
+  recipients_category: null,
+  recipients_outside_eea: null,
+  retention: null,
+  retention_other: null,
+  risk_type: [],
+  storage_location: null,
+  storage_format: [],
+  paper_storage_security: [],
+  digital_storage_security: []
+};
+
+const ACCESS_TOKEN = 'THIS IS A PLACEHOLDER';
+
 /*
   Renders the form for the creation/editing of an Asset.
   */
 class AssetForm extends Component {
-
-  constructor() {
-    super();
-
-    this.handleChange = this.handleChange.bind(this);
-    this.fetch = this.fetch.bind(this);
-
-    this.state = {
-      // asset state
-      name: null,
-      department: null,
-      purpose: null,
-      research: null,
-      owner: null,
-      private: null,
-      personal_data: null,
-      data_subject: [],
-      data_category: [],
-      recipients_category: null,
-      recipients_outside_eea: null,
-      retention: null,
-      retention_other: null,
-      risk_type: [],
-      storage_location: null,
-      storage_format: [],
-      paper_storage_security: [],
-      digital_storage_security: [],
-    }
-  }
 
   /*
   Wrapper for fetch() that handles errors / unmarshalls JSON
@@ -130,11 +122,20 @@ class AssetForm extends Component {
       if (response.ok) {
         return response.json()
       } else {
-        this.props.handleMessage('Network Error: ' + response.statusText)
+        this.props.snackbarOpen('Network Error: ' + response.statusText)
       }
     }).then(data => data && cb(data)).catch(
-      error => this.props.handleMessage('Network Error: ' + error)
+      error => this.props.snackbarOpen('Network Error: ' + error)
     );
+  }
+
+  constructor() {
+    super();
+
+    this.handleChange = this.handleChange.bind(this);
+    this.fetch = this.fetch.bind(this);
+
+    this.state = NEW_ASSET;
   }
 
   /*
@@ -142,7 +143,11 @@ class AssetForm extends Component {
    */
   componentDidMount() {
     if (this.props.url) {
-      this.props.getAsset(this.props.url);
+      if (this.props.asset) {
+        this.setState(this.props.asset.asset);
+      } else {
+        this.props.getAsset(this.props.url);
+      }
     }
   }
 
@@ -150,8 +155,14 @@ class AssetForm extends Component {
   FIXME
    */
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.asset.isLoading) {
-      this.setState(nextProps.asset.asset);
+    let asset = nextProps.asset;
+    if (asset) {
+      if (this.state.savedAt && asset.fetchedAt > this.state.savedAt) {
+        this.props.snackbarOpen('"' + asset.asset.name + '" saved.');
+        this.props.history.push("/");
+      } else {
+        this.setState(asset.asset);
+      }
     }
   }
 
@@ -168,22 +179,12 @@ class AssetForm extends Component {
   Either creates a new asset or updates an existing one depending on the mode of the form.
    */
   handleSave() {
-    let method = 'post';
-    let endpoint = config.ENDPOINT_ASSETS;
-    if (this.props.match.url !== '/asset/create') {
-      method = 'put';
-      endpoint += this.props.match.params.assetId + '/';
+    if (this.props.url) {
+      this.props.updateAsset(this.props.url, JSON.stringify(this.state));
+    } else {
+      this.props.createAsset(config.ENDPOINT_ASSETS, JSON.stringify(this.state));
     }
-    this.fetch(endpoint, {
-      method: method,
-      body: JSON.stringify(this.state),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }, (data) => {
-      this.props.handleMessage('"' + data.name + '" saved.');
-      this.props.history.push("/")
-    });
+    this.setState({savedAt: new Date()})
   }
 
   render() {
@@ -191,7 +192,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + this.state.name}
+          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
         />
 
         <div>
@@ -385,13 +386,21 @@ class AssetForm extends Component {
   }
 }
 
-const mapDispatchToProps = {
-  handleMessage: snackbarOpen,
-  getAsset: getAsset
-};
+const mapDispatchToProps = { snackbarOpen, getAsset, createAsset, updateAsset };
 
-const mapStateToProps = (state, props) => {
-  return { asset: state.assets.assetsByUrl.get(props.url) };
+const mapStateToProps = ({ assets } , props) => {
+
+  let url = assets.url; // for resolving the url post-save
+  if (props.match.url !== '/asset/create') {
+    url = config.ENDPOINT_ASSETS + props.match.params.assetId + '/';
+  }
+
+  let asset = assets.assetsByUrl.get(url);
+  if (asset && asset.asset.isLoading) {
+    asset = null;
+  }
+
+  return { url, asset };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetForm);

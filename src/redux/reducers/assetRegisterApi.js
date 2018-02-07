@@ -1,7 +1,9 @@
 import {
   ASSETS_LIST_REQUEST, ASSETS_LIST_SUCCESS, ASSETS_LIST_FAILURE,
   ASSETS_DELETE_SUCCESS,
-  ASSET_GET_REQUEST, ASSET_GET_SUCCESS, ASSET_GET_FAILURE
+  ASSET_GET_REQUEST, ASSET_GET_SUCCESS, ASSET_GET_FAILURE,
+  ASSET_PUT_SUCCESS,
+  ASSET_POST_SUCCESS
 } from '../actions/assetRegisterApi';
 
 // Initial endpoint used to fetch assets. This is the default "next" field.
@@ -100,6 +102,8 @@ export default (state = initialState, action) => {
       return { ...state, assetsByUrl };
     }
 
+    case ASSET_POST_SUCCESS:
+    case ASSET_PUT_SUCCESS:
     case ASSET_GET_SUCCESS: {
       // Add the asset to the assetsByUrl map
       const asset = action.payload;
@@ -107,7 +111,7 @@ export default (state = initialState, action) => {
         ...state.assetsByUrl,
         [asset.url, { asset, fetchedAt: new Date() }]
       ]);
-      return { ...state, assetsByUrl };
+      return { ...state, assetsByUrl, url: asset.url };
     }
 
     case ASSET_GET_FAILURE: {

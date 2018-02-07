@@ -31,7 +31,7 @@ class Lookup extends Component {
   Fetch the owner's name for the lookup API.
    */
   componentWillReceiveProps(nextProps) {
-      if (nextProps.value) {
+      if (nextProps.value && this.props.value !== nextProps.value) {
         this.props.fetch(ENDPOINT_PEOPLE + nextProps.value, {}, data => {
           this.setState({displayName: data.visibleName})
         });

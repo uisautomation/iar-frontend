@@ -12,16 +12,17 @@ import { isRSAA, RSAA } from 'redux-api-middleware';
 import { logout } from '../actions';
 
 export default ({ getState, dispatch }) => next => action => {
+
   // pass non-RSAA actions to next middleware
   if(!isRSAA(action)) { return next(action); }
 
   // update action with authorisation headers
   const { auth } = getState();
-  const authHeaders = (!auth || !auth.isLoggedIn) ?
-    { } : { 'Authorization': 'Bearer ' + auth.token };
+  const headers = (!auth || !auth.isLoggedIn) ?
+    { } : { ...action[[RSAA]].headers, 'Authorization': 'Bearer ' + auth.token };
   const updatedAction = {
     ...action,
-    [RSAA]: {...action[[RSAA]], headers: authHeaders }
+    [RSAA]: {...action[[RSAA]], headers: headers }
   };
 
   // pass action to next middleware

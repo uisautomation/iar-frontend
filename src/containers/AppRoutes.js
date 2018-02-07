@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { LoginRequiredRoute } from '../components';
-import config from '../config';
 
 import AssetList from './AssetList';
 import AssetForm from './AssetForm';
@@ -17,13 +16,7 @@ const AppRoutes = () => (
     <LoginRequiredRoute path="/static/:page" exact component={Static}/>
     <LoginRequiredRoute path="/assets/:filter" exact component={AssetList}/>
     <LoginRequiredRoute path="/asset/create" exact component={AssetForm} />
-    {/* FIXME refactor to use assetId */}
-    <LoginRequiredRoute
-       path="/asset/:assetId" exact
-       component={routeProps => <AssetForm
-         url={config.ENDPOINT_ASSETS + routeProps.match.params.assetId + '/'}
-         {...routeProps} />}
-    />
+    <LoginRequiredRoute path="/asset/:assetId" exact component={AssetForm} />
     <Route path="/oauth2-callback" exact component={() => <div />} />
     <Redirect from='/' exact to='/assets/dept' />
 
