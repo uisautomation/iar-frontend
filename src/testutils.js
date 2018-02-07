@@ -1,25 +1,35 @@
+import './test/mock-localstorage.js';
+
 import React from 'react';
 import { Provider } from 'react-redux';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import configureMockStore from 'redux-mock-store'
+import configureMockStore from 'redux-mock-store';
+import { middlewares } from './redux/enhancer';
+import { initialState as assetsInitialState } from './redux/reducers/assetRegisterApi';
+import { initialState as deleteConfirmationInitialState } from './redux/reducers/deleteConfirmation';
+import { initialState as snackbarInitialState } from './redux/reducers/snackbar';
 
-import './test/mock-localstorage.js';
-
-export const mockStore = configureMockStore([]);
+export const mockStore = configureMockStore(middlewares);
 
 export const DEFAULT_INITIAL_STATE = {
   auth: { isLoggedIn: true },
+  assets: assetsInitialState,
+  deleteConfirmation: deleteConfirmationInitialState,
+  snackbar: snackbarInitialState,
 };
+
+export const createMockStore = (initialState = DEFAULT_INITIAL_STATE) => mockStore(initialState);
 
 /*
   Helper function to render a component for testing. Wraps component in the necessary scaffolding and returns the
   TestInstance for checking.
  */
-const render = (component, {initialState = DEFAULT_INITIAL_STATE, url} = {}) => {
+const render = (component, {store, url} = {}) => {
+  if(!store) { store = createMockStore(DEFAULT_INITIAL_STATE); }
   let wrapped_component = (
-    <Provider store={mockStore(initialState)}>
+    <Provider store={store}>
       <MuiThemeProvider>
         { component }
       </MuiThemeProvider>

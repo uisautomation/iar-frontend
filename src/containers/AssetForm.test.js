@@ -1,16 +1,15 @@
+// mock any components which are troublesome in our test suite
+import '../test/mocks';
+
 import React from 'react';
 import { Route } from 'react-router-dom'
 import fetch_mock from 'fetch-mock';
 import { AppBar, RadioButtonGroup, TextField } from 'material-ui';
 import { render, condition } from '../testutils';
 import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
-
-// need to mock the material-ui checkbox as we get 'TypeError: Cannot read property 'checked' of undefined'
-// when rendered with react-test-renderer. see
-// https://stackoverflow.com/questions/48465807/why-is-my-renderer-failing-when-using-material-ui-using-jest-and-react-test-rend
-jest.mock('material-ui/Checkbox', () => () => <input type='check' />);
-
-import RoutedAssetForm from './RoutedAssetForm';
+import AppRoutes from './AppRoutes';
+import { createMockStore } from '../testutils';
+import { SNACKBAR_OPEN } from '../redux/actions/snackbar';
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -39,6 +38,12 @@ const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 fetch_mock.get(ASSET_FIXTURE_URL, ASSET_FIXTURE);
 
+// Required because asset form redirects to the index when the form has been saved and the index
+// will fetch the asset list.
+fetch_mock.get('http://localhost:8000/assets/', {
+  next: null, previous: null, results: [ ASSET_FIXTURE ],
+});
+
 fetch_mock.get('http://localhost:8080/people/crsid/mb2174', {
   url: "http://localhost:8080/people/crsid/mb2174",
   identifier: {"scheme": "crsid", "value": "mb2174"},
@@ -46,21 +51,11 @@ fetch_mock.get('http://localhost:8080/people/crsid/mb2174', {
 });
 
 /*
-  Tests that nothing is rendered for a non-matching route
- */
-test("can't route /where/dat", () => {
-
-  const testInstance = render(<RoutedAssetForm/>, {url: '/where/dat'});
-
-  expect(testInstance.findByType(Route).children).toEqual([])
-});
-
-/*
   Tests that a form is rendered for /asset/create
  */
 test('can route /asset/create', () => {
 
-  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/create'});
+  const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
 
   expect(testInstance.findByType(AppBar).props.title).toBe('Create new asset')
 });
@@ -70,7 +65,7 @@ test('can route /asset/create', () => {
  */
 test('can route /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', async () => {
 
-  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
+  const testInstance = render(<AppRoutes/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated. TODO better way to do this?
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -83,7 +78,7 @@ test('can route /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', async () => {
  */
 test('can render a blank form', () => {
 
-  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/create'});
+  const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
 
   expect(testInstance.findByProps({name: 'name'}).type).toBe(TextField);
   expect(testInstance.findByProps({name: 'department'}).type).toBe(TextField);
@@ -110,7 +105,7 @@ test('can render a blank form', () => {
  */
 test('can populate a form with data', async () => {
 
-  const testInstance = render(<RoutedAssetForm/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
+  const testInstance = render(<AppRoutes/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated.
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -142,11 +137,13 @@ test('check fetch errors are reports', async () => {
 
   fetch_mock.get('http://localhost:8000/assets/NO-ASSETS-HERE/', 404);
 
-  let message = null;
+  const store = createMockStore();
+  render(<AppRoutes />, {store, url: '/asset/NO-ASSETS-HERE'});
 
-  render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, {url: '/asset/NO-ASSETS-HERE'});
+  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
 
-  await condition(() => message);
+  const [ { payload: { message } } ] =
+    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
 
   expect(message).toEqual('Network Error: Not Found');
 });
@@ -162,9 +159,8 @@ test('can save a new asset', async () => {
     return true;
   }, ASSET_FIXTURE);
 
-  let message = null;
-
-  const testInstance = render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, {url: '/asset/create'});
+  const store = createMockStore();
+  const testInstance = render(<AppRoutes />, {store, url: '/asset/create'});
 
   setDataOnInput(testInstance, 'name', 'Super Secret Medical Data');
   setDataOnInput(testInstance, 'department', "Medicine");
@@ -187,7 +183,10 @@ test('can save a new asset', async () => {
 
   // "click" the save button and wair for the response
   testInstance.findByProps({label: 'Save'}).props.onClick();
-  await condition(() => message);
+  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
+
+  const [ { payload: { message } } ] =
+    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
 
   expect(message).toEqual('"Super Secret Medical Data" saved.');
 });
@@ -204,9 +203,8 @@ test('can update an asset', async () => {
     return true;
   }, ASSET_FIXTURE);
 
-  let message = null;
-
-  const testInstance = render(<RoutedAssetForm handleMessage={(message_) => {message = message_}}/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
+  const store = createMockStore();
+  const testInstance = render(<AppRoutes />, {store, url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated.
   await condition(() => testInstance.findByType(AppBar).props.title);
@@ -215,7 +213,10 @@ test('can update an asset', async () => {
 
   // "click" the save button and wair for the response
   testInstance.findByProps({label: 'Save'}).props.onClick();
-  await condition(() => message);
+  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
+
+  const [ { payload: { message } } ] =
+    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
 
   expect(message).toEqual('"Super Secret Medical Data" saved.');
 });

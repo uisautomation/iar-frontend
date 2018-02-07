@@ -3,8 +3,10 @@ import { RadioButton, RadioButtonGroup, TextField } from 'material-ui';
 import config from '../config';
 import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../components'
 import Page from '../containers/Page';
+import { connect } from 'react-redux';
+import { snackbarOpen } from '../redux/actions/snackbar';
 
-const ACCESS_TOKEN = 'THIS IS JUST A PLACEHOLDER';
+const ACCESS_TOKEN = 'THIS IS A PLACEHOLDER';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -129,7 +131,7 @@ class AssetForm extends Component {
         this.props.handleMessage('Network Error: ' + response.statusText)
       }
     }).then(data => data && cb(data)).catch(
-        error => this.props.handleMessage('Network Error: ' + error)
+      error => this.props.handleMessage('Network Error: ' + error)
     );
   }
 
@@ -374,4 +376,6 @@ class AssetForm extends Component {
   }
 }
 
-export default AssetForm
+const mapDispatchToProps = { handleMessage: snackbarOpen };
+
+export default connect(null, mapDispatchToProps)(AssetForm);
