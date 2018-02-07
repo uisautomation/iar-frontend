@@ -50,7 +50,7 @@ export const initialState = {
   // The asset resource may be a "summary" resource with only the url field set if the asset is
   // currently being loaded.
   assetsByUrl: new Map(),
-}
+};
 
 export default (state = initialState, action) => {
   switch(action.type) {

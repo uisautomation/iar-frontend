@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
 import {AutoComplete} from 'material-ui';
-import _ from "underscore";
-import config from '../config';
-
-const ENDPOINT_SEARCH = config.ENDPOINT_LOOKUP + 'search';
-
-const ENDPOINT_PEOPLE = config.ENDPOINT_LOOKUP + 'people/crsid/';
+import _ from "lodash";
+import {getPerson, searchPeople} from '../redux/actions';
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 
 /*
   A component implementing an auto-complete that search's for a user either by name or CRSID and returns a list of
@@ -17,13 +15,20 @@ class Lookup extends Component {
   constructor() {
     super();
 
-    this.fetchMatchingUsers = _.debounce(this.fetchMatchingUsers, 200);
-
     this.state = {
-      // the list of matching users returned from lookup
-      matchingUsers: [],
       // the selected user's full name
       displayName: ""
+    };
+
+    this.searchPeopleDebounced = _.debounce(this.searchPeopleDebounced, 200);
+  }
+
+  /*
+  FIXME
+   */
+  searchPeopleDebounced(searchText) {
+    if (searchText.length >= 2) {
+      this.props.searchPeople(searchText);
     }
   }
 
@@ -32,9 +37,10 @@ class Lookup extends Component {
    */
   componentWillReceiveProps(nextProps) {
       if (nextProps.value && this.props.value !== nextProps.value) {
-        this.props.fetch(ENDPOINT_PEOPLE + nextProps.value, {}, data => {
-          this.setState({displayName: data.visibleName})
-        });
+        this.props.getPerson(nextProps.value);
+      }
+      if (!this.state.displayName && nextProps.person) {
+        this.setState({displayName: nextProps.person.visibleName})
       }
   }
 
@@ -48,20 +54,7 @@ class Lookup extends Component {
       this.props.onChange({target: {name: this.props.name}}, null);
     }
     this.setState({displayName: searchText});
-    this.fetchMatchingUsers(searchText);
-  }
-
-  /*
-  Fetches a list of users matching the searchText from the lookup api.
-  This function is debounced to reduce the number of remote calls.
-   */
-  fetchMatchingUsers(searchText) {
-    // TODO (include CRSID in display name)
-    let self = this;
-    this.props.fetch(
-      ENDPOINT_SEARCH + "?limit=10&query=" + encodeURIComponent(searchText), {},
-      data => self.setState({matchingUsers: data.results})
-    );
+    this.searchPeopleDebounced(searchText)
   }
 
   render() {
@@ -71,13 +64,36 @@ class Lookup extends Component {
         hintText={this.props.hintText}
         searchText={this.state.displayName}
         filter={AutoComplete.noFilter}
-        dataSource={this.state.matchingUsers}
+        dataSource={/* FIXME */ this.props.matchingPeopleByQuery.get(this.state.displayName) ? this.props.matchingPeopleByQuery.get(this.state.displayName) : []}
         dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
         onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
         onNewRequest={(chosenRequest) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
       />
     )
-  };
+  }
 }
 
-export default Lookup
+Lookup.propTypes = {
+  getPerson: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  hintText: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  matchingPeopleByQuery: PropTypes.object.isRequired,
+  peopleByCrsid: PropTypes.object.isRequired,
+  person: PropTypes.object,
+};
+
+const mapDispatchToProps = { getPerson, searchPeople };
+
+const mapStateToProps = ({ lookupApi: {peopleByCrsid, matchingPeopleByQuery} } , props) => {
+
+  let person = null;
+  if (props.value) {
+    person = peopleByCrsid.get(props.value);
+  }
+
+  return { person, matchingPeopleByQuery };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Lookup);

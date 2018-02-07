@@ -100,41 +100,14 @@ export const NEW_ASSET = {
   digital_storage_security: []
 };
 
-const ACCESS_TOKEN = 'THIS IS A PLACEHOLDER';
-
 /*
   Renders the form for the creation/editing of an Asset.
   */
 class AssetForm extends Component {
 
-  /*
-  Wrapper for fetch() that handles errors / unmarshalls JSON
-   */
-  fetch(url, options, cb) {
-    if (options.headers) {
-      options.headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
-    } else {
-      options['headers'] = new Headers({
-        'Authorization': 'Bearer ' + ACCESS_TOKEN
-      });
-    }
-    fetch(url, options).then(response => {
-      if (response.ok) {
-        return response.json()
-      } else {
-        this.props.snackbarOpen('Network Error: ' + response.statusText)
-      }
-    }).then(data => data && cb(data)).catch(
-      error => this.props.snackbarOpen('Network Error: ' + error)
-    );
-  }
-
   constructor() {
     super();
-
     this.handleChange = this.handleChange.bind(this);
-    this.fetch = this.fetch.bind(this);
-
     this.state = NEW_ASSET;
   }
 
@@ -142,11 +115,11 @@ class AssetForm extends Component {
   If the form is in edit mode - fetch the asset
    */
   componentDidMount() {
-    if (this.props.url) {
+    if (this.props.assetUrl) {
       if (this.props.asset) {
         this.setState(this.props.asset.asset);
       } else {
-        this.props.getAsset(this.props.url);
+        this.props.getAsset(this.props.assetUrl);
       }
     }
   }
@@ -179,8 +152,8 @@ class AssetForm extends Component {
   Either creates a new asset or updates an existing one depending on the mode of the form.
    */
   handleSave() {
-    if (this.props.url) {
-      this.props.updateAsset(this.props.url, JSON.stringify(this.state));
+    if (this.props.assetUrl) {
+      this.props.updateAsset(this.props.assetUrl, JSON.stringify(this.state));
     } else {
       this.props.createAsset(config.ENDPOINT_ASSETS, JSON.stringify(this.state));
     }
@@ -192,7 +165,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
+          title={this.props.match.assetUrl === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
         />
 
         <div>
@@ -235,7 +208,6 @@ class AssetForm extends Component {
                 name="owner"
                 value={this.state.owner}
                 onChange={this.handleChange}
-                fetch={this.fetch}
               />
             </div>
             <div className="App-grid-item"/>
@@ -388,23 +360,30 @@ class AssetForm extends Component {
 
 AssetForm.propTypes = {
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  snackbarOpen: PropTypes.func.isRequired,
+  getAsset: PropTypes.func.isRequired,
+  createAsset: PropTypes.func.isRequired,
+  updateAsset: PropTypes.func.isRequired,
+  assetUrl: PropTypes.string,
+  asset: PropTypes.object,
 };
 
 const mapDispatchToProps = { snackbarOpen, getAsset, createAsset, updateAsset };
 
 const mapStateToProps = ({ assets } , props) => {
 
-  let url = assets.url; // for resolving the url post-save
+  let assetUrl = assets.url; // for resolving the url post-save
   if (props.match.url !== '/asset/create') {
-    url = config.ENDPOINT_ASSETS + props.match.params.assetId + '/';
+    assetUrl = config.ENDPOINT_ASSETS + props.match.params.assetId + '/';
   }
 
-  let asset = assets.assetsByUrl.get(url);
+  let asset = assets.assetsByUrl.get(assetUrl);
   if (asset && asset.asset.isLoading) {
     asset = null;
   }
 
-  return { url, asset };
+  return { assetUrl, asset };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssetForm);
