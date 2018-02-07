@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import { connect } from 'react-redux';
-import { deleteAsset } from '../redux/actions/assetRegisterApi';
-import { handleConfirmDelete } from '../redux/actions/deleteConfirmation';
+import { deleteAsset, handleConfirmDelete } from '../redux/actions';
 
 /**
  * A modal dialogue box that asks for confirmation before deleting an asset.

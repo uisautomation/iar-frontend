@@ -26,10 +26,11 @@ export default ({ getState, dispatch }) => next => action => {
   };
 
   // pass action to next middleware
-  return next(updatedAction).then(({ error, payload }) => {
-    if(error && payload && (payload.status === 401)) {
+  return next(updatedAction).then((action_) => {
+    if(action_.error && action_.payload && (action_.payload.status === 401)) {
       // TODO: have a less abrupt UI for this!
       dispatch(logout());
     }
+    return action_;
   });
 };

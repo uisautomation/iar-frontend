@@ -1,10 +1,10 @@
 import { applyMiddleware } from 'redux';
 import { authMiddleware as auth } from 'redux-implicit-oauth2';
 import { apiMiddleware as api } from 'redux-api-middleware';
-import apiAuth from './middlewares/apiAuth';
+import { apiAuth, netError } from './middlewares';
 import logger from 'redux-logger';
 
-export const middlewares = [auth, apiAuth, api];
+export const middlewares = [auth, apiAuth, netError, api];
 
 // only add logger middleware in development
 if (process.env.NODE_ENV === 'development') {

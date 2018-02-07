@@ -1,2 +1,11 @@
 import { login, logout } from './auth';
-export { login, logout };
+import { getMoreAssets, deleteAsset, getAsset, updateAsset, createAsset } from './assetRegisterApi';
+import { handleConfirmDelete } from './deleteConfirmation';
+import { snackbarOpen } from './snackbar';
+
+export {
+  login, logout,
+  getMoreAssets, deleteAsset, getAsset, updateAsset, createAsset,
+  handleConfirmDelete,
+  snackbarOpen
+};

@@ -4,8 +4,8 @@ import config from '../config';
 import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../components'
 import Page from '../containers/Page';
 import { connect } from 'react-redux';
-import { snackbarOpen } from '../redux/actions/snackbar';
-import { getAsset, createAsset, updateAsset } from '../redux/actions/assetRegisterApi';
+import { getAsset, createAsset, updateAsset, snackbarOpen } from '../redux/actions';
+import PropTypes from "prop-types";
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -385,6 +385,10 @@ class AssetForm extends Component {
     )
   }
 }
+
+AssetForm.propTypes = {
+  match: PropTypes.object.isRequired,
+};
 
 const mapDispatchToProps = { snackbarOpen, getAsset, createAsset, updateAsset };
 
