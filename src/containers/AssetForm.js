@@ -133,7 +133,7 @@ class AssetForm extends Component {
         this.props.handleMessage('Network Error: ' + response.statusText)
       }
     }).then(data => data && cb(data)).catch(
-        error => this.props.handleMessage('Network Error: ' + error)
+      error => this.props.handleMessage('Network Error: ' + error)
     );
   }
 

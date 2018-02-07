@@ -38,6 +38,8 @@ const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 fetch_mock.get(ASSET_FIXTURE_URL, ASSET_FIXTURE);
 
+// Required because asset form redirects to the index when the form has been saved and the index
+// will fetch the asset list.
 fetch_mock.get('http://localhost:8000/assets/', {
   next: null, previous: null, results: [ ASSET_FIXTURE ],
 });

@@ -15,7 +15,9 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 const AssetListItem = ({confirmDelete, asset}) => (
   <TableRow hoverable={true}>
-    <TableRowColumn><Link to={'/asset/' + asset.id}>{asset.name}</Link></TableRowColumn>
+    <TableRowColumn><Link to={'/asset/' + asset.id}>
+      {asset.name ? asset.name : asset.id}
+    </Link></TableRowColumn>
     <TableRowColumn>{asset.is_complete ? 'Complete' : 'In Progress'}</TableRowColumn>
     <TableRowColumn>{asset.department}</TableRowColumn>
     <TableRowColumn>{asset.private ? <TickIcon/> : ""}</TableRowColumn>
