@@ -8,7 +8,7 @@ import LogoutLink from './LogoutLink'
   Renders the IAR application side bar.
  */
 const Sidebar = () => (
-  <Drawer open={true}>
+  <Drawer variant="permanent">
     <img src={logo} className="App-logo" alt="logo" />
     <h3>Assets</h3>
     <ul>

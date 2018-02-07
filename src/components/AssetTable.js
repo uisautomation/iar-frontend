@@ -2,14 +2,7 @@ import React from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import AssetListItem from './AssetListItem';
 
 /**
@@ -17,28 +10,18 @@ import AssetListItem from './AssetListItem';
  */
 export const AssetTable = ({ assetSummaries, isLoadingAssets = false }) => (
   <div className="Asset-table">
-    <Table
-      fixedHeader={true}
-      selectable={false}
-    >
-      <TableHeader
-        displaySelectAll={false}
-        adjustForCheckbox={false}
-      >
+    <Table>
+      <TableHead>
         <TableRow>
-          <TableHeaderColumn>Name</TableHeaderColumn>
-          <TableHeaderColumn>Status</TableHeaderColumn>
-          <TableHeaderColumn>Department</TableHeaderColumn>
-          <TableHeaderColumn>Private</TableHeaderColumn>
-          <TableHeaderColumn>Last edited</TableHeaderColumn>
-          <TableHeaderColumn>&nbsp;</TableHeaderColumn>
+          <TableCell>Name</TableCell>
+          <TableCell>Status</TableCell>
+          <TableCell>Department</TableCell>
+          <TableCell>Private</TableCell>
+          <TableCell>Last edited</TableCell>
+          <TableCell>&nbsp;</TableCell>
         </TableRow>
-      </TableHeader>
-      <TableBody
-        showRowHover={true}
-        displayRowCheckbox={false}
-        className="Asset-table-body"
-      >
+      </TableHead>
+      <TableBody className="Asset-table-body">
         {
           // Display a "no assets" row if there is no loading happening and there are no assets.
           ((assetSummaries.length === 0) && !isLoadingAssets) ? <ZeroAssetsRow /> : null
@@ -59,9 +42,9 @@ AssetTable.propTypes = {
  */
 export const ZeroAssetsRow = () => (
   <TableRow>
-    <TableRowColumn colSpan={6} style={{textAlign: 'center'}}>
+    <TableCell colSpan={6} style={{textAlign: 'center'}}>
       There are no assets to display
-    </TableRowColumn>
+    </TableCell>
   </TableRow>
 );
 

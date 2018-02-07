@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { RaisedButton } from 'material-ui';
+import { Button } from 'material-ui';
 import { login, logout } from '../redux/actions';
 
 /**
@@ -10,9 +10,9 @@ import { login, logout } from '../redux/actions';
  */
 const LoginButton = ({ isLoggedIn, login, logout }) => {
   if (isLoggedIn) {
-    return <RaisedButton type='RaisedButton' onClick={logout}>Sign Out</RaisedButton>
+    return <Button variant="raised" type='Button' onClick={logout}>Sign Out</Button>
   } else {
-    return <RaisedButton type='RaisedButton' onClick={login}>Sign In</RaisedButton>
+    return <Button variant="raised" type='Button' onClick={login}>Sign In</Button>
   }
 };
 
