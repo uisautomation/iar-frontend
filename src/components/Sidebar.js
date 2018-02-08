@@ -15,12 +15,8 @@ const Sidebar = () => (
       <li><Link to="/assets/dept">My department</Link></li>
       <li><Link to="/assets/all">All</Link></li>
       <hr/>
-      <li><Link to="/static/what-is-asset">What is an information asset?</Link></li>
-      <li><Link to="/static/what-i-do">What do I need to do?</Link></li>
+      <li><Link to="/help">Help</Link></li>
       <hr/>
-      <li><Link to="/static/feedback">Feedback</Link></li>
-      <li><Link to="/static/contact">Contact</Link></li>
-      <li><Link to="/static/tcs">Terms & Conditions</Link></li>
       <li><LogoutLink>Sign out</LogoutLink></li>
     </ul>
   </Drawer>

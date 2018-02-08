@@ -1,15 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Page from '../containers/Page';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+import { withStyles } from 'material-ui/styles';
 
-const TITLES = {
-  '/static/what-is-asset': 'What is an information asset?',
-  '/static/what-i-do': 'What do I need to do?',
-  '/static/feedback': 'Feedback',
-  '/static/contact': 'Contact',
-  '/static/tcs': 'Terms & Conditions',
+// Import static page contents
+import help from '../static/help';
+
+// Initialise object mapping page names to their content.
+const pages = { help };
+
+const styles = {
+  paper: { padding: '16px 24px' },
 };
 
 /*
@@ -25,18 +31,32 @@ const StaticHeader = ({ title }) => (
   </AppBar>
 );
 
-/*
-  Renders the IAR app's static pages.
+/**
+ * Renders the IAR app's static pages.
+ *
+ * The page prop must be a string with corresponding content object in pages.
  */
-const Static = ({ match }) => (
-  <Page>
-    <div>
-      <StaticHeader title={ TITLES[match.url] } />
+const Static = ({ page, classes }) => {
+  const { title, content } = pages[page];
+  return (
+    <Page>
       <div>
-        <h1>Copy for "{ TITLES[match.url] }"</h1>
+        <StaticHeader title={title} />
+        <Paper className={classes.paper}>
+          <Grid container justify='center'>
+            <Grid item xs={12} sm={10} md={8} lg={6} >
+              <Typography>{ content }</Typography>
+            </Grid>
+          </Grid>
+        </Paper>
       </div>
-    </div>
-  </Page>
-);
+    </Page>
+  );
+}
 
-export default Static;
+Static.propTypes = {
+  page: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(Static);
