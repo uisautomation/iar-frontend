@@ -15,34 +15,10 @@ const appBarTitle = testInstance => (
  * Simple unit test which assert that routes generate pages with the correct titles.
  */
 
-test('can render /static/what-is-asset', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/static/what-is-asset'});
+test('can render /help', () => {
+  const testInstance = render(<AppRoutes/>, {url: '/help'});
 
-  expect(appBarTitle(testInstance)).toBe('What is an information asset?')
-});
-
-test('can render /static/what-i-do', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/static/what-i-do'});
-
-  expect(appBarTitle(testInstance)).toBe('What do I need to do?')
-});
-
-test('can render /static/feedback', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/static/feedback'});
-
-  expect(appBarTitle(testInstance)).toBe('Feedback')
-});
-
-test('can render /static/contact', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/static/contact'});
-
-  expect(appBarTitle(testInstance)).toBe('Contact')
-});
-
-test('can render /static/tcs', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/static/tcs'});
-
-  expect(appBarTitle(testInstance)).toBe('Terms & Conditions')
+  expect(appBarTitle(testInstance)).toBe('Help')
 });
 
 test('can render /assets/dept', () => {
