@@ -12,7 +12,7 @@ const styles = {
 };
 
 /*
-  Renders the app bar of the list view of Assets.
+  Renders the app bar of the form for the creation/editing of an Asset.
   */
 const AssetFormHeader = ({ title, onClick, classes }) => (
   <AppBar position="static">
