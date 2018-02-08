@@ -1,6 +1,8 @@
 import React from 'react';
-import { AppBar } from 'material-ui';
 import Page from '../containers/Page';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 
 const TITLES = {
   '/static/what-is-asset': 'What is an information asset?',
@@ -14,9 +16,13 @@ const TITLES = {
   Renders the app bar of the IAR app's static pages.
  */
 const StaticHeader = ({ title }) => (
-  <div className="App-header">
-    <AppBar title={ title } />
-  </div>
+  <AppBar position="static">
+    <Toolbar>
+      <Typography variant="title" color="inherit">
+        { title }
+      </Typography>
+    </Toolbar>
+  </AppBar>
 );
 
 /*

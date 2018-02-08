@@ -1,7 +1,7 @@
 import React from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
 import VisibilitySensor from 'react-visibility-sensor';
-import CircularProgress from 'material-ui/CircularProgress';
+import { CircularProgress } from 'material-ui/Progress';
 import { getMoreAssets } from '../redux/actions/assetRegisterApi';
 import { connect } from 'react-redux';
 

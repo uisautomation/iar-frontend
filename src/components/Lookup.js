@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {AutoComplete} from 'material-ui';
+import {TextField} from 'material-ui';
 import _ from "underscore";
 import config from '../config';
 
@@ -66,15 +66,9 @@ class Lookup extends Component {
 
   render() {
     return (
-      <AutoComplete
+      <TextField
         disabled={this.props.disabled}
-        hintText={this.props.hintText}
-        searchText={this.state.displayName}
-        filter={AutoComplete.noFilter}
-        dataSource={this.state.matchingUsers}
-        dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
-        onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
-        onNewRequest={(chosenRequest) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
+        helperText={this.props.helperText}
       />
     )
   };
