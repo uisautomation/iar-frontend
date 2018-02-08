@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { snackbarOpen } from '../redux/actions/snackbar';
 
 const ACCESS_TOKEN =
-  'PBi2W7PuYQ6RU4LLW-kVYfACXNAYPt6KXVNcQ0ivkUc.oN2ZYkfzYtE8-bF3dBE_3Nx_PPMvQMQtJeq_Vp_yBDg';
+  'RUT5hW6OUCmwEER_1dgDKH3B0jTiovGxNqdfPkCJZxI.27T3nFaYFletjAqIs4fE_Wr_MU5Ic5mfXleZ-4nKg-g';
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -159,20 +159,20 @@ class AssetForm extends Component {
     });
   }
 
+  handleChange({ target: { name, value } }) {
+    this.setState({ [name]: value === '' ? null : value });
+  }
+
+  handleBooleanChange({ target: { name, value } }) {
+    this.handleChange({ target: { name, value: value === "true" } })
+  }
+
+  handleCheckboxChange({ target: { name } }, checked) {
+    this.handleChange({ target: { name, value: checked } })
+  }
+
   render() {
     const nullToBlank = v => ( v === null ? '' : v );
-
-    const onChange = ({ target: { name, value } }) => {
-      this.setState({ [name]: value === '' ? null : value });
-    }
-
-    const onBooleanChange = ({ target: { name, value } }) => {
-      onChange({ target: { name, value: value === "true" } })
-    };
-
-    const onCheckboxChange = ({ target: { name } }, checked) => (
-      onChange({ target: { name, value: checked } })
-    );
 
     return (
       <Page>
@@ -192,7 +192,7 @@ class AssetForm extends Component {
               }
               name='name'
               value={nullToBlank(this.state.name)}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               margin="normal"
             />
           </Grid>
@@ -206,7 +206,7 @@ class AssetForm extends Component {
               }
               name='purpose'
               value={nullToBlank(this.state.purpose)}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               margin="normal"
             />
           </Grid>
@@ -218,7 +218,7 @@ class AssetForm extends Component {
               label="Asset department"
               name='department'
               value={nullToBlank(this.state.department)}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               margin="normal"
             />
           </Grid>
@@ -230,7 +230,7 @@ class AssetForm extends Component {
               label="Make this record private to your deparment"
               margin="normal"
               name="private"
-              onChange={onCheckboxChange}
+              onChange={(event, checked) => this.handleCheckboxChange(event, checked)}
             />
           </Grid>
         </Grid>
@@ -239,7 +239,7 @@ class AssetForm extends Component {
             Is this asset retained for research purposes?
           </Grid>
           <Grid item xs={6}>
-            <BooleanChoice name="research" value={this.state.research} onChange={onBooleanChange} />
+            <BooleanChoice name="research" value={this.state.research} onChange={event => this.handleBooleanChange(event)} />
           </Grid>
           <Grid item xs={6}>
             Who is the Principle Investigator of this research activity?
@@ -251,7 +251,7 @@ class AssetForm extends Component {
               helperText="You can search by name or CRSid"
               name="owner"
               value={this.state.owner}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               fetch={this.fetch}
             />
           </Grid>
@@ -263,7 +263,7 @@ class AssetForm extends Component {
           </Grid>
           <Grid item xs={6}>
             <BooleanChoice name="personal_data" value={this.state.personal_data}
-              onChange={onBooleanChange} />
+              onChange={event => this.handleBooleanChange(event)} />
           </Grid>
         </Grid>
 
@@ -274,7 +274,7 @@ class AssetForm extends Component {
               name='data_subject'
               labels={DATA_SUBJECT_LABELS}
               values={this.state.data_subject}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               disabled={!this.state.personal_data}
             />
           </Grid>
@@ -287,7 +287,7 @@ class AssetForm extends Component {
               name='data_category'
               labels={DATA_CATEGORY_LABELS}
               values={this.state.data_category}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               columns="2"
               disabled={!this.state.personal_data}
             />
@@ -303,7 +303,7 @@ class AssetForm extends Component {
               helperText="This could be a company or individual."
               name='recipients_category'
               value={this.state.recipients_category === null ? "" : this.state.recipients_category}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               disabled={!this.state.personal_data}
             />
           </Grid>
@@ -321,7 +321,7 @@ class AssetForm extends Component {
               }
               name='recipients_outside_eea'
               value={this.state.recipients_outside_eea === null ? "" : this.state.recipients_outside_eea}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               disabled={!this.state.personal_data}
             />
           </Grid>
@@ -333,7 +333,7 @@ class AssetForm extends Component {
             <RadioGroup
               name="retention"
               value={this.state.retention}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
             >
               <FormControlLabel control={<Radio />} disabled={!this.state.personal_data} style={retentionStyle}
                            value="<=1" label="Less than 1 year" />
@@ -356,7 +356,7 @@ class AssetForm extends Component {
               name="risk_type"
               labels={RISK_TYPE_LABELS}
               values={this.state.risk_type}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
             />
           </Grid>
         </Grid>
@@ -373,7 +373,7 @@ class AssetForm extends Component {
               }
               name="storage_location"
               value={this.state.storage_location === null ? "" : this.state.storage_location}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
             />
           </Grid>
         </Grid>
@@ -403,7 +403,7 @@ class AssetForm extends Component {
               labels={DIGITAL_STORAGE_SECURITY_LABELS}
               name="digital_storage_security"
               values={this.state.digital_storage_security}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               disabled={this.state.storage_format.indexOf("digital") === -1}
             />
           </Grid>
@@ -412,7 +412,7 @@ class AssetForm extends Component {
               labels={PAPER_STORAGE_SECURITY_LABELS}
               name="paper_storage_security"
               values={this.state.paper_storage_security}
-              onChange={onChange}
+              onChange={event => this.handleChange(event)}
               disabled={this.state.storage_format.indexOf("paper") === -1}
             />
           </Grid>
