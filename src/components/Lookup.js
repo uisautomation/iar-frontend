@@ -80,7 +80,6 @@ Lookup.propTypes = {
   hintText: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   matchingPeopleByQuery: PropTypes.object.isRequired,
-  peopleByCrsid: PropTypes.object.isRequired,
   person: PropTypes.object,
 };
 

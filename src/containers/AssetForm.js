@@ -165,7 +165,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.assetUrl === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
+          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
         />
 
         <div>

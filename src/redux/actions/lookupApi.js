@@ -1,6 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
 import config from "../../config";
-import {ASSETS_LIST_REQUEST} from "./assetRegisterApi";
 
 export const PEOPLE_GET_REQUEST = Symbol('PEOPLE_GET_REQUEST');
 export const PEOPLE_GET_SUCCESS = Symbol('PEOPLE_GET_SUCCESS');

@@ -2,7 +2,6 @@
 import '../test/mocks';
 
 import React from 'react';
-import { Route } from 'react-router-dom'
 import fetch_mock from 'fetch-mock';
 import { AppBar, RadioButtonGroup, TextField } from 'material-ui';
 import { render, condition } from '../testutils';
@@ -51,7 +50,7 @@ fetch_mock.get('http://localhost:8080/people/crsid/mb2174', {
 });
 
 /*
-  Tests that a form is rendered for /asset/create
+  Tests that a form is rendered for /asset/create.
  */
 test('can route /asset/create', () => {
 
@@ -68,7 +67,7 @@ test('can route /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', async () => {
   const testInstance = render(<AppRoutes/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
 
   // waits for the title to be populated. TODO better way to do this?
-  await condition(() => testInstance.findByType(AppBar).props.title);
+  await condition(() => testInstance.findByType(AppBar).props.asset);
 
   expect(testInstance.findByType(AppBar).props.title).toBe('Editing: Super Secret Medical Data')
 });
