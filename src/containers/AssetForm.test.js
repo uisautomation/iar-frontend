@@ -2,13 +2,15 @@
 import '../test/mocks';
 
 import React from 'react';
-import fetch_mock from 'fetch-mock';
-import { AppBar, RadioButtonGroup, TextField } from 'material-ui';
-import { render, condition } from '../testutils';
+import { RadioButtonGroup, TextField } from 'material-ui';
+import { render } from '../testutils';
 import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
-import AppRoutes from './AppRoutes';
-import { createMockStore } from '../testutils';
-import { SNACKBAR_OPEN } from '../redux/actions/snackbar';
+import { createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
+import {ASSET_GET_REQUEST, ASSET_PUT_REQUEST, ASSET_POST_REQUEST} from '../redux/actions/assetRegisterApi';
+import AssetForm from "./AssetForm";
+import { Route } from 'react-router-dom';
+import {ENDPOINT_ASSETS} from "../config";
+
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -31,53 +33,18 @@ const NEW_ASSET_FIXTURE = {
   digital_storage_security: [ 'encryption', 'acl' ]
 };
 
-const ASSET_FIXTURE_URL = 'http://localhost:8000/assets/e20f4cd4-9f97-4829-8178-476c7a67eb97/';
+const ASSET_FIXTURE_URL = ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/';
 
 const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
-
-fetch_mock.get(ASSET_FIXTURE_URL, ASSET_FIXTURE);
-
-// Required because asset form redirects to the index when the form has been saved and the index
-// will fetch the asset list.
-fetch_mock.get('http://localhost:8000/assets/', {
-  next: null, previous: null, results: [ ASSET_FIXTURE ],
-});
-
-fetch_mock.get('http://localhost:8080/people/crsid/mb2174', {
-  url: "http://localhost:8080/people/crsid/mb2174",
-  identifier: {"scheme": "crsid", "value": "mb2174"},
-  visibleName: "M. Bamford",
-});
-
-/*
-  Tests that a form is rendered for /asset/create.
- */
-test('can route /asset/create', () => {
-
-  const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
-
-  expect(testInstance.findByType(AppBar).props.title).toBe('Create new asset')
-});
-
-/*
-  Tests that a form populated with an asset is rendered for /asset/:assetId
- */
-test('can route /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', async () => {
-
-  const testInstance = render(<AppRoutes/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
-
-  // waits for the title to be populated. TODO better way to do this?
-  await condition(() => testInstance.findByType(AppBar).props.asset);
-
-  expect(testInstance.findByType(AppBar).props.title).toBe('Editing: Super Secret Medical Data')
-});
 
 /*
   Tests that all input's are present on a blank form
  */
 test('can render a blank form', () => {
 
-  const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
+  const testInstance = render(<Route path="/asset/create" component={AssetForm} />, {
+    url: '/asset/create'
+  });
 
   expect(testInstance.findByProps({name: 'name'}).type).toBe(TextField);
   expect(testInstance.findByProps({name: 'department'}).type).toBe(TextField);
@@ -102,12 +69,28 @@ test('can render a blank form', () => {
 /*
   Tests that all input's are populated with the correct data when in editing mode.
  */
-test('can populate a form with data', async () => {
+test('can populate a form with data', () => {
 
-  const testInstance = render(<AppRoutes/>, {url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
+  const assetForm = <Route path="/asset/:assetId" component={AssetForm} />;
 
-  // waits for the title to be populated.
-  await condition(() => testInstance.findByType(AppBar).props.title);
+  // test the ASSET_GET_REQUEST is dispatched
+
+  const store = createMockStore();
+
+  render(assetForm, {
+    url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', store
+  });
+
+  expect(store.getActions()).toEqual([{meta: {url: ASSET_FIXTURE_URL}, type: ASSET_GET_REQUEST}]);
+
+  // test the ASSET_GET_REQUEST is dispatched
+
+  const assetsByUrl = new Map([[ASSET_FIXTURE_URL, {asset: NEW_ASSET_FIXTURE}]]);
+
+  const testInstance = render(assetForm, {
+    url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97',
+    store: createMockStore({...DEFAULT_INITIAL_STATE, assets: {assetsByUrl}})
+  });
 
   expect(testInstance.findByProps({name: 'name'}).props.value).toBe('Super Secret Medical Data');
   expect(testInstance.findByProps({name: 'department'}).props.value).toBe("Medicine");
@@ -130,36 +113,14 @@ test('can populate a form with data', async () => {
 });
 
 /*
-  Tests that fetch errors are reported - in this case a 404.
- */
-test('check fetch errors are reports', async () => {
-
-  fetch_mock.get('http://localhost:8000/assets/NO-ASSETS-HERE/', 404);
-
-  const store = createMockStore();
-  render(<AppRoutes />, {store, url: '/asset/NO-ASSETS-HERE'});
-
-  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
-
-  const [ { payload: { message } } ] =
-    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
-
-  expect(message).toEqual('Network Error: Not Found');
-});
-
-/*
   Tests that a new asset is saved with the correct data.
  */
 test('can save a new asset', async () => {
 
-  fetch_mock.post(function(url, opts) {
-    expect(url).toEqual('http://localhost:8000/assets/');
-    expect(JSON.parse(opts.body)).toEqual(NEW_ASSET_FIXTURE);
-    return true;
-  }, ASSET_FIXTURE);
+  const assetForm = <Route path="/asset/create" component={AssetForm} />;
 
   const store = createMockStore();
-  const testInstance = render(<AppRoutes />, {store, url: '/asset/create'});
+  const testInstance = render(assetForm, {store, url: '/asset/create'});
 
   setDataOnInput(testInstance, 'name', 'Super Secret Medical Data');
   setDataOnInput(testInstance, 'department', "Medicine");
@@ -180,14 +141,13 @@ test('can save a new asset', async () => {
   setDataOnInput(testInstance, 'digital_storage_security', ["encryption", "acl"]);
   setDataOnInput(testInstance, 'paper_storage_security', ["safe"]);
 
-  // "click" the save button and wair for the response
+  // "click" the save button
   testInstance.findByProps({label: 'Save'}).props.onClick();
-  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
 
-  const [ { payload: { message } } ] =
-    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
+  const action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
 
-  expect(message).toEqual('"Super Secret Medical Data" saved.');
+  expect(action.meta.url).toEqual(ENDPOINT_ASSETS);
+  expect(JSON.parse(action.meta.body)).toEqual(NEW_ASSET_FIXTURE);
 });
 
 /*
@@ -195,29 +155,25 @@ test('can save a new asset', async () => {
  */
 test('can update an asset', async () => {
 
-  fetch_mock.put(function(url, opts) {
-    expect(url).toEqual('http://localhost:8000/assets/e20f4cd4-9f97-4829-8178-476c7a67eb97/');
-    // check for new value
-    expect(JSON.parse(opts.body)).toEqual({...ASSET_FIXTURE, purpose: 'Secret Medical Research'});
-    return true;
-  }, ASSET_FIXTURE);
+  const assetsByUrl = new Map([[ASSET_FIXTURE_URL, {asset: ASSET_FIXTURE}]]);
 
-  const store = createMockStore();
-  const testInstance = render(<AppRoutes />, {store, url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97'});
+  const store = createMockStore({...DEFAULT_INITIAL_STATE, assets: {assetsByUrl}});
 
-  // waits for the title to be populated.
-  await condition(() => testInstance.findByType(AppBar).props.title);
+  const assetForm = <Route path="/asset/:assetId" component={AssetForm} />;
+
+  const testInstance = render(assetForm, {
+    url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', store
+  });
 
   setDataOnInput(testInstance, 'purpose', "Secret Medical Research");
 
-  // "click" the save button and wair for the response
+  // "click" the save button
   testInstance.findByProps({label: 'Save'}).props.onClick();
-  await condition(() => store.getActions().filter(action => action.type === SNACKBAR_OPEN));
 
-  const [ { payload: { message } } ] =
-    store.getActions().filter(action => action.type === SNACKBAR_OPEN);
+  const action = store.getActions().find(action => action.type === ASSET_PUT_REQUEST);
 
-  expect(message).toEqual('"Super Secret Medical Data" saved.');
+  expect(action.meta.url).toEqual(ASSET_FIXTURE_URL);
+  expect(JSON.parse(action.meta.body)).toEqual({...ASSET_FIXTURE, purpose: 'Secret Medical Research'});
 });
 
 /*

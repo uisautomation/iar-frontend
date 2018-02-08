@@ -131,6 +131,7 @@ class AssetForm extends Component {
     let asset = nextProps.asset;
     if (asset) {
       if (this.state.savedAt && asset.fetchedAt > this.state.savedAt) {
+        // FIXME do this in middleware
         this.props.snackbarOpen('"' + asset.asset.name + '" saved.');
         this.props.history.push("/");
       } else {

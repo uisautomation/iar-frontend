@@ -76,7 +76,8 @@ export const updateAsset = (url, body) => ({
     headers: {'Content-Type': 'application/json'},
     body: body,
     types: [
-      { type: ASSET_PUT_REQUEST, meta: { url } },
+      { type: ASSET_PUT_REQUEST, meta: { url, body } },
+        // body added for testing TODO: find a better way of checking body
       { type: ASSET_PUT_SUCCESS, meta: { url } },
       { type: ASSET_PUT_FAILURE, meta: { url } },
     ]
@@ -93,7 +94,8 @@ export const createAsset = (url, body) => ({
     headers: {'Content-Type': 'application/json'},
     body: body,
     types: [
-      { type: ASSET_POST_REQUEST, meta: { url } },
+      { type: ASSET_POST_REQUEST, meta: { url, body } },
+        // body added for testing TODO: find a better way of checking body
       { type: ASSET_POST_SUCCESS, meta: { url } },
       { type: ASSET_POST_FAILURE, meta: { url } },
     ]
