@@ -1,0 +1,74 @@
+# docker-compose file for local development and testing with container image.
+version: '3.2'
+services:
+  # IAR backend server
+  iar-backend:
+    build:
+      context: ./compose/
+      dockerfile: iar-backend.Dockerfile
+    expose:
+      - "8080"
+    ports:
+      - "8000:8080"
+    depends_on:
+      - "iar-db"
+      - "hydra"
+    env_file:
+      - compose/iar-backend.env
+  iar-db:
+    image: postgres
+    env_file:
+      - compose/iar-backend.env
+
+  # Lookup proxy service
+  lookupproxy:
+    build:
+      context: ./compose/
+      dockerfile: lookupproxy.Dockerfile
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "lookupproxy-db"
+      - "hydra"
+    env_file:
+      - compose/lookupproxy.env
+  lookupproxy-db:
+    image: postgres
+    env_file:
+      - compose/lookupproxy.env
+
+  # Hydra OAuth2 infrastructure
+  consent:
+    build:
+      context: compose/consent
+    entrypoint: ["flask"]
+    command: ["run", "-h", "0.0.0.0", "-p", "8090"]
+    volumes:
+      - "./compose/consent/:/usr/src/app/:ro"
+    working_dir: "/usr/src/app"
+    environment:
+      - FLASK_DEBUG=1
+      - FLASK_APP=app.py
+    env_file:
+      - compose/hydra.env
+    ports:
+      - "8090:8090"
+  hydra:
+    image: oryd/hydra:v0.11.6-alpine
+    entrypoint: ["/tmp/start-hydra.sh"]
+    ports:
+      - "4444:4444"
+      - "4445:4445"
+    env_file:
+      - compose/hydra.env
+    depends_on:
+      - hydra-db
+      - consent
+    volumes:
+      - "./compose/start-hydra.sh:/tmp/start-hydra.sh/:ro"
+  hydra-db:
+    image: postgres
+    env_file:
+      - compose/hydra.env
