@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logout } from '../redux/actions';
+import { logout } from '../redux/actions/auth';
 
 /**
  * A link whose action will always log the current user out.

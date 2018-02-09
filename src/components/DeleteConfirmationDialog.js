@@ -8,7 +8,8 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import { Button } from 'material-ui';
 import { connect } from 'react-redux';
-import { deleteAsset, handleConfirmDelete } from '../redux/actions';
+import { deleteAsset } from '../redux/actions/assetRegisterApi';
+import { handleConfirmDelete } from '../redux/actions/deleteConfirmation';
 
 /**
  * A modal dialogue box that asks for confirmation before deleting an asset.

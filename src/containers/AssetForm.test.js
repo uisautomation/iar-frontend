@@ -3,8 +3,8 @@ import '../test/mocks';
 
 // Mock configuration for endpoints
 jest.mock('../config', () => ({
-  ENDPOINT_ASSETS: 'http://localhost:8000/assets/',
-  ENDPOINT_LOOKUP: 'http://localhost:8080/',
+  ENDPOINT_ASSETS: 'http://iar-backend.invalid/',
+  ENDPOINT_LOOKUP: 'http://lookup-backend.invalid/',
 }));
 
 import React from 'react';

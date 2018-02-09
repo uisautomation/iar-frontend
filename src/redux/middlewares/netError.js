@@ -4,7 +4,7 @@
  * The result of the RSSA action is observed. If an error is flagged the error message is
  * dispatched to the user.
  */
-import { snackbarOpen } from '../actions';
+import { snackbarOpen } from '../actions/snackbar';
 import {isRSAA} from "redux-api-middleware";
 
 export default ({ getState, dispatch }) => next => action => {

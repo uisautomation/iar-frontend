@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'material-ui';
-import { login, logout } from '../redux/actions';
+import { login, logout } from '../redux/actions/auth';
 
 /**
  * A material button which indicates the current sign in state and allows the user to log in or

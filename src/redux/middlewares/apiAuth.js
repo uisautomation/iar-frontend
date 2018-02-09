@@ -9,7 +9,7 @@
  * in silently.
  */
 import { isRSAA, RSAA } from 'redux-api-middleware';
-import { logout } from '../actions';
+import { logout } from '../actions/auth';
 
 export default ({ getState, dispatch }) => next => action => {
 

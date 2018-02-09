@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {TextField} from 'material-ui';
 import _ from "lodash";
-import {getPerson, searchPeople} from '../redux/actions';
+import {getPerson, searchPeople} from '../redux/actions/lookupApi';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
