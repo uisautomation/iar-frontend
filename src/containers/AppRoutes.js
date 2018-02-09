@@ -14,8 +14,9 @@ import NotFoundPage from './NotFoundPage';
 const AppRoutes = () => (
   <Switch>
     <LoginRequiredRoute path="/assets/:filter" exact component={AssetList}/>
-    <LoginRequiredRoute path="/asset/create" exact component={AssetForm} />
-    <LoginRequiredRoute path="/asset/:assetId" exact component={AssetForm} />
+    <LoginRequiredRoute path="/asset/:assetId" exact
+                        component={routeProps => <AssetForm navigateOnSave='/' {...routeProps} />}
+    />
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />

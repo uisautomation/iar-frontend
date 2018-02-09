@@ -10,7 +10,8 @@ import Switch from 'material-ui/Switch';
 import { FormControlLabel } from 'material-ui/Form';
 
 import { connect } from 'react-redux';
-import { getAsset, createAsset, updateAsset, snackbarOpen } from '../redux/actions';
+import { getAsset, postAsset, putAsset } from '../redux/actions/assetRegisterApi';
+import { snackbarOpen } from '../redux/actions/snackbar';
 import PropTypes from "prop-types";
 
 const DATA_SUBJECT_LABELS = [
@@ -119,7 +120,7 @@ class AssetForm extends Component {
   Receives updated props - specifically an Asset from redux state.
    */
   componentWillReceiveProps(nextProps) {
-    nextProps.asset && this.setState(nextProps.asset.asset);
+    if (nextProps.asset) { this.setState(nextProps.asset.asset); }
   }
 
   /*
@@ -131,15 +132,16 @@ class AssetForm extends Component {
     */
     const handleHandleSave = ({ error, payload }) => {
       if (!error) {
-        this.props.snackbarOpen('"' + payload.name + '" saved.');
-        this.props.history.push("/");
+        const { navigateOnSave, history,  snackbarOpen } = this.props;
+        snackbarOpen('"' + payload.name + '" saved.');
+        history.push(navigateOnSave);
       }
     };
     const body = JSON.stringify(this.state);
     if (this.props.assetUrl) {
-      this.props.updateAsset(this.props.assetUrl, body).then(handleHandleSave);
+      this.props.putAsset(this.props.assetUrl, body).then(handleHandleSave);
     } else {
-      this.props.createAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
+      this.props.postAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
     }
   }
 
@@ -162,7 +164,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
+          title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id ) : 'Create new asset'}
         />
 
         <Grid container>
@@ -410,25 +412,26 @@ AssetForm.propTypes = {
   history: PropTypes.object.isRequired,
   snackbarOpen: PropTypes.func.isRequired,
   getAsset: PropTypes.func.isRequired,
-  createAsset: PropTypes.func.isRequired,
-  updateAsset: PropTypes.func.isRequired,
+  postAsset: PropTypes.func.isRequired,
+  putAsset: PropTypes.func.isRequired,
   assetUrl: PropTypes.string,
   asset: PropTypes.object,
 };
 
-const mapDispatchToProps = { snackbarOpen, getAsset, createAsset, updateAsset };
+const mapDispatchToProps = { snackbarOpen, getAsset, postAsset, putAsset };
 
-const mapStateToProps = ({ assets } , props) => {
+const mapStateToProps = ({ assets } , { match : {params: {assetId} } } ) => {
 
-  let assetUrl = assets.url; // for resolving the url post-save
-  if (props.match.url !== '/asset/create') {
-    assetUrl = config.ENDPOINT_ASSETS + props.match.params.assetId + '/';
+  let assetUrl, asset = null;
+
+  if (assetId !== 'create') {
+    assetUrl = config.ENDPOINT_ASSETS + assetId + '/';
+    asset = assets.assetsByUrl.get(assetUrl);
+    if (asset && asset.asset.isLoading) {
+      asset = null;
+    }
   }
 
-  let asset = assets.assetsByUrl.get(assetUrl);
-  if (asset && asset.asset.isLoading) {
-    asset = null;
-  }
 
   return { assetUrl, asset };
 };

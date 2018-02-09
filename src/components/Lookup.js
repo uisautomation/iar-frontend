@@ -5,7 +5,7 @@ import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import _ from "lodash";
-import {getPerson, searchPeople} from '../redux/actions';
+import {getPerson, searchPeople} from '../redux/actions/lookupApi';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
