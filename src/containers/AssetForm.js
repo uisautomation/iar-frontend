@@ -10,7 +10,7 @@ import Switch from 'material-ui/Switch';
 import { FormControlLabel } from 'material-ui/Form';
 
 import { connect } from 'react-redux';
-import { getAsset, createAsset, updateAsset } from '../redux/actions/assetRegisterApi';
+import { getAsset, postAsset, putAsset } from '../redux/actions/assetRegisterApi';
 import { snackbarOpen } from '../redux/actions/snackbar';
 import PropTypes from "prop-types";
 
@@ -139,9 +139,9 @@ class AssetForm extends Component {
     };
     const body = JSON.stringify(this.state);
     if (this.props.assetUrl) {
-      this.props.updateAsset(this.props.assetUrl, body).then(handleHandleSave);
+      this.props.putAsset(this.props.assetUrl, body).then(handleHandleSave);
     } else {
-      this.props.createAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
+      this.props.postAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
     }
   }
 
@@ -412,13 +412,13 @@ AssetForm.propTypes = {
   history: PropTypes.object.isRequired,
   snackbarOpen: PropTypes.func.isRequired,
   getAsset: PropTypes.func.isRequired,
-  createAsset: PropTypes.func.isRequired,
-  updateAsset: PropTypes.func.isRequired,
+  postAsset: PropTypes.func.isRequired,
+  putAsset: PropTypes.func.isRequired,
   assetUrl: PropTypes.string,
   asset: PropTypes.object,
 };
 
-const mapDispatchToProps = { snackbarOpen, getAsset, createAsset, updateAsset };
+const mapDispatchToProps = { snackbarOpen, getAsset, postAsset, putAsset };
 
 const mapStateToProps = ({ assets } , props) => {
 

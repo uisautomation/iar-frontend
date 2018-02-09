@@ -69,7 +69,7 @@ export const getAsset = (url) => ({
 /**
  * Update an asset.
  */
-export const updateAsset = (url, body) => ({
+export const putAsset = (url, body) => ({
   [RSAA]: {
     endpoint: url,
     method: 'PUT',
@@ -87,7 +87,7 @@ export const updateAsset = (url, body) => ({
 /**
  * Create an asset.
  */
-export const createAsset = (url, body) => ({
+export const postAsset = (url, body) => ({
   [RSAA]: {
     endpoint: url,
     method: 'POST',
