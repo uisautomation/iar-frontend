@@ -85,7 +85,6 @@ export const NEW_ASSET = {
   recipients_category: null,
   recipients_outside_eea: null,
   retention: null,
-  retention_other: null,
   risk_type: [],
   storage_location: null,
   storage_format: [],

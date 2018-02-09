@@ -58,8 +58,7 @@ class Lookup extends Component {
   }
 
   render() {
-    return (
-      {/*
+      /*
       <AutoComplete
         disabled={this.props.disabled}
         hintText={this.props.hintText}
@@ -70,7 +69,8 @@ class Lookup extends Component {
         onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
         onNewRequest={(chosenRequest) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
       />
-      */}
+      */
+    return (
       <TextField
         disabled={this.props.disabled}
         helperText={this.props.helperText}
@@ -83,7 +83,7 @@ Lookup.propTypes = {
   getPerson: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
-  hintText: PropTypes.string.isRequired,
+  helperText: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   matchingPeopleByQuery: PropTypes.object.isRequired,
   person: PropTypes.object,

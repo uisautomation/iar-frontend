@@ -66,7 +66,7 @@ test('/ redirects to /assets/dept', () => {
 test('can render /asset/create', () => {
   const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Create new asset')
+  expect(appBarTitle(testInstance)).toBe('Create new asset')
 });
 
 test('can render /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', () => {
@@ -82,7 +82,7 @@ test('can render /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', () => {
     store: createMockStore({...DEFAULT_INITIAL_STATE, assets: {assetsByUrl}})
   });
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Editing: Super Secret Medical Data')
+  expect(appBarTitle(testInstance)).toBe('Editing: Super Secret Medical Data')
 });
 
 test('/this-does-not-exist renders a not found page', () => {
