@@ -119,28 +119,28 @@ class AssetForm extends Component {
   FIXME
    */
   componentWillReceiveProps(nextProps) {
-    let asset = nextProps.asset;
-    if (asset) {
-      if (this.state.savedAt && asset.fetchedAt > this.state.savedAt) {
-        // FIXME do this in middleware
-        this.props.snackbarOpen('"' + asset.asset.name + '" saved.');
-        this.props.history.push("/");
-      } else {
-        this.setState(asset.asset);
-      }
-    }
+    nextProps.asset && this.setState(nextProps.asset.asset);
   }
 
   /*
   Either creates a new asset or updates an existing one depending on the mode of the form.
    */
   handleSave() {
+    /*
+    FIXME
+    */
+    const handleHandleSave = ({ error, payload }) => {
+      if (!error) {
+        this.props.snackbarOpen('"' + payload.name + '" saved.');
+        this.props.history.push("/");
+      }
+    };
+    const body = JSON.stringify(this.state);
     if (this.props.assetUrl) {
-      this.props.updateAsset(this.props.assetUrl, JSON.stringify(this.state));
+      this.props.updateAsset(this.props.assetUrl, body).then(handleHandleSave);
     } else {
-      this.props.createAsset(config.ENDPOINT_ASSETS, JSON.stringify(this.state));
+      this.props.createAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
     }
-    this.setState({savedAt: new Date()})
   }
 
   handleChange({ target: { name, value } }) {
