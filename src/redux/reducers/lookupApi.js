@@ -7,10 +7,11 @@ import {
  * State managed by the lookup API reducers.
  */
 export const initialState = {
-  // FIXME
+  // a map of people records retrieved from the lookup api - keyed on crsid
   peopleByCrsid: new Map(),
 
-  // FIXME
+  // a map of arrays of people records returned by the lookup api search endpoint -
+  // keyed on the search text that produced the result.
   matchingPeopleByQuery: new Map()
 };
 
@@ -32,7 +33,7 @@ export default (state = initialState, action) => {
         ...state.matchingPeopleByQuery,
         [query, action.payload.results]
       ]);
-      // FIXME implement cache
+      // TODO some simple cache clearing should be done here.
       return { ...state, matchingPeopleByQuery };
 
     default:

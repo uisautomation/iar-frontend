@@ -183,7 +183,7 @@ class Lookup extends Component {
   };
 
   /*
-  FIXME
+  Dispatches the search people action after being debounced if the searchText has 2 or more chars.
    */
   searchPeopleDebounced(searchText) {
     if (searchText.length >= 2) {
@@ -195,12 +195,12 @@ class Lookup extends Component {
   Fetch the owner's name for the lookup API.
    */
   componentWillReceiveProps(nextProps) {
-      if (nextProps.value && this.props.value !== nextProps.value) {
-        this.props.getPerson(nextProps.value);
-      }
-      if (!this.state.displayName && nextProps.person) {
-        this.setState({displayName: nextProps.person.visibleName})
-      }
+      // if (nextProps.value && this.props.value !== nextProps.value) {
+      //   this.props.getPerson(nextProps.value);
+      // }
+      // if (!this.state.displayName && nextProps.person) {
+      //   this.setState({displayName: nextProps.person.visibleName})
+      // }
   }
 
   /*
@@ -258,6 +258,7 @@ class Lookup extends Component {
 
 Lookup.propTypes = {
   getPerson: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   helperText: PropTypes.string.isRequired,

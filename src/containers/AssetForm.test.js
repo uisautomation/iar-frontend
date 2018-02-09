@@ -8,15 +8,17 @@ jest.mock('../config', () => ({
 }));
 
 import React from 'react';
+import fetch_mock from 'fetch-mock';
 import { AppBar, RadioGroup, TextField, Typography, FormControlLabel } from 'material-ui';
-import { render } from '../testutils';
+import {condition, render} from '../testutils';
 import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
 import { createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
 import {ASSET_GET_REQUEST, ASSET_PUT_REQUEST, ASSET_POST_REQUEST} from '../redux/actions/assetRegisterApi';
 import AssetForm from "./AssetForm";
-import { Route } from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import {ENDPOINT_ASSETS} from "../config";
 import AssetFormHeader from '../components/AssetFormHeader';
+import {SNACKBAR_OPEN} from "../redux/actions/snackbar";
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -120,6 +122,8 @@ test('can populate a form with data', () => {
  */
 test('can save a new asset', async () => {
 
+  fetch_mock.post(() => true, ASSET_FIXTURE);
+
   const assetForm = <Route path="/asset/create" component={AssetForm} />;
 
   const store = createMockStore();
@@ -146,16 +150,22 @@ test('can save a new asset', async () => {
   // "click" the save button
   testInstance.findByType(AssetFormHeader).props.onClick();
 
-  const action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
+  const post_action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
+  expect(post_action.meta.url).toEqual(ENDPOINT_ASSETS);
+  expect(JSON.parse(post_action.meta.body)).toEqual(NEW_ASSET_FIXTURE);
 
-  expect(action.meta.url).toEqual(ENDPOINT_ASSETS);
-  expect(JSON.parse(action.meta.body)).toEqual(NEW_ASSET_FIXTURE);
+  await condition(() => store.getActions().find(action => action.type === SNACKBAR_OPEN));
+
+  const snackbar_action = store.getActions().find(action => action.type === SNACKBAR_OPEN);
+  expect(snackbar_action.payload.message).toEqual('"Super Secret Medical Data" saved.');
 });
 
 /*
   Tests that an edited existing asset is saved with the correct data.
  */
 test('can update an asset', async () => {
+
+  fetch_mock.put(() => true, ASSET_FIXTURE);
 
   const assetsByUrl = new Map([[ASSET_FIXTURE_URL, {asset: ASSET_FIXTURE}]]);
 
@@ -176,6 +186,11 @@ test('can update an asset', async () => {
 
   expect(action.meta.url).toEqual(ASSET_FIXTURE_URL);
   expect(JSON.parse(action.meta.body)).toEqual({...ASSET_FIXTURE, purpose: 'Secret Medical Research'});
+
+  await condition(() => store.getActions().find(action => action.type === SNACKBAR_OPEN));
+
+  const snackbar_action = store.getActions().find(action => action.type === SNACKBAR_OPEN);
+  expect(snackbar_action.payload.message).toEqual('"Super Secret Medical Data" saved.');
 });
 
 /*
