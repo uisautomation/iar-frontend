@@ -94,7 +94,6 @@ class Lookup extends Component {
     super();
 
     this.state = {
-      value: '',
       suggestions: [],
       // the selected user's full name
       displayName: ""
@@ -119,7 +118,7 @@ class Lookup extends Component {
       this.props.onChange({target: {name: this.props.name, value: null}});
     }
     this.setState({
-      value: newValue,
+      displayName: newValue,
     });
   };
 
@@ -149,9 +148,8 @@ class Lookup extends Component {
       this.props.getPerson(nextProps.value);
     }
     if (!this.state.displayName && nextProps.person) {
-      this.setState({displayName: nextProps.person.visibleName})
       this.setState({
-        value: nextProps.person.visibleName + " (" + nextProps.person.identifier.value + ")",
+        displayName: nextProps.person.visibleName + " (" + nextProps.person.identifier.value + ")",
       });
     }
   }
@@ -190,7 +188,7 @@ class Lookup extends Component {
           classes,
           label: this.props.label,
           helperText: this.props.helperText,
-          value: this.state.value,
+          value: this.state.displayName,
           onChange: this.handleChangeOther,
           disabled: this.props.disabled
         }}
