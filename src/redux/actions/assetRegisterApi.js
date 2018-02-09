@@ -13,6 +13,14 @@ export const ASSET_GET_REQUEST = Symbol('ASSET_GET_REQUEST');
 export const ASSET_GET_SUCCESS = Symbol('ASSET_GET_SUCCESS');
 export const ASSET_GET_FAILURE = Symbol('ASSET_GET_FAILURE');
 
+export const ASSET_PUT_REQUEST = Symbol('ASSET_PUT_REQUEST');
+export const ASSET_PUT_SUCCESS = Symbol('ASSET_PUT_SUCCESS');
+export const ASSET_PUT_FAILURE = Symbol('ASSET_PUT_FAILURE');
+
+export const ASSET_POST_REQUEST = Symbol('ASSET_POST_REQUEST');
+export const ASSET_POST_SUCCESS = Symbol('ASSET_POST_SUCCESS');
+export const ASSET_POST_FAILURE = Symbol('ASSET_POST_FAILURE');
+
 // Shared fields between FILTER_FIELDS and SORT_FIELDS.
 const COMMON_FIELDS = [
   'id', 'name', 'department', 'purpose', 'owner', 'private', 'research', 'personal_data',
@@ -153,6 +161,42 @@ export const getAsset = (url) => ({
       { type: ASSET_GET_REQUEST, meta: { url } },
       { type: ASSET_GET_SUCCESS, meta: { url } },
       { type: ASSET_GET_FAILURE, meta: { url } },
+    ]
+  }
+});
+
+/**
+ * Update an asset.
+ */
+export const putAsset = (url, body) => ({
+  [RSAA]: {
+    endpoint: url,
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: body,
+    types: [
+      { type: ASSET_PUT_REQUEST, meta: { url, body } },
+        // body added for testing TODO: find a better way of checking body
+      { type: ASSET_PUT_SUCCESS, meta: { url } },
+      { type: ASSET_PUT_FAILURE, meta: { url } },
+    ]
+  }
+});
+
+/**
+ * Create an asset.
+ */
+export const postAsset = (url, body) => ({
+  [RSAA]: {
+    endpoint: url,
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: body,
+    types: [
+      { type: ASSET_POST_REQUEST, meta: { url, body } },
+        // body added for testing TODO: find a better way of checking body
+      { type: ASSET_POST_SUCCESS, meta: { url } },
+      { type: ASSET_POST_FAILURE, meta: { url } },
     ]
   }
 });
