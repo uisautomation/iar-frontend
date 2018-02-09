@@ -1,8 +1,14 @@
 // mock any components which are troublesome in our test suite
 import '../test/mocks';
 
+// Mock configuration for endpoints
+jest.mock('../config', () => ({
+  ENDPOINT_ASSETS: 'http://localhost:8000/assets/',
+  ENDPOINT_LOOKUP: 'http://localhost:8080/',
+}));
+
 import React from 'react';
-import { RadioButtonGroup, TextField } from 'material-ui';
+import { AppBar, RadioGroup, TextField, Typography, FormControlLabel } from 'material-ui';
 import { render } from '../testutils';
 import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
 import { createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
@@ -10,7 +16,7 @@ import {ASSET_GET_REQUEST, ASSET_PUT_REQUEST, ASSET_POST_REQUEST} from '../redux
 import AssetForm from "./AssetForm";
 import { Route } from 'react-router-dom';
 import {ENDPOINT_ASSETS} from "../config";
-
+import AssetFormHeader from '../components/AssetFormHeader';
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -24,8 +30,7 @@ const NEW_ASSET_FIXTURE = {
   data_category: [ 'sexual', 'medical', 'genetic', 'biometric' ],
   recipients_category: 'Addenbrookes',
   recipients_outside_eea: 'Not shared',
-  retention: 'other',
-  retention_other: 'Yonks',
+  retention: '<=1',
   risk_type: [ 'compliance', 'reputational', 'operational' ],
   storage_location: 'Under the stairs',
   storage_format: [ 'digital', 'paper' ],
@@ -51,17 +56,16 @@ test('can render a blank form', () => {
   expect(testInstance.findByProps({name: 'purpose'}).type).toBe(TextField);
   expect(testInstance.findByProps({name: "research"}).type).toBe(BooleanChoice);
   expect(testInstance.findByProps({name: 'owner'}).type).toBe(Lookup);
-  expect(testInstance.findByProps({name: "private"}).type).toBe(BooleanChoice);
+  expect(testInstance.findByProps({name: "private"}).type).toBe(FormControlLabel);
   expect(testInstance.findByProps({name: "personal_data"}).type).toBe(BooleanChoice);
   expect(testInstance.findByProps({name: "data_subject"}).type).toBe(CheckboxGroup);
   expect(testInstance.findByProps({name: "data_category"}).type).toBe(CheckboxGroup);
   expect(testInstance.findByProps({name: 'recipients_category'}).type).toBe(TextField);
   expect(testInstance.findByProps({name: 'recipients_outside_eea'}).type).toBe(TextField);
-  expect(testInstance.findByProps({name: 'retention'}).type).toBe(RadioButtonGroup);
-  expect(testInstance.findByProps({name: 'retention_other'}).type).toBe(TextField);
+  expect(testInstance.findByProps({name: 'retention'}).type).toBe(RadioGroup);
   expect(testInstance.findByProps({name: "risk_type"}).type).toBe(CheckboxGroup);
   expect(testInstance.findByProps({name: 'storage_location'}).type).toBe(TextField);
-  expect(testInstance.findByProps({name: 'storage_format'}).type).toBe(RadioButtonGroup);
+  expect(testInstance.findByProps({name: 'storage_format'}).type).toBe(RadioGroup);
   expect(testInstance.findByProps({name: "digital_storage_security"}).type).toBe(CheckboxGroup);
   expect(testInstance.findByProps({name: "paper_storage_security"}).type).toBe(CheckboxGroup);
 });
@@ -97,17 +101,16 @@ test('can populate a form with data', () => {
   expect(testInstance.findByProps({name: 'purpose'}).props.value).toBe("Medical Research");
   expect(testInstance.findByProps({name: "research"}).props.value).toBeTruthy();
   expect(testInstance.findByProps({name: 'owner'}).props.value).toBe("mb2174");
-  expect(testInstance.findByProps({name: "private"}).props.value).toBeTruthy();
+  expect(testInstance.findByProps({name: "private"}).props.checked).toBeTruthy();
   expect(testInstance.findByProps({name: "personal_data"}).props.value).toBeTruthy();
   expect(testInstance.findByProps({name: "data_subject"}).props.values).toEqual(["patients"]);
   expect(testInstance.findByProps({name: "data_category"}).props.values).toEqual(["sexual", "medical", "genetic", "biometric"]);
   expect(testInstance.findByProps({name: 'recipients_category'}).props.value).toBe("Addenbrookes");
   expect(testInstance.findByProps({name: 'recipients_outside_eea'}).props.value).toBe("Not shared");
-  expect(testInstance.findByProps({name: 'retention'}).props.valueSelected).toBe("other");
-  expect(testInstance.findByProps({name: 'retention_other'}).props.value).toBe("Yonks");
+  expect(testInstance.findByProps({name: 'retention'}).props.value).toBe("<=1");
   expect(testInstance.findByProps({name: "risk_type"}).props.values).toEqual(["compliance", "reputational", "operational"]);
   expect(testInstance.findByProps({name: 'storage_location'}).props.value).toBe("Under the stairs");
-  expect(testInstance.findByProps({name: 'storage_format'}).props.valueSelected).toBe("digital,paper");
+  expect(testInstance.findByProps({name: 'storage_format'}).props.value).toBe("digital,paper");
   expect(testInstance.findByProps({name: "digital_storage_security"}).props.values).toEqual(["encryption", "acl"]);
   expect(testInstance.findByProps({name: "paper_storage_security"}).props.values).toEqual(["safe"]);
 });
@@ -125,16 +128,15 @@ test('can save a new asset', async () => {
   setDataOnInput(testInstance, 'name', 'Super Secret Medical Data');
   setDataOnInput(testInstance, 'department', "Medicine");
   setDataOnInput(testInstance, 'purpose', "Medical Research");
-  setDataOnInput(testInstance, 'research', true);
+  setDataOnInput(testInstance, 'research', "true");
   setDataOnInput(testInstance, 'owner', "mb2174");
   setDataOnInput(testInstance, 'private', true);
-  setDataOnInput(testInstance, 'personal_data', true);
+  setDataOnInput(testInstance, 'personal_data', "true");
   setDataOnInput(testInstance, 'data_subject', ["patients"]);
   setDataOnInput(testInstance, 'data_category', ["sexual", "medical", "genetic", "biometric"]);
   setDataOnInput(testInstance, 'recipients_category', "Addenbrookes");
   setDataOnInput(testInstance, 'recipients_outside_eea', "Not shared");
-  setDataOnInput(testInstance, 'retention', "other");
-  setDataOnInput(testInstance, 'retention_other', "Yonks");
+  setDataOnInput(testInstance, 'retention', "<=1");
   setDataOnInput(testInstance, 'risk_type', ["compliance",  "reputational", "operational"]);
   setDataOnInput(testInstance, 'storage_location', "Under the stairs");
   setDataOnInput(testInstance, 'storage_format', "digital,paper");
@@ -142,7 +144,7 @@ test('can save a new asset', async () => {
   setDataOnInput(testInstance, 'paper_storage_security', ["safe"]);
 
   // "click" the save button
-  testInstance.findByProps({label: 'Save'}).props.onClick();
+  testInstance.findByType(AssetFormHeader).props.onClick();
 
   const action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
 
@@ -168,7 +170,7 @@ test('can update an asset', async () => {
   setDataOnInput(testInstance, 'purpose', "Secret Medical Research");
 
   // "click" the save button
-  testInstance.findByProps({label: 'Save'}).props.onClick();
+  testInstance.findByType(AssetFormHeader).props.onClick();
 
   const action = store.getActions().find(action => action.type === ASSET_PUT_REQUEST);
 
@@ -180,5 +182,5 @@ test('can update an asset', async () => {
   Helper for setting some data on an input component
  */
 function setDataOnInput(testInstance, name, value) {
-  testInstance.findByProps({name: name}).props.onChange({target: {name: name}}, value);
+  testInstance.findByProps({name: name}).props.onChange({target: {name: name, value}}, value);
 }

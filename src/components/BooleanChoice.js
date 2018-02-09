@@ -1,32 +1,28 @@
 import React from 'react'
-import { RadioButtonGroup, RadioButton } from 'material-ui';
+import PropTypes from 'prop-types';
+import Radio, { RadioGroup } from 'material-ui/Radio';
+import { FormControlLabel } from 'material-ui/Form';
+import { withStyles } from 'material-ui/styles';
 
-const groupStyle = {
-  display: 'flex',
-  borderLeft: '1px solid #d1d1d1'
-};
-
-const buttonStyle = {
-  width: 'auto',
-  borderWidth: '1px 1px 1px 0',
-  borderStyle: 'solid',
-  borderColor: '#d1d1d1',
-  padding: "10px 20px"
+const styles = {
+  buttonStyle: {
+    backgroundColor: 'white',
+    paddingRight: 15,
+  },
 };
 
 /*
   A component implementing a yes/no choice and updating a boolean in state.
   */
-const BooleanChoice = (props) => (
-  <RadioButtonGroup
-    name={props.name}
-    valueSelected={props.value}
-    onChange={props.onChange}
-    style={groupStyle}
-  >
-    <RadioButton value={true} label="yes" style={buttonStyle} />
-    <RadioButton value={false} label="no" style={buttonStyle} />
-  </RadioButtonGroup>
+const BooleanChoice = ({ name, value, onChange, classes }) => (
+  <RadioGroup name={name} value={value ? "true" : "false"} onChange={onChange} row>
+    <FormControlLabel value="true" label="yes" control={<Radio />} className={classes.buttonStyle} />
+    <FormControlLabel value="false" label="no" control={<Radio />} className={classes.buttonStyle} />
+  </RadioGroup>
 );
 
-export default BooleanChoice
+BooleanChoice.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(BooleanChoice);

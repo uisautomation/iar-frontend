@@ -5,8 +5,10 @@ import { snackbarClose } from '../redux/actions/snackbar';
 
 const Snackbar = ({ isOpen, message, snackbarClose }) => (
   <MuiSnackbar
-    open={isOpen} message={message} autoHideDuration={3000}
-    onRequestClose={snackbarClose}
+    open={isOpen} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    message={message}
+    autoHideDuration={3000}
+    onClose={snackbarClose}
   />
 );
 

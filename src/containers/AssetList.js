@@ -4,6 +4,7 @@ import AssetListHeader from '../components/AssetListHeader';
 import AssetTable from '../components/AssetTable';
 import Page from '../containers/Page';
 import GetMoreAssets from '../components/GetMoreAssets';
+import { withRouter } from 'react-router'
 
 import '../style/App.css';
 
@@ -30,4 +31,4 @@ AssetList.propTypes = {
   match: PropTypes.object.isRequired,
 };
 
-export default AssetList;
+export default withRouter(AssetList);

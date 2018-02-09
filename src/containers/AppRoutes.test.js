@@ -2,10 +2,14 @@
 import '../test/mocks';
 
 import React from 'react';
-import { AppBar } from 'material-ui';
+import { AppBar, Typography } from 'material-ui';
 import {createMockStore, DEFAULT_INITIAL_STATE, render} from '../testutils';
 import AppRoutes from './AppRoutes';
 import NotFoundPage from './NotFoundPage';
+
+const appBarTitle = testInstance => (
+  testInstance.findByType(AppBar).findByType(Typography).props.children
+);
 
 /**
  * Simple unit test which assert that routes generate pages with the correct titles.
@@ -14,49 +18,49 @@ import NotFoundPage from './NotFoundPage';
 test('can render /static/what-is-asset', () => {
   const testInstance = render(<AppRoutes/>, {url: '/static/what-is-asset'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('What is an information asset?')
+  expect(appBarTitle(testInstance)).toBe('What is an information asset?')
 });
 
 test('can render /static/what-i-do', () => {
   const testInstance = render(<AppRoutes/>, {url: '/static/what-i-do'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('What do I need to do?')
+  expect(appBarTitle(testInstance)).toBe('What do I need to do?')
 });
 
 test('can render /static/feedback', () => {
   const testInstance = render(<AppRoutes/>, {url: '/static/feedback'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Feedback')
+  expect(appBarTitle(testInstance)).toBe('Feedback')
 });
 
 test('can render /static/contact', () => {
   const testInstance = render(<AppRoutes/>, {url: '/static/contact'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Contact')
+  expect(appBarTitle(testInstance)).toBe('Contact')
 });
 
 test('can render /static/tcs', () => {
   const testInstance = render(<AppRoutes/>, {url: '/static/tcs'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Terms & Conditions')
+  expect(appBarTitle(testInstance)).toBe('Terms & Conditions')
 });
 
 test('can render /assets/dept', () => {
   const testInstance = render(<AppRoutes/>, {url: '/assets/dept'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Assets: My department')
+  expect(appBarTitle(testInstance)).toBe('Assets: My department')
 });
 
 test('can render /assets/all', () => {
   const testInstance = render(<AppRoutes/>, {url: '/assets/all'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Assets: All')
+  expect(appBarTitle(testInstance)).toBe('Assets: All')
 });
 
 test('/ redirects to /assets/dept', () => {
   const testInstance = render(<AppRoutes/>, {url: '/'});
 
-  expect(testInstance.findByType(AppBar).props.title).toBe('Assets: My department')
+  expect(appBarTitle(testInstance)).toBe('Assets: My department')
 });
 
 test('can render /asset/create', () => {

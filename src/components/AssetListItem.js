@@ -6,31 +6,22 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { confirmDelete } from '../redux/actions/deleteConfirmation';
 
-import {TableRow, TableRowColumn} from 'material-ui/Table';
-import TickIcon from 'material-ui/svg-icons/action/done';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {TableRow, TableCell} from 'material-ui/Table';
+import TickIcon from 'material-ui-icons/Done';
+import Button from 'material-ui/Button';
 
 const AssetListItem = ({confirmDelete, asset}) => (
-  <TableRow hoverable={true}>
-    <TableRowColumn><Link to={'/asset/' + asset.id}>
+  <TableRow>
+    <TableCell><Link to={'/asset/' + asset.id}>
       {asset.name ? asset.name : asset.id}
-    </Link></TableRowColumn>
-    <TableRowColumn>{asset.is_complete ? 'Complete' : 'In Progress'}</TableRowColumn>
-    <TableRowColumn>{asset.department}</TableRowColumn>
-    <TableRowColumn>{asset.private ? <TickIcon/> : ""}</TableRowColumn>
-    <TableRowColumn>{asset.updated_at}</TableRowColumn>
-    <TableRowColumn>
-      <IconMenu
-        iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-      >
-        <MenuItem primaryText="Delete" onClick={() => confirmDelete(asset.url)} />
-      </IconMenu>
-    </TableRowColumn>
+    </Link></TableCell>
+    <TableCell>{asset.is_complete ? 'Complete' : 'In Progress'}</TableCell>
+    <TableCell>{asset.department}</TableCell>
+    <TableCell>{asset.private ? <TickIcon/> : ""}</TableCell>
+    <TableCell>{asset.updated_at}</TableCell>
+    <TableCell>
+      <Button onClick={() => confirmDelete(asset.url)}>Delete</Button>
+    </TableCell>
   </TableRow>
 );
 
