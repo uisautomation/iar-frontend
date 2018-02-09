@@ -164,7 +164,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + (this.state.name ? this.state.name : this.state.id)}
+          title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id ) : 'Create new asset'}
         />
 
         <Grid container>
@@ -420,12 +420,12 @@ AssetForm.propTypes = {
 
 const mapDispatchToProps = { snackbarOpen, getAsset, postAsset, putAsset };
 
-const mapStateToProps = ({ assets } , props) => {
+const mapStateToProps = ({ assets } , { match : {params: {assetId} } } ) => {
 
   let assetUrl, asset = null;
 
-  if (props.match.url !== '/asset/create') {
-    assetUrl = config.ENDPOINT_ASSETS + props.match.params.assetId + '/';
+  if (assetId !== 'create') {
+    assetUrl = config.ENDPOINT_ASSETS + assetId + '/';
     asset = assets.assetsByUrl.get(assetUrl);
     if (asset && asset.asset.isLoading) {
       asset = null;

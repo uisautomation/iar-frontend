@@ -4,7 +4,7 @@ import '../test/mocks';
 // Mock configuration for endpoints
 jest.mock('../config', () => ({
   ENDPOINT_ASSETS: 'http://iar-backend.invalid/',
-  ENDPOINT_LOOKUP: 'http://lookup-backend.invalid/',
+  ENDPOINT_LOOKUP: 'http://iar-backend.invalid/',
 }));
 
 import React from 'react';
@@ -49,7 +49,7 @@ const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
  */
 test('can render a blank form', () => {
 
-  const testInstance = render(<Route path="/asset/create" component={AssetForm} />, {
+  const testInstance = render(<Route path="/asset/:assetId" component={AssetForm} />, {
     url: '/asset/create'
   });
 
@@ -124,7 +124,7 @@ test('can save a new asset', async () => {
 
   fetch_mock.post(() => true, ASSET_FIXTURE);
 
-  const assetForm = <Route path="/asset/create" component={AssetForm} />;
+  const assetForm = <Route path="/asset/:assetId" component={AssetForm} />;
 
   const store = createMockStore();
   const testInstance = render(assetForm, {store, url: '/asset/create'});
