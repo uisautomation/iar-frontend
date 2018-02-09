@@ -24,7 +24,7 @@ class Lookup extends Component {
   }
 
   /*
-  FIXME
+  Dispatches the search people action after being debounced if the searchText has 2 or more chars.
    */
   searchPeopleDebounced(searchText) {
     if (searchText.length >= 2) {

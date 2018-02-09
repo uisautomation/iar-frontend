@@ -1,11 +1,8 @@
 /**
- * Middleware to FIXME
+ * Middleware to handle to any failed network api calls.
  *
- * The result of the RSSA action is observed. If it has the following form:
- *
- *    { error: true, payload: { status: 401 } }
- *
- * then FIXME
+ * The result of the RSSA action is observed. If an error is flagged the error message is
+ * dispatched to the user.
  */
 import { snackbarOpen } from '../actions';
 import {isRSAA} from "redux-api-middleware";

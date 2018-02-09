@@ -116,7 +116,7 @@ class AssetForm extends Component {
   }
 
   /*
-  FIXME
+  Receives updated props - specifically an Asset from redux state.
    */
   componentWillReceiveProps(nextProps) {
     nextProps.asset && this.setState(nextProps.asset.asset);
@@ -127,7 +127,7 @@ class AssetForm extends Component {
    */
   handleSave() {
     /*
-    FIXME
+    Called by RSAA promise to handle a successfully save asset - messages the user and redirects.
     */
     const handleHandleSave = ({ error, payload }) => {
       if (!error) {

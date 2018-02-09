@@ -86,7 +86,6 @@ export default (state = initialState, action) => {
     }
 
     case ASSETS_LIST_FAILURE:
-      // TODO: provide some feedback to user
       return {...state, isLoading: false };
 
     case ASSETS_DELETE_SUCCESS:
