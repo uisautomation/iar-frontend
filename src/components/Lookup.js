@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {MenuItem, Paper, TextField} from 'material-ui';
+import {Chip, MenuItem, Paper, TextField} from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
@@ -9,50 +9,17 @@ import {getPerson, searchPeople} from '../redux/actions';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of' },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
-];
-
 function renderInput(inputProps) {
-  const { classes, ref, ...other } = inputProps;
+  const { classes, ref, helperText, label, ...other } = inputProps;
+
+  /*{<Chip label="Basic Chip" className={classes.chip} />}*/
 
   return (
     <TextField
       fullWidth
       inputRef={ref}
+      helperText={helperText}
+      label={label}
       InputProps={{
         classes: {
           input: classes.input,
@@ -64,21 +31,18 @@ function renderInput(inputProps) {
 }
 
 function renderSuggestion(suggestion, { query, isHighlighted }) {
-  const matches = match(suggestion.label, query);
-  const parts = parse(suggestion.label, matches);
+  const text = suggestion.visibleName + " (" + suggestion.identifier.value + ")";
+  const matches = match(text, query);
+  const parts = parse(text, matches);
 
   return (
     <MenuItem selected={isHighlighted} component="div">
       <div>
         {parts.map((part, index) => {
           return part.highlight ? (
-            <span key={String(index)} style={{ fontWeight: 300 }}>
-              {part.text}
-            </span>
+            <strong key={String(index)} style={{ fontWeight: 500 }}>{part.text}</strong>
           ) : (
-            <strong key={String(index)} style={{ fontWeight: 500 }}>
-              {part.text}
-            </strong>
+            <span key={String(index)} style={{ fontWeight: 300 }}>{part.text}</span>
           );
         })}
       </div>
@@ -90,42 +54,17 @@ function renderSuggestionsContainer(options) {
   const { containerProps, children } = options;
 
   return (
-    <Paper {...containerProps} square>
+    <Paper {...containerProps} square style={{zIndex: 100}}>
       {children}
     </Paper>
   );
-}
-
-function getSuggestionValue(suggestion) {
-  return suggestion.label;
-}
-
-function getSuggestions(value) {
-  console.log(value);
-  const inputValue = value.trim().toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
-
-  return inputLength === 0
-    ? []
-    : suggestions.filter(suggestion => {
-        const keep =
-          count < 5 && suggestion.label.toLowerCase().slice(0, inputLength) === inputValue;
-
-        if (keep) {
-          count += 1;
-        }
-
-        return keep;
-      });
 }
 
 const styles = theme => ({
   container: {
     flexGrow: 1,
     position: 'relative',
-    height: 200,
-    width: 200,
+    width: 300,
   },
   suggestionsContainerOpen: {
     position: 'absolute',
@@ -165,9 +104,8 @@ class Lookup extends Component {
   }
 
   handleSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(value),
-    });
+    this.setState({displayName: value});
+    this.searchPeopleDebounced(value);
   };
 
   handleSuggestionsClearRequested = () => {
@@ -176,10 +114,18 @@ class Lookup extends Component {
     });
   };
 
-  handleChange = (event, { newValue }) => {
+  handleChangeOther = (event, { newValue }) => {
+    if (!newValue) {
+      this.props.onChange({target: {name: this.props.name, value: null}});
+    }
     this.setState({
       value: newValue,
     });
+  };
+
+  getSuggestionValue = (suggestion) => {
+    this.props.onChange({target: {name: this.props.name, value: suggestion.identifier.value}});
+    return suggestion.visibleName + " (" + suggestion.identifier.value + ")";
   };
 
   /*
@@ -195,12 +141,19 @@ class Lookup extends Component {
   Fetch the owner's name for the lookup API.
    */
   componentWillReceiveProps(nextProps) {
-      // if (nextProps.value && this.props.value !== nextProps.value) {
-      //   this.props.getPerson(nextProps.value);
-      // }
-      // if (!this.state.displayName && nextProps.person) {
-      //   this.setState({displayName: nextProps.person.visibleName})
-      // }
+    let suggestions = nextProps.matchingPeopleByQuery.get(this.state.displayName);
+    if (suggestions) {
+      this.setState({suggestions});
+    }
+    if (nextProps.value && this.props.value !== nextProps.value) {
+      this.props.getPerson(nextProps.value);
+    }
+    if (!this.state.displayName && nextProps.person) {
+      this.setState({displayName: nextProps.person.visibleName})
+      this.setState({
+        value: nextProps.person.visibleName + " (" + nextProps.person.identifier.value + ")",
+      });
+    }
   }
 
   /*
@@ -208,28 +161,16 @@ class Lookup extends Component {
   matching the searchText is fetched.
   Deleting all text is detected and the owner field is cleared to allow the deleting of an owner.
    */
-  handleOwnerUpdateInput(searchText) {
-    if (!searchText) {
-      this.props.onChange({target: {name: this.props.name}}, null);
-    }
-    this.setState({displayName: searchText});
-    this.searchPeopleDebounced(searchText)
-  }
+  // handleOwnerUpdateInput(searchText) {
+  //   if (!searchText) {
+  //     this.props.onChange({target: {name: this.props.name}}, null);
+  //   }
+  //   this.setState({displayName: searchText});
+  //   this.searchPeopleDebounced(searchText)
+  // }
 
   render() {
     const { classes } = this.props;
-      /*
-      <AutoComplete
-        disabled={this.props.disabled}
-        hintText={this.props.hintText}
-        searchText={this.state.displayName}
-        filter={AutoComplete.noFilter}
-        dataSource={** FIXME ** this.props.matchingPeopleByQuery.get(this.state.displayName) ? this.props.matchingPeopleByQuery.get(this.state.displayName) : []}
-        dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
-        onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
-        onNewRequest={(chosenRequest) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
-      />
-      */
     return (
       <Autosuggest
         theme={{
@@ -243,13 +184,15 @@ class Lookup extends Component {
         onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
         onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
         renderSuggestionsContainer={renderSuggestionsContainer}
-        getSuggestionValue={getSuggestionValue}
+        getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={renderSuggestion}
         inputProps={{
           classes,
-          placeholder: 'Search a country (start with a)',
+          label: this.props.label,
+          helperText: this.props.helperText,
           value: this.state.value,
-          onChange: this.handleChange,
+          onChange: this.handleChangeOther,
+          disabled: this.props.disabled
         }}
       />
      )
