@@ -36,12 +36,12 @@ class Lookup extends Component {
   Fetch the owner's name for the lookup API.
    */
   componentWillReceiveProps(nextProps) {
-      if (nextProps.value && this.props.value !== nextProps.value) {
-        this.props.getPerson(nextProps.value);
-      }
-      if (!this.state.displayName && nextProps.person) {
-        this.setState({displayName: nextProps.person.visibleName})
-      }
+      // if (nextProps.value && this.props.value !== nextProps.value) {
+      //   this.props.getPerson(nextProps.value);
+      // }
+      // if (!this.state.displayName && nextProps.person) {
+      //   this.setState({displayName: nextProps.person.visibleName})
+      // }
   }
 
   /*
@@ -58,22 +58,15 @@ class Lookup extends Component {
   }
 
   render() {
-      /*
-      <AutoComplete
-        disabled={this.props.disabled}
-        hintText={this.props.hintText}
-        searchText={this.state.displayName}
-        filter={AutoComplete.noFilter}
-        dataSource={** FIXME ** this.props.matchingPeopleByQuery.get(this.state.displayName) ? this.props.matchingPeopleByQuery.get(this.state.displayName) : []}
-        dataSourceConfig={{text: 'visibleName', value: 'identifier.value'}}
-        onUpdateInput={(searchText) => this.handleOwnerUpdateInput(searchText)}
-        onNewRequest={(chosenRequest) => this.props.onChange({target: {name: this.props.name}}, chosenRequest.identifier.value)}
-      />
-      */
+    const nullToBlank = v => ( v === null ? '' : v );
     return (
       <TextField
+        label={this.props.label}
+        name={this.props.name}
+        value={nullToBlank(this.props.value)}
         disabled={this.props.disabled}
         helperText={this.props.helperText}
+        onChange={this.props.onChange}
       />
     )
   }
@@ -81,6 +74,7 @@ class Lookup extends Component {
 
 Lookup.propTypes = {
   getPerson: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   helperText: PropTypes.string.isRequired,
