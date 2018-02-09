@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { LoginRequiredRoute } from '../components';
-import config from '../config';
 
 import AssetList from './AssetList';
 import AssetForm from './AssetForm';
@@ -15,16 +14,9 @@ import NotFoundPage from './NotFoundPage';
 const AppRoutes = () => (
   <Switch>
     <LoginRequiredRoute path="/assets/:filter" exact component={AssetList}/>
-    <LoginRequiredRoute
-       path="/asset/create" exact
-       component={routeProps => <AssetForm assetId='create' {...routeProps} />} />
-    <LoginRequiredRoute
-       path="/asset/:assetId" exact
-       component={routeProps => <AssetForm
-         url={config.ENDPOINT_ASSETS + routeProps.match.params.assetId + '/'}
-         {...routeProps} />}
+    <LoginRequiredRoute path="/asset/:assetId" exact
+                        component={routeProps => <AssetForm navigateOnSave='/' {...routeProps} />}
     />
-
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />

@@ -9,26 +9,28 @@
  * in silently.
  */
 import { isRSAA, RSAA } from 'redux-api-middleware';
-import { logout } from '../actions';
+import { logout } from '../actions/auth';
 
 export default ({ getState, dispatch }) => next => action => {
+
   // pass non-RSAA actions to next middleware
   if(!isRSAA(action)) { return next(action); }
 
   // update action with authorisation headers
   const { auth } = getState();
-  const authHeaders = (!auth || !auth.isLoggedIn) ?
-    { } : { 'Authorization': 'Bearer ' + auth.token };
+  const headers = (!auth || !auth.isLoggedIn) ?
+    { } : { ...action[[RSAA]].headers, 'Authorization': 'Bearer ' + auth.token };
   const updatedAction = {
     ...action,
-    [RSAA]: {...action[[RSAA]], headers: authHeaders }
+    [RSAA]: {...action[[RSAA]], headers: headers }
   };
 
   // pass action to next middleware
-  return next(updatedAction).then(({ error, payload }) => {
-    if(error && payload && (payload.status === 401)) {
+  return next(updatedAction).then((action_) => {
+    if(action_.error && action_.payload && (action_.payload.status === 401)) {
       // TODO: have a less abrupt UI for this!
       dispatch(logout());
     }
+    return action_;
   });
 };

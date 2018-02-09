@@ -3,7 +3,7 @@ import '../test/mocks';
 
 import React from 'react';
 import { AppBar, Typography } from 'material-ui';
-import { render } from '../testutils';
+import {createMockStore, DEFAULT_INITIAL_STATE, render} from '../testutils';
 import AppRoutes from './AppRoutes';
 import NotFoundPage from './NotFoundPage';
 
@@ -37,6 +37,28 @@ test('/ redirects to /assets/dept', () => {
   const testInstance = render(<AppRoutes/>, {url: '/'});
 
   expect(appBarTitle(testInstance)).toBe('Assets: My department')
+});
+
+test('can render /asset/create', () => {
+  const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
+
+  expect(appBarTitle(testInstance)).toBe('Create new asset')
+});
+
+test('can render /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', () => {
+
+  const assetsByUrl = new Map([[
+    'http://localhost:8000/assets/e20f4cd4-9f97-4829-8178-476c7a67eb97/', {
+      asset: {name: 'Super Secret Medical Data'}
+    }
+  ]]);
+
+  const testInstance = render(<AppRoutes/>, {
+    url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97',
+    store: createMockStore({...DEFAULT_INITIAL_STATE, assets: {assetsByUrl}})
+  });
+
+  expect(appBarTitle(testInstance)).toBe('Editing: Super Secret Medical Data')
 });
 
 test('/this-does-not-exist renders a not found page', () => {
