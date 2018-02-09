@@ -10,10 +10,9 @@ import Switch from 'material-ui/Switch';
 import { FormControlLabel } from 'material-ui/Form';
 
 import { connect } from 'react-redux';
+import { getAsset, postAsset, putAsset } from '../redux/actions/assetRegisterApi';
 import { snackbarOpen } from '../redux/actions/snackbar';
-
-const ACCESS_TOKEN =
-  'RUT5hW6OUCmwEER_1dgDKH3B0jTiovGxNqdfPkCJZxI.27T3nFaYFletjAqIs4fE_Wr_MU5Ic5mfXleZ-4nKg-g';
+import PropTypes from "prop-types";
 
 const DATA_SUBJECT_LABELS = [
   {value: "staff", label: "Staff & applicants"},
@@ -74,6 +73,26 @@ const retentionStyle = {
   padding: '10px 20px'
 };
 
+export const NEW_ASSET = {
+  name: null,
+  department: null,
+  purpose: null,
+  research: null,
+  owner: null,
+  private: null,
+  personal_data: null,
+  data_subject: [],
+  data_category: [],
+  recipients_category: null,
+  recipients_outside_eea: null,
+  retention: null,
+  risk_type: [],
+  storage_location: null,
+  storage_format: [],
+  paper_storage_security: [],
+  digital_storage_security: []
+};
+
 /*
   Renders the form for the creation/editing of an Asset.
   */
@@ -81,82 +100,49 @@ class AssetForm extends Component {
 
   constructor() {
     super();
-
-    this.state = {
-      // asset state
-      name: null,
-      department: null,
-      purpose: null,
-      research: null,
-      owner: null,
-      private: null,
-      personal_data: null,
-      data_subject: [],
-      data_category: [],
-      recipients_category: null,
-      recipients_outside_eea: null,
-      retention: null,
-      risk_type: [],
-      storage_location: null,
-      storage_format: [],
-      paper_storage_security: [],
-      digital_storage_security: [],
-    }
-  }
-
-  /*
-  Wrapper for fetch() that handles errors / unmarshalls JSON
-   */
-  fetch(url, options, cb) {
-    if (options.headers) {
-      options.headers.append('Authorization', 'Bearer ' + ACCESS_TOKEN);
-    } else {
-      options['headers'] = new Headers({
-        'Authorization': 'Bearer ' + ACCESS_TOKEN
-      });
-    }
-    fetch(url, options).then(response => {
-      if (response.ok) {
-        return response.json()
-      } else {
-        this.props.handleMessage('Network Error: ' + response.statusText)
-      }
-    }).then(data => data && cb(data)).catch(
-      error => this.props.handleMessage('Network Error: ' + error)
-    );
+    this.state = NEW_ASSET;
   }
 
   /*
   If the form is in edit mode - fetch the asset
    */
   componentDidMount() {
-    if (this.props.match.url !== '/asset/create') {
-      this.fetch(config.ENDPOINT_ASSETS + this.props.match.params.assetId + '/', {}, data => {
-        this.setState(data);
-      });
+    if (this.props.assetUrl) {
+      if (this.props.asset) {
+        this.setState(this.props.asset.asset);
+      } else {
+        this.props.getAsset(this.props.assetUrl);
+      }
     }
+  }
+
+  /*
+  Receives updated props - specifically an Asset from redux state.
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.asset) { this.setState(nextProps.asset.asset); }
   }
 
   /*
   Either creates a new asset or updates an existing one depending on the mode of the form.
    */
   handleSave() {
-    let method = 'post';
-    let endpoint = config.ENDPOINT_ASSETS;
-    if (this.props.match.url !== '/asset/create') {
-      method = 'put';
-      endpoint += this.props.match.params.assetId + '/';
+    /*
+    Called by RSAA promise to handle a successfully save asset - messages the user and redirects.
+    */
+    const handleHandleSave = ({ error, payload }) => {
+      if (!error) {
+        const { navigateOnSave, history,  snackbarOpen } = this.props;
+        snackbarOpen('"' + payload.name + '" saved.');
+        history.push(navigateOnSave);
+      }
+    };
+    const body = JSON.stringify(this.state);
+    if (this.props.assetUrl) {
+      this.props.putAsset(this.props.assetUrl, body).then(handleHandleSave);
+    } else {
+      this.props.postAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
     }
-    this.fetch(endpoint, {
-      method: method,
-      body: JSON.stringify(this.state),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }, (data) => {
-      this.props.handleMessage('"' + data.name + '" saved.');
-      this.props.history.push("/")
-    });
   }
 
   handleChange({ target: { name, value } }) {
@@ -178,7 +164,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.match.url === '/asset/create' ? 'Create new asset' : 'Editing: ' + this.state.name}
+          title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id ) : 'Create new asset'}
         />
 
         <Grid container>
@@ -252,7 +238,6 @@ class AssetForm extends Component {
               name="owner"
               value={this.state.owner}
               onChange={event => this.handleChange(event)}
-              fetch={this.fetch}
             />
           </Grid>
         </Grid>
@@ -422,6 +407,33 @@ class AssetForm extends Component {
   }
 }
 
-const mapDispatchToProps = { handleMessage: snackbarOpen };
+AssetForm.propTypes = {
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  snackbarOpen: PropTypes.func.isRequired,
+  getAsset: PropTypes.func.isRequired,
+  postAsset: PropTypes.func.isRequired,
+  putAsset: PropTypes.func.isRequired,
+  assetUrl: PropTypes.string,
+  asset: PropTypes.object,
+};
 
-export default connect(null, mapDispatchToProps)(AssetForm);
+const mapDispatchToProps = { snackbarOpen, getAsset, postAsset, putAsset };
+
+const mapStateToProps = ({ assets } , { match : {params: {assetId} } } ) => {
+
+  let assetUrl, asset = null;
+
+  if (assetId !== 'create') {
+    assetUrl = config.ENDPOINT_ASSETS + assetId + '/';
+    asset = assets.assetsByUrl.get(assetUrl);
+    if (asset && asset.asset.isLoading) {
+      asset = null;
+    }
+  }
+
+
+  return { assetUrl, asset };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AssetForm);
