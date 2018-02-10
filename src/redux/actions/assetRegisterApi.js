@@ -4,6 +4,7 @@ import { ENDPOINT_ASSETS } from '../../config';
 export const ASSETS_LIST_REQUEST = Symbol('ASSETS_LIST_REQUEST');
 export const ASSETS_LIST_SUCCESS = Symbol('ASSETS_LIST_SUCCESS');
 export const ASSETS_LIST_FAILURE = Symbol('ASSETS_LIST_FAILURE');
+export const ASSETS_LIST_RESET = Symbol('ASSETS_LIST_RESET');
 
 export const ASSETS_DELETE_SUCCESS = Symbol('ASSETS_DELETE_SUCCESS');
 export const ASSETS_DELETE_REQUEST = Symbol('ASSETS_DELETE_REQUEST');
@@ -133,6 +134,17 @@ export const getMoreAssets = (url) => ({
       { type: ASSETS_LIST_FAILURE, meta: { url } },
     ],
   }
+});
+
+/**
+ * Reset the asset list to the initial "unfetched" state.
+ *
+ * The current query state is not changed. The effect of this action is performed whenever an asset
+ * is modified or created via putAsset or postAsset so there's no need to fire this action if
+ * modifying assets.
+ */
+export const resetAssets = () => ({
+  type: ASSETS_LIST_RESET,
 });
 
 /**

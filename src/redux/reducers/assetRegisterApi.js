@@ -1,5 +1,5 @@
 import {
-  ASSETS_LIST_REQUEST, ASSETS_LIST_SUCCESS, ASSETS_LIST_FAILURE,
+  ASSETS_LIST_REQUEST, ASSETS_LIST_SUCCESS, ASSETS_LIST_FAILURE, ASSETS_LIST_RESET,
   ASSETS_DELETE_SUCCESS,
   ASSET_GET_REQUEST, ASSET_GET_SUCCESS, ASSET_GET_FAILURE,
   ASSET_PUT_SUCCESS,
@@ -65,6 +65,23 @@ export const initialState = {
   assetsByUrl: new Map(),
 };
 
+// Utility function to add asset from the action payload into the assetsByUrl map. Takes state as
+// a first parameter
+const stateWithAssetFromAction = (state, action) => {
+  const asset = action.payload;
+  const assetsByUrl = new Map([
+    ...state.assetsByUrl,
+    [asset.url, { asset, fetchedAt: new Date() }]
+  ]);
+  return { ...state, assetsByUrl, url: asset.url };
+};
+
+// Utility function to reset asset list in state
+const stateWithResetSummaries = state => ({
+  ...state,
+  isLoading: false, url: null, fetchedAt: null, next: null, previous: null, summaries: [],
+});
+
 export default (state = initialState, action) => {
   switch(action.type) {
     case ASSETS_LIST_REQUEST: {
@@ -108,6 +125,11 @@ export default (state = initialState, action) => {
     case ASSETS_LIST_FAILURE:
       return {...state, isLoading: false };
 
+    case ASSETS_LIST_RESET:
+      // Usually this is performed as a side-effect of adding or modifying an asset but it can be
+      // performed explicitly.
+      return stateWithResetSummaries(state);
+
     case ASSETS_DELETE_SUCCESS:
       // Delete the matching summary.
       return {
@@ -123,15 +145,12 @@ export default (state = initialState, action) => {
 
     case ASSET_POST_SUCCESS:
     case ASSET_PUT_SUCCESS:
-    case ASSET_GET_SUCCESS: {
-      // Add the asset to the assetsByUrl map
-      const asset = action.payload;
-      const assetsByUrl = new Map([
-        ...state.assetsByUrl,
-        [asset.url, { asset, fetchedAt: new Date() }]
-      ]);
-      return { ...state, assetsByUrl, url: asset.url };
-    }
+      // PUT-ting/PUSH-ing a new asset may change the list of assets displayed to the user.
+      // Invalidate our cache so it is re-fetched if necessary.
+      return stateWithResetSummaries(stateWithAssetFromAction(state, action));
+
+    case ASSET_GET_SUCCESS:
+      return stateWithAssetFromAction(state, action);
 
     case ASSET_GET_FAILURE: {
       // Remove the asset which was being requested from assetsByUrl.
