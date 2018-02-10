@@ -15,6 +15,11 @@ const TITLES = {
   '/assets/all': 'Assets: All',
 };
 
+// Default query to use if none has previously been set by the user.
+export const DEFAULT_QUERY = {
+  sort: { field: 'updated_at', direction: Direction.descending },
+};
+
 class AssetList extends Component {
   componentDidMount() {
     const { getAssets, lastAssetListUrl } = this.props;
@@ -22,7 +27,15 @@ class AssetList extends Component {
     // Fetch an asset list if one has not already been fetched. We detect a fetch by looking at the
     // "url" property in the assets state which is exposed as the "lastAssetListUrl" prop.
     if(!lastAssetListUrl) {
-      getAssets({ sort: { field: 'updated_at', direction: Direction.descending } });
+      // If there is currently a sort query set by the user, use that otherwise update the query
+      // with a default sort.
+      const { query } = this.props;
+      const { sort: { field } } = query;
+      if(field !== null) {
+        getAssets(query);
+      } else {
+        getAssets({ ...query, ...DEFAULT_QUERY });
+      }
     }
   }
 
@@ -47,9 +60,12 @@ class AssetList extends Component {
 AssetList.propTypes = {
   match: PropTypes.object.isRequired,
   lastAssetListUrl: PropTypes.string,
+  query: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ assets: { url: lastAssetListUrl } }) => ({ lastAssetListUrl });
+const mapStateToProps = ({ assets: { url: lastAssetListUrl, query } }) => (
+  { lastAssetListUrl, query }
+);
 
 const mapDispatchToProps = { getAssets };
 
