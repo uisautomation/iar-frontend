@@ -22,11 +22,12 @@ export const DEFAULT_QUERY = {
 
 class AssetList extends Component {
   componentDidMount() {
-    const { getAssets, lastAssetListUrl } = this.props;
+    const { getAssets, fetchedAt } = this.props;
 
-    // Fetch an asset list if one has not already been fetched. We detect a fetch by looking at the
-    // "url" property in the assets state which is exposed as the "lastAssetListUrl" prop.
-    if(!lastAssetListUrl) {
+    // Fetch an asset list if one has not already been fetched. We detect an existing fetch by
+    // looking at the "fetchedAt" value on the asset list which should be non-NULL if a fetch
+    // happened.
+    if(!fetchedAt) {
       // If there is currently a sort query set by the user, use that otherwise update the query
       // with a default sort.
       const { query } = this.props;
@@ -59,12 +60,12 @@ class AssetList extends Component {
 
 AssetList.propTypes = {
   match: PropTypes.object.isRequired,
-  lastAssetListUrl: PropTypes.string,
+  fetchedAt: PropTypes.object,
   query: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ assets: { url: lastAssetListUrl, query } }) => (
-  { lastAssetListUrl, query }
+const mapStateToProps = ({ assets: { fetchedAt, query } }) => (
+  { fetchedAt, query }
 );
 
 const mapDispatchToProps = { getAssets };
