@@ -1,5 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import config from "../../config";
+import assert from "assert";
 
 export const PEOPLE_LIST_REQUEST = Symbol('PEOPLE_LIST_REQUEST');
 export const PEOPLE_LIST_SUCCESS = Symbol('PEOPLE_LIST_SUCCESS');
@@ -16,17 +17,23 @@ export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
  * @param limit
  * @returns {{}}
  */
-export const listPeople = (query, limit = 10) => ({
-  [RSAA]: {
-    endpoint: config.ENDPOINT_PEOPLE + "?limit=" + parseInt(limit, 10) + "&query=" + encodeURIComponent(query),
-    method: 'GET',
-    types: [
-      PEOPLE_LIST_REQUEST,
-      { type: PEOPLE_LIST_SUCCESS, meta: { query } },
-      PEOPLE_LIST_FAILURE
-    ]
+export const listPeople = (query, limit = 10) => {
+  const the_limit = parseInt(limit, 10);
+  if (!the_limit || the_limit <= 0) {
+    throw new Error('the limit must be > 0');
   }
-});
+  return {
+    [RSAA]: {
+      endpoint: config.ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
+      method: 'GET',
+      types: [
+        PEOPLE_LIST_REQUEST,
+        {type: PEOPLE_LIST_SUCCESS, meta: {query}},
+        PEOPLE_LIST_FAILURE
+      ]
+    }
+  }
+};
 
 /**
  * FIXME
