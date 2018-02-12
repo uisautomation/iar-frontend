@@ -61,10 +61,12 @@ export const Direction = Object.freeze({
  *   are looked at. Other properties are ignored.
  *
  */
-export const getAssets = ({
-  sort: { field: sortBy = 'created_at', direction = Direction.descending } = { }, search, filter
-} = {}) => {
-  // Build a query string from the options passed to this action.
+export const getAssets = (unsanitisedQuery = {}) => {
+  // Unpick values from the function input to sanitise input.
+  let {
+    search, filter,
+    sort: { field: sortBy = 'created_at', direction = Direction.descending } = { }
+  } = unsanitisedQuery;
 
   // Array of [key, value] pairs which are built into the query string.
   const queryParts = [];
