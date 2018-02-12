@@ -12,6 +12,13 @@ import '../style/App.css';
 
 const theme = createMuiTheme();
 
+// Update colours
+theme.palette = {
+  ...theme.palette,
+  complete: '#7ed321',
+  inProgress: '#f5a623',
+};
+
 /*
   IAR main app component.
   */

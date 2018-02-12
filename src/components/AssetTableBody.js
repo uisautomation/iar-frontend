@@ -1,14 +1,38 @@
 import React from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { TableBody, TableCell, TableRow } from 'material-ui/Table';
 import AssetListItem from './AssetListItem';
 
+// There is much discussion here on how to have tbody box-shadows actually appear. This solution is
+// horrible but works.
+// http://www.css3recipes.com/recipes/4938443/box-shadow-on-tbody-in-chrome
+const styles = theme => ({
+  assetTableBody: {
+    position: 'relative',
+
+    '& tr': {
+      position: 'relative',
+      backgroundColor: theme.palette.background.paper,
+    },
+    '& tr:hover td': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    '& tr:after': {
+      content: "''",
+      position: 'absolute',
+      top: 0, left: 0, width: '100%', height: '100%', zIndex: -1,
+      boxShadow: theme.shadows[2],
+    },
+  },
+});
+
 /**
  * A table of assets.
  */
-export const UnconnectedAssetTableBody = ({ summaries, isLoading = false }) => (
-  <TableBody className="Asset-table-body">
+export const UnconnectedAssetTableBody = ({ summaries, isLoading = false, classes }) => (
+  <TableBody className={classes.assetTableBody}>
     {
       // Display a "no assets" row if there is no loading happening and there are no assets.
       ((summaries.length === 0) && !isLoading) ? <ZeroAssetsRow /> : null
@@ -37,4 +61,4 @@ const mapStateToProps = ({ assets: { summaries, isLoading } }) => ({
   summaries, isLoading
 });
 
-export default connect(mapStateToProps)(UnconnectedAssetTableBody);
+export default connect(mapStateToProps)(withStyles(styles)(UnconnectedAssetTableBody));
