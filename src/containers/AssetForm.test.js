@@ -18,7 +18,7 @@ import AssetForm from "./AssetForm";
 import {Route} from 'react-router-dom';
 import {ENDPOINT_ASSETS, ENDPOINT_PEOPLE} from "../config";
 import AssetFormHeader from '../components/AssetFormHeader';
-import {SNACKBAR_OPEN} from "../redux/actions/snackbar";
+import {SNACKBAR_OPEN} from '../redux/actions/snackbar';
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',

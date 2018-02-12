@@ -18,7 +18,7 @@ export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
  */
 export const listPeople = (query, limit = 10) => ({
   [RSAA]: {
-    endpoint: config.ENDPOINT_PEOPLE + "?approxMatches=true&limit=" + parseInt(limit, 10) + "&query=" + encodeURIComponent(query),
+    endpoint: config.ENDPOINT_PEOPLE + "?limit=" + parseInt(limit, 10) + "&query=" + encodeURIComponent(query),
     method: 'GET',
     types: [
       PEOPLE_LIST_REQUEST,

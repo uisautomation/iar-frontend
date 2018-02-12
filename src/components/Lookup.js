@@ -46,7 +46,7 @@ class Lookup extends Component {
     this.state = {
       suggestions: [],
       // the selected user's full name
-      displayName: ""
+      searchText: ""
     };
 
     this.searchPeopleDebounced = _.debounce(this.searchPeopleDebounced, 200);
@@ -54,7 +54,7 @@ class Lookup extends Component {
 
   handleChange = (event, { newValue }) => {
     this.setState({
-      displayName: newValue,
+      searchText: newValue,
     });
     this.searchPeopleDebounced(newValue);
   };
@@ -73,7 +73,14 @@ class Lookup extends Component {
    */
   searchPeopleDebounced(searchText) {
     if (searchText.length >= 2) {
-      this.props.listPeople(searchText);
+      let suggestions = this.props.matchingPeopleByQuery.get(searchText);
+      if (suggestions) {
+        this.setState({suggestions});
+      } else {
+        this.props.listPeople(searchText);
+      }
+    } else {
+      this.setState({suggestions: []});
     }
   }
 
@@ -81,7 +88,7 @@ class Lookup extends Component {
   Fetch the owner's name for the lookup API.
    */
   componentWillReceiveProps(nextProps) {
-    let suggestions = nextProps.matchingPeopleByQuery.get(this.state.displayName);
+    let suggestions = nextProps.matchingPeopleByQuery.get(this.state.searchText);
     if (suggestions) {
       this.setState({suggestions});
     }
@@ -158,7 +165,7 @@ class Lookup extends Component {
         inputProps={{
           label: this.props.label,
           helperText: this.props.helperText,
-          value: this.state.displayName,
+          value: this.state.searchText,
           onChange: this.handleChange,
           onDelete: this.handleDelete,
           disabled: this.props.disabled,

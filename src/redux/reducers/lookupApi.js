@@ -3,16 +3,17 @@ import {
   PEOPLE_LIST_SUCCESS,
 } from '../actions/lookupApi';
 
+import {Cache} from 'immutable-cache';
+
 /**
  * State managed by the lookup API reducers.
  */
 export const initialState = {
   // a map of people records retrieved from the lookup api - keyed on crsid
   peopleByCrsid: new Map(),
-
-  // a map of arrays of people records returned by the lookup api search endpoint -
+  // a cache of arrays of people records returned by the lookup api search endpoint -
   // keyed on the search text that produced the result.
-  matchingPeopleByQuery: new Map()
+  matchingPeopleByQuery: new Cache({maxSize: 50}),
 };
 
 export default (state = initialState, action) => {
@@ -20,11 +21,7 @@ export default (state = initialState, action) => {
 
     case PEOPLE_LIST_SUCCESS:
       const { query } = action.meta;
-      const matchingPeopleByQuery = new Map([
-        ...state.matchingPeopleByQuery,
-        [query, action.payload.results]
-      ]);
-      // TODO some simple cache clearing should be done here.
+      const matchingPeopleByQuery = state.matchingPeopleByQuery.set(query, action.payload.results);
       return { ...state, matchingPeopleByQuery };
 
     case PEOPLE_GET_SUCCESS:
