@@ -1,7 +1,8 @@
 import './test/mock-localstorage.js';
 
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
+import { IntlProvider } from 'react-intl';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
@@ -31,16 +32,22 @@ export const createMockStore = (initialState = DEFAULT_INITIAL_STATE) => mockSto
 const render = (component, {store, url} = {}) => {
   if(!store) { store = createMockStore(DEFAULT_INITIAL_STATE); }
   const theme = createMuiTheme();
+
+  // Make sure this hierarchy reflects that in App.js.
   let wrapped_component = (
-    <Provider store={store}>
-      <MuiThemeProvider theme={theme}>
-        { component }
-      </MuiThemeProvider>
-    </Provider>
+    <MuiThemeProvider theme={theme}>
+      <IntlProvider locale="en">
+        <ReduxProvider store={store}>
+          {
+            // Wrap the component in a MemoryRouter if url is truthy.
+            Boolean(url)
+            ? <MemoryRouter initialEntries={[url]}>{ component }</MemoryRouter>
+            : component
+          }
+        </ReduxProvider>
+      </IntlProvider>
+    </MuiThemeProvider>
   );
-  if (url) {
-    wrapped_component = <MemoryRouter initialEntries={[url]}>{ wrapped_component }</MemoryRouter>;
-  }
   return TestRenderer.create(wrapped_component).root;
 };
 

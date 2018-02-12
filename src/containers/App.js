@@ -1,7 +1,8 @@
 import React from 'react'
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { IntlProvider } from 'react-intl';
 import Snackbar from '../components/Snackbar';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
@@ -16,17 +17,19 @@ const theme = createMuiTheme();
   */
 const App = ({ store }) => (
   <MuiThemeProvider theme={theme}>
-    <Provider store={ store }>
-      <div>
-        <Router>
-          <ScrollToTop>
-            <AppRoutes />
-          </ScrollToTop>
-        </Router>
-        <DeleteConfirmationDialog />
-        <Snackbar />
-      </div>
-    </Provider>
+    <IntlProvider locale={navigator.language}>
+      <ReduxProvider store={ store }>
+        <div>
+          <Router>
+            <ScrollToTop>
+              <AppRoutes />
+            </ScrollToTop>
+          </Router>
+          <DeleteConfirmationDialog />
+          <Snackbar />
+        </div>
+      </ReduxProvider>
+    </IntlProvider>
   </MuiThemeProvider>
 );
 
