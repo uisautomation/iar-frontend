@@ -1,6 +1,6 @@
 import {
   PEOPLE_GET_SUCCESS,
-  SEARCH_GET_SUCCESS,
+  PEOPLE_LIST_SUCCESS,
 } from '../actions/lookupApi';
 
 /**
@@ -18,6 +18,15 @@ export const initialState = {
 export default (state = initialState, action) => {
   switch(action.type) {
 
+    case PEOPLE_LIST_SUCCESS:
+      const { query } = action.meta;
+      const matchingPeopleByQuery = new Map([
+        ...state.matchingPeopleByQuery,
+        [query, action.payload.results]
+      ]);
+      // TODO some simple cache clearing should be done here.
+      return { ...state, matchingPeopleByQuery };
+
     case PEOPLE_GET_SUCCESS:
       // Add the person to the peopleByCrsid map
       const person = action.payload;
@@ -26,15 +35,6 @@ export default (state = initialState, action) => {
         [person.identifier.value, person]
       ]);
       return { ...state, peopleByCrsid };
-
-    case SEARCH_GET_SUCCESS:
-      const { query } = action.meta;
-      const matchingPeopleByQuery = new Map([
-        ...state.matchingPeopleByQuery,
-        [query, action.payload.results]
-      ]);
-      // TODO some simple cache clearing should be done here.
-      return { ...state, matchingPeopleByQuery };
 
     default:
       return state;

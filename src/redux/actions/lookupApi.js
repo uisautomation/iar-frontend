@@ -1,33 +1,43 @@
 import { RSAA } from 'redux-api-middleware';
 import config from "../../config";
 
+export const PEOPLE_LIST_REQUEST = Symbol('PEOPLE_LIST_REQUEST');
+export const PEOPLE_LIST_SUCCESS = Symbol('PEOPLE_LIST_SUCCESS');
+export const PEOPLE_LIST_FAILURE = Symbol('PEOPLE_LIST_FAILURE');
+
 export const PEOPLE_GET_REQUEST = Symbol('PEOPLE_GET_REQUEST');
 export const PEOPLE_GET_SUCCESS = Symbol('PEOPLE_GET_SUCCESS');
 export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
 
-export const SEARCH_GET_REQUEST = Symbol('SEARCH_GET_REQUEST');
-export const SEARCH_GET_SUCCESS = Symbol('SEARCH_GET_SUCCESS');
-export const SEARCH_GET_FAILURE = Symbol('SEARCH_GET_FAILURE');
-
 /**
- * Request an individual asset by URL.
+ * FIXME
+ *
+ * @param query
+ * @param limit
+ * @returns {{}}
  */
-export const getPerson = (crsid) => ({
+export const listPeople = (query, limit = 10) => ({
   [RSAA]: {
-    endpoint: config.ENDPOINT_LOOKUP + 'people/crsid/' + crsid,
+    endpoint: config.ENDPOINT_PEOPLE + "?approxMatches=true&limit=" + parseInt(limit, 10) + "&query=" + encodeURIComponent(query),
     method: 'GET',
-    types: [PEOPLE_GET_REQUEST, PEOPLE_GET_SUCCESS, PEOPLE_GET_FAILURE]
+    types: [
+      PEOPLE_LIST_REQUEST,
+      { type: PEOPLE_LIST_SUCCESS, meta: { query } },
+      PEOPLE_LIST_FAILURE
+    ]
   }
 });
 
-export const searchPeople = (query, limit = 10) => ({
+/**
+ * FIXME
+ *
+ * @param crsid
+ * @returns {{}}
+ */
+export const getPeople = (crsid) => ({
   [RSAA]: {
-    endpoint: config.ENDPOINT_LOOKUP + "search?limit=" + parseInt(limit, 10) + "&query=" + encodeURIComponent(query),
+    endpoint: config.ENDPOINT_PEOPLE + '/crsid/' + crsid,
     method: 'GET',
-    types: [
-      SEARCH_GET_REQUEST,
-      { type: SEARCH_GET_SUCCESS, meta: { query } },
-      SEARCH_GET_FAILURE
-    ]
+    types: [PEOPLE_GET_REQUEST, PEOPLE_GET_SUCCESS, PEOPLE_GET_FAILURE]
   }
 });

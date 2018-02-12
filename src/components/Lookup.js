@@ -5,7 +5,7 @@ import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import _ from "lodash";
-import {getPerson, searchPeople} from '../redux/actions/lookupApi';
+import {getPeople, listPeople} from '../redux/actions/lookupApi';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
@@ -53,18 +53,19 @@ class Lookup extends Component {
   }
 
   handleChange = (event, { newValue }) => {
-    if (!newValue) {
-      this.props.onChange({target: {name: this.props.name, value: null}});
-    }
     this.setState({
       displayName: newValue,
     });
     this.searchPeopleDebounced(newValue);
   };
 
+  handleDelete = () => {
+    this.props.onChange({target: {name: this.props.name, value: null}});
+  };
+
   getSuggestionValue = (suggestion) => {
     this.props.onChange({target: {name: this.props.name, value: suggestion.identifier.value}});
-    return suggestion.visibleName + " (" + suggestion.identifier.value + ")";
+    return this.displayName(suggestion);
   };
 
   /*
@@ -72,7 +73,7 @@ class Lookup extends Component {
    */
   searchPeopleDebounced(searchText) {
     if (searchText.length >= 2) {
-      this.props.searchPeople(searchText);
+      this.props.listPeople(searchText);
     }
   }
 
@@ -85,19 +86,16 @@ class Lookup extends Component {
       this.setState({suggestions});
     }
     if (nextProps.value && this.props.value !== nextProps.value) {
-      this.props.getPerson(nextProps.value);
-    }
-    if (!this.state.displayName && nextProps.person) {
-      this.setState({
-        displayName: nextProps.person.visibleName + " (" + nextProps.person.identifier.value + ")",
-      });
+      this.props.getPeople(nextProps.value);
     }
   }
 
-  renderInput(inputProps) {
-    const { ref, helperText, label, ...other } = inputProps;
+  renderInput = (inputProps) => {
+    const { ref, helperText, label, person, onDelete, ...other } = inputProps;
 
-    /*{<Chip label="Basic Chip" className={classes.chip} />}*/
+    if (person) {
+      return <Chip label={this.displayName(person)} onDelete={onDelete} />
+    }
 
     return (
       <TextField
@@ -110,10 +108,9 @@ class Lookup extends Component {
     );
   }
 
-  renderSuggestion(suggestion, { query, isHighlighted }) {
-    const text = suggestion.visibleName + " (" + suggestion.identifier.value + ")";
-    const matches = match(text, query);
-    const parts = parse(text, matches);
+  renderSuggestion = (suggestion, { query, isHighlighted }) => {
+    const matches = match(this.displayName(suggestion), query);
+    const parts = parse(this.displayName(suggestion), matches);
 
     return (
       <MenuItem selected={isHighlighted} component="div">
@@ -163,15 +160,22 @@ class Lookup extends Component {
           helperText: this.props.helperText,
           value: this.state.displayName,
           onChange: this.handleChange,
-          disabled: this.props.disabled
+          onDelete: this.handleDelete,
+          disabled: this.props.disabled,
+          person: this.props.person
         }}
       />
      )
   }
+
+  displayName(person) {
+    return person.visibleName + " (" + person.identifier.value + ")";
+  }
 }
 
 Lookup.propTypes = {
-  getPerson: PropTypes.func.isRequired,
+  getPeople: PropTypes.func.isRequired,
+  listPeople: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
@@ -181,7 +185,7 @@ Lookup.propTypes = {
   person: PropTypes.object,
 };
 
-const mapDispatchToProps = { getPerson, searchPeople };
+const mapDispatchToProps = { getPeople, listPeople };
 
 const mapStateToProps = ({ lookupApi: {peopleByCrsid, matchingPeopleByQuery} } , props) => {
 
