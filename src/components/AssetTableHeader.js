@@ -11,7 +11,7 @@ const directionDescriptions = new Map([
 
 // Given the current assets list query and the field name corresponding to a column, return the
 // query which should be run if that column's header is clicked.
-const getNextQuery = (query, field) => {
+export const getNextQuery = (query, field) => {
   const { sort: { field: sortField, direction } } = query;
   if(sortField !== field) {
     return {...query, sort: { field, direction: Direction.ascending } };
@@ -53,7 +53,7 @@ const mapStateToProps = ({ assets: { query } }, { label, field }) => {
 
 const mapDispatchToProps = { getAssets };
 
-const SortCell = connect(mapStateToProps, mapDispatchToProps)(UnconnectedSortCell);
+export const SortCell = connect(mapStateToProps, mapDispatchToProps)(UnconnectedSortCell);
 
 SortCell.propTypes = {
   field: PropTypes.string.isRequired,
