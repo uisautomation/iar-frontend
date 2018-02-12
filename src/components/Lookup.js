@@ -9,57 +9,6 @@ import {getPerson, searchPeople} from '../redux/actions/lookupApi';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
-function renderInput(inputProps) {
-  const { classes, ref, helperText, label, ...other } = inputProps;
-
-  /*{<Chip label="Basic Chip" className={classes.chip} />}*/
-
-  return (
-    <TextField
-      fullWidth
-      inputRef={ref}
-      helperText={helperText}
-      label={label}
-      InputProps={{
-        classes: {
-          input: classes.input,
-        },
-        ...other,
-      }}
-    />
-  );
-}
-
-function renderSuggestion(suggestion, { query, isHighlighted }) {
-  const text = suggestion.visibleName + " (" + suggestion.identifier.value + ")";
-  const matches = match(text, query);
-  const parts = parse(text, matches);
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <div>
-        {parts.map((part, index) => {
-          return part.highlight ? (
-            <strong key={String(index)} style={{ fontWeight: 500 }}>{part.text}</strong>
-          ) : (
-            <span key={String(index)} style={{ fontWeight: 300 }}>{part.text}</span>
-          );
-        })}
-      </div>
-    </MenuItem>
-  );
-}
-
-function renderSuggestionsContainer(options) {
-  const { containerProps, children } = options;
-
-  return (
-    <Paper {...containerProps} square style={{zIndex: 100}}>
-      {children}
-    </Paper>
-  );
-}
-
 const styles = theme => ({
   container: {
     flexGrow: 1,
@@ -72,6 +21,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 3,
     left: 0,
     right: 0,
+    zIndex: 100,
   },
   suggestion: {
     display: 'block',
@@ -102,24 +52,14 @@ class Lookup extends Component {
     this.searchPeopleDebounced = _.debounce(this.searchPeopleDebounced, 200);
   }
 
-  handleSuggestionsFetchRequested = ({ value }) => {
-    this.setState({displayName: value});
-    this.searchPeopleDebounced(value);
-  };
-
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    });
-  };
-
-  handleChangeOther = (event, { newValue }) => {
+  handleChange = (event, { newValue }) => {
     if (!newValue) {
       this.props.onChange({target: {name: this.props.name, value: null}});
     }
     this.setState({
       displayName: newValue,
     });
+    this.searchPeopleDebounced(newValue);
   };
 
   getSuggestionValue = (suggestion) => {
@@ -154,42 +94,75 @@ class Lookup extends Component {
     }
   }
 
-  /*
-  As the user types into the owner AutoComplete the displayName is updated and a list of users
-  matching the searchText is fetched.
-  Deleting all text is detected and the owner field is cleared to allow the deleting of an owner.
-   */
-  // handleOwnerUpdateInput(searchText) {
-  //   if (!searchText) {
-  //     this.props.onChange({target: {name: this.props.name}}, null);
-  //   }
-  //   this.setState({displayName: searchText});
-  //   this.searchPeopleDebounced(searchText)
-  // }
+  renderInput(inputProps) {
+    const { ref, helperText, label, ...other } = inputProps;
+
+    /*{<Chip label="Basic Chip" className={classes.chip} />}*/
+
+    return (
+      <TextField
+        fullWidth
+        inputRef={ref}
+        helperText={helperText}
+        label={label}
+        InputProps={other}
+      />
+    );
+  }
+
+  renderSuggestion(suggestion, { query, isHighlighted }) {
+    const text = suggestion.visibleName + " (" + suggestion.identifier.value + ")";
+    const matches = match(text, query);
+    const parts = parse(text, matches);
+
+    return (
+      <MenuItem selected={isHighlighted} component="div">
+        <div>
+          {parts.map((part, index) => {
+            return part.highlight ? (
+              <strong key={String(index)} style={{ fontWeight: 500 }}>{part.text}</strong>
+            ) : (
+              <span key={String(index)} style={{ fontWeight: 300 }}>{part.text}</span>
+            );
+          })}
+        </div>
+      </MenuItem>
+    );
+  }
+
+  renderSuggestionsContainer(options) {
+    const { containerProps, children } = options;
+
+    return (
+      <Paper {...containerProps} square>
+        {children}
+      </Paper>
+    );
+  }
+
 
   render() {
     const { classes } = this.props;
     return (
       <Autosuggest
+        onSuggestionsFetchRequested={() => {}}
+        onSuggestionsClearRequested={() => {}}
         theme={{
           container: classes.container,
           suggestionsContainerOpen: classes.suggestionsContainerOpen,
           suggestionsList: classes.suggestionsList,
           suggestion: classes.suggestion,
         }}
-        renderInputComponent={renderInput}
+        renderInputComponent={this.renderInput}
+        renderSuggestionsContainer={this.renderSuggestionsContainer}
+        renderSuggestion={this.renderSuggestion}
         suggestions={this.state.suggestions}
-        onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-        renderSuggestionsContainer={renderSuggestionsContainer}
         getSuggestionValue={this.getSuggestionValue}
-        renderSuggestion={renderSuggestion}
         inputProps={{
-          classes,
           label: this.props.label,
           helperText: this.props.helperText,
           value: this.state.displayName,
-          onChange: this.handleChangeOther,
+          onChange: this.handleChange,
           disabled: this.props.disabled
         }}
       />
