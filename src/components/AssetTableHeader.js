@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withStyles } from 'material-ui/styles';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 import { TableRow, TableCell, TableSortLabel, TableHead } from 'material-ui/Table';
+import Tooltip from 'material-ui/Tooltip';
+import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
 
 // A map from sort directions to values for the "direction" prop of TableSortLabel.
 const directionDescriptions = new Map([
@@ -27,8 +30,8 @@ export const getNextQuery = (query, field) => {
  * A table heading cell which shows if the current asset list is sorted by a particular field and,
  * if so, in which direction.
  */
-const UnconnectedSortCell = ({ direction, active, label, nextQuery, getAssets }) => (
-  <TableCell sortDirection={active ? direction : false}>
+const UnconnectedSortCell = ({ direction, active, label, nextQuery, getAssets, ...rest}) => (
+  <TableCell sortDirection={active ? direction : false} {...rest}>
     <TableSortLabel onClick={() => getAssets(nextQuery)} active={active} direction={direction}>
       {label}
     </TableSortLabel>
@@ -57,8 +60,28 @@ export const SortCell = connect(mapStateToProps, mapDispatchToProps)(Unconnected
 
 SortCell.propTypes = {
   field: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.node.isRequired,
 };
+
+const tooltipTextStyle = {
+  label: {
+    whiteSpace: 'nowrap',
+  },
+
+  icon: {
+    fontSize: '0.9rem',
+    verticalAlign: 'text-bottom',
+    paddingLeft: '1ex',
+  },
+};
+
+const TooltipText = withStyles(tooltipTextStyle)(({ title, children, classes }) => (
+  <Tooltip title={<div style={{width: '16em'}}>{ children }</div>}>
+    <div className={classes.label}>
+      { title }<HelpOutlineIcon className={classes.icon} fontSize={true} />
+    </div>
+  </Tooltip>
+));
 
 /**
  * A component which provides the header row for the asset table. Heading titles can be used to
@@ -68,12 +91,22 @@ SortCell.propTypes = {
 export const AssetTableHeader = () => (
   <TableHead>
     <TableRow>
-      <SortCell field='name' label='Name' />
-      <SortCell field='is_complete' label='Status' />
-      <SortCell field='department' label='Department' />
-      <SortCell field='private' label='Private' />
-      <SortCell field='updated_at' label='Last edited' />
-      <TableCell>&nbsp;</TableCell>
+      <SortCell style={{width: '50%'}} field='name' label='Name' />
+      <SortCell style={{width: 8*10}} field='is_complete' label={
+        <TooltipText title="Status">
+          The status is automatically set to complete when the record has a value in all
+          required fields.
+        </TooltipText>
+      }/>
+      <SortCell style={{width: '50%'}} field='department' label='Department' />
+      <SortCell style={{width: 8*3}} field='private' label={
+        <TooltipText title="Private">
+          "Private" marks whether the record should be hidden from users outside of the record's
+          assigned department.
+        </TooltipText>
+      }/>
+      <SortCell style={{width: 8*13}} field='updated_at' label='Last edited' />
+      <TableCell style={{width: 8*4}}>&nbsp;</TableCell>
     </TableRow>
   </TableHead>
 );
