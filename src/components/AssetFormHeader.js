@@ -7,9 +7,11 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 
-const styles = {
+const styles = theme => ({
   flex: { flex: 1 },
-};
+  cancelButton: { color: theme.customColors.white },
+  saveButton: { background: theme.customColors.white }
+});
 
 /*
   Renders the app bar of the form for the creation/editing of an Asset.
@@ -21,10 +23,10 @@ const AssetFormHeader = ({ title, onClick, classes }) => (
         { title }
       </Typography>
       <Link className='App-raised-button-link' to="/">
-        <Button variant="raised" color='primary'>Cancel</Button>
+        <Button className={classes.cancelButton} color='primary'>Cancel</Button>
       </Link>
       &nbsp;
-      <Button variant="raised" onClick={onClick}>Save</Button>
+      <Button className={classes.saveButton} variant="raised" onClick={onClick}>Save</Button>
     </Toolbar>
   </AppBar>
 );

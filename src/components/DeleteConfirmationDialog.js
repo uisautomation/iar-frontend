@@ -16,8 +16,8 @@ import { handleConfirmDelete } from '../redux/actions/deleteConfirmation';
  *
  * The dialogue box is "open" when the URL of the asset being considered for deletion is truthy.
  */
-const DeleteConfirmationDialog = ({ url, name, id, deleteAsset, handleConfirmDelete }) => (
-  <Dialog open={!!url}>
+const DeleteConfirmationDialog = ({ url, name, id, isOpen, deleteAsset, handleConfirmDelete }) => (
+  <Dialog open={isOpen}>
     <DialogTitle>Delete Asset Permanently?</DialogTitle>
     <DialogContent>
       <DialogContentText>
@@ -37,17 +37,20 @@ const DeleteConfirmationDialog = ({ url, name, id, deleteAsset, handleConfirmDel
 
 DeleteConfirmationDialog.propTypes = {
   url: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
   name: PropTypes.string,
   id: PropTypes.string,
   deleteAsset: PropTypes.func.isRequired,
   handleConfirmDelete: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ assets: { assetsByUrl }, deleteConfirmation: { url } }) => {
+const mapStateToProps = (
+  { assets: { assetsByUrl }, deleteConfirmation: { url, userShouldConfirm } }
+) => {
   // The asset which is being considered for deletion.
   const assetRecord= assetsByUrl.get(url);
   const { name, id } = assetRecord ? assetRecord.asset : { };
-  return { url, name, id };
+  return { url, name, id, isOpen: userShouldConfirm };
 };
 
 const mapDispatchToProps = { deleteAsset, handleConfirmDelete };
