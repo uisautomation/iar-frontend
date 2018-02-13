@@ -7,9 +7,12 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 
-const styles = {
+const styles = theme => ({
   flex: { flex: 1 },
-};
+  createButton: {
+    backgroundColor: theme.customColors.white,
+  },
+});
 
 /*
   Renders the app bar of the list view of Assets.
@@ -21,7 +24,7 @@ const AssetListHeader = ({ title, classes }) => (
         { title }
       </Typography>
       <Link className='App-raised-button-link' to="/asset/create">
-        <Button variant='raised'>Create Asset</Button>
+        <Button variant='raised' className={classes.createButton}>Create Asset</Button>
       </Link>
     </Toolbar>
   </AppBar>
