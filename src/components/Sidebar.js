@@ -4,7 +4,6 @@ import { withStyles } from 'material-ui/styles';
 import LogoutLink from './LogoutLink';
 import Divider from 'material-ui/Divider';
 import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 import List from 'material-ui/List';
 import SidebarNavLink from './SidebarNavLink';
 import Logo from '../images/cambridgeuniversity_logo.svg';
