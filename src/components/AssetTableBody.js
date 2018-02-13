@@ -12,14 +12,14 @@ const styles = theme => ({
   assetTableBody: {
     position: 'relative',
 
-    '& tr': {
+    '& td': {
       position: 'relative',
       backgroundColor: theme.palette.background.paper,
     },
     '& tr:hover td': {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.customColors.assetTableHover,
     },
-    '& tr:after': {
+    '& td:after': {
       content: "''",
       position: 'absolute',
       top: 0, left: 0, width: '100%', height: '100%', zIndex: -1,

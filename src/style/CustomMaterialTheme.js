@@ -13,6 +13,11 @@ const blueyGrey = '#ECEFF1';
 const complete = '#7ed321';
 const inProgress = '#f5a623';
 
+// Background of asset when hovering in asset table. We cannot use theme.action.hover since that is
+// implemented as an rgba(...) overlay colour which shows the box-shadows per cell we use to
+// implement the asset table body.
+const assetTableHover = '#dbdbdb';
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -32,7 +37,8 @@ const theme = createMuiTheme({
     lightGrey,
     blueyGrey,
     complete,
-    inProgress
+    inProgress,
+    assetTableHover
   }
 });
 
