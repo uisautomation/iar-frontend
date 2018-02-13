@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import theme from './style/CustomMaterialTheme';
 import configureMockStore from 'redux-mock-store';
 import { middlewares } from './redux/enhancer';
 import { initialState as assetsInitialState } from './redux/reducers/assetRegisterApi';
@@ -30,7 +31,6 @@ export const createMockStore = (initialState = DEFAULT_INITIAL_STATE) => mockSto
  */
 const render = (component, {store, url} = {}) => {
   if(!store) { store = createMockStore(DEFAULT_INITIAL_STATE); }
-  const theme = createMuiTheme();
   let wrapped_component = (
     <Provider store={store}>
       <MuiThemeProvider theme={theme}>
