@@ -7,10 +7,14 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import List from 'material-ui/List';
 import SidebarNavLink from './SidebarNavLink';
+import Logo from '../images/cambridgeuniversity_logo.svg';
 
 const styles = theme => ({
   drawerHeader: theme.mixins.toolbar,
   nested: { paddingLeft: theme.spacing.unit * 4 },
+  camLogo: { width: '145px', paddingTop: '10px'},
+  tagLine: { fontSize: 12},
+  logoToolbar: { flexDirection:'column', alignItems: 'flex-start', paddingLeft: theme.spacing.unit * 2  }
 });
 
 /**
@@ -19,8 +23,9 @@ const styles = theme => ({
 const Sidebar = ({ classes, history, logout }) => (
   <div>
     <div className={classes.drawerHeader}>
-      <Toolbar>
-        <Typography variant='title' color='inherit'>IAR</Typography>
+      <Toolbar className={classes.logoToolbar} disableGutters={true}>
+        <img src={Logo} className={classes.camLogo} alt="Cambridge University Logo"/>
+        <div className={classes.tagLine}>Information Asset Register</div>
       </Toolbar>
     </div>
     <Divider />
