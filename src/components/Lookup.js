@@ -52,11 +52,21 @@ class Lookup extends Component {
     this.searchPeopleDebounced = _.debounce(this.searchPeopleDebounced, 200);
   }
 
+  /*
+  FIXME .. if the searchText has 2 or more chars.
+   */
   handleChange = (event, { newValue }) => {
-    this.setState({
-      searchText: newValue,
-    });
-    this.searchPeopleDebounced(newValue);
+    this.setState({searchText: newValue});
+    if (newValue.length >= 2) {
+      let suggestions = this.props.matchingPeopleByQuery.get(newValue);
+      if (suggestions) {
+        this.setState({suggestions});
+      } else {
+        this.searchPeopleDebounced(newValue);
+      }
+    } else {
+      this.setState({suggestions: []});
+    }
   };
 
   handleDelete = () => {
@@ -65,23 +75,15 @@ class Lookup extends Component {
 
   getSuggestionValue = (suggestion) => {
     this.props.onChange({target: {name: this.props.name, value: suggestion.identifier.value}});
+    this.setState({searchText: ""});
     return this.displayName(suggestion);
   };
 
   /*
-  Dispatches the search people action after being debounced if the searchText has 2 or more chars.
+  Dispatches the search people action after being debounced
    */
   searchPeopleDebounced(searchText) {
-    if (searchText.length >= 2) {
-      let suggestions = this.props.matchingPeopleByQuery.get(searchText);
-      if (suggestions) {
-        this.setState({suggestions});
-      } else {
-        this.props.listPeople(searchText);
-      }
-    } else {
-      this.setState({suggestions: []});
-    }
+    this.props.listPeople(searchText);
   }
 
   /*
@@ -98,7 +100,7 @@ class Lookup extends Component {
   }
 
   renderInput = (inputProps) => {
-    const { ref, helperText, label, person, onDelete, ...other } = inputProps;
+    const { ref, helperText, label, person, onChange, onDelete, ...other } = inputProps;
 
     if (person) {
       return <Chip label={this.displayName(person)} onDelete={onDelete} />
@@ -110,6 +112,7 @@ class Lookup extends Component {
         inputRef={ref}
         helperText={helperText}
         label={label}
+        onChange={onChange}
         InputProps={other}
       />
     );

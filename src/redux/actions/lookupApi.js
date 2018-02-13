@@ -27,9 +27,9 @@ export const listPeople = (query, limit = 10) => {
       endpoint: config.ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
       method: 'GET',
       types: [
-        PEOPLE_LIST_REQUEST,
+        {type: PEOPLE_LIST_REQUEST, meta: {query}},
         {type: PEOPLE_LIST_SUCCESS, meta: {query}},
-        PEOPLE_LIST_FAILURE
+        {type: PEOPLE_LIST_FAILURE, meta: {query}},
       ]
     }
   }
