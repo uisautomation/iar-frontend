@@ -1,3 +1,8 @@
+/**
+ * A component implementing an auto-complete that search's for a user either by name or CRSID and returns a list of
+ * possible matches for the user to select. The CRSID is set as the selected value. Also an initial CRSID is looked up
+ * and the full name is displayed as the selected value.
+ */
 import React, {Component} from 'react'
 import {Chip, MenuItem, Paper, TextField} from 'material-ui';
 import { withStyles } from 'material-ui/styles';
@@ -33,77 +38,112 @@ const styles = theme => ({
   },
 });
 
-/*
-  A component implementing an auto-complete that search's for a user either by name or CRSID and returns a list of
-  possible matches for the user to select. The CRSID is set as the selected value. Also an initial CRSID is looked up
-  and the full name is displayed as the selected value.
-  */
+/**
+ * Called by Autosuggest to render the sugestion container.
+ */
+const renderSuggestionsContainer = (options) => {
+  const { containerProps, children } = options;
+
+  return (
+    <Paper {...containerProps} square>
+      {children}
+    </Paper>
+  );
+};
+
+/**
+ * @param person a person model retrieved from lookup
+ * @returns {string} the display name for the person
+ */
+const formatDisplayName = (person) => {
+  return person.visibleName + " (" + person.identifier.value + ")";
+};
+
 class Lookup extends Component {
 
   constructor() {
     super();
 
     this.state = {
+      // the typed search text
+      searchText: "",
+      // the suggestions matching the search text
       suggestions: [],
-      // the selected user's full name
-      searchText: ""
     };
 
-    this.searchPeopleDebounced = _.debounce(this.searchPeopleDebounced, 200);
+    this.listPeopleDebounced = _.debounce(this.listPeopleDebounced, 200);
   }
 
-  /*
-  FIXME .. if the searchText has 2 or more chars.
+  /**
+   * Dispatches the list people action after being debounced.
+   *
+   * @param searchText the search text for the action
    */
-  handleChange = (event, { newValue }) => {
+  listPeopleDebounced(searchText) {
+    this.props.listPeople(searchText);
+  }
+
+  /**
+   * Handles the input of search text. Suggestions are shown after two characters are typed.
+   * The local cache is checked for suggestions before the lookup api is called.
+   */
+  handleChange = ({ }, { newValue }) => {
     this.setState({searchText: newValue});
     if (newValue.length >= 2) {
       let suggestions = this.props.matchingPeopleByQuery.get(newValue);
       if (suggestions) {
         this.setState({suggestions});
       } else {
-        this.searchPeopleDebounced(newValue);
+        this.listPeopleDebounced(newValue);
       }
     } else {
       this.setState({suggestions: []});
     }
   };
 
+  /**
+   * Handles the deletion of the person chip. Clears the input value.
+   */
   handleDelete = () => {
     this.props.onChange({target: {name: this.props.name, value: null}});
   };
 
+  /**
+   * Called by Autosuggest when a suggestion is selected. Updates the input vale with the CRSID.
+   * It's irrelevant what it actually returns as TextField is replaced by Chip.
+   */
   getSuggestionValue = (suggestion) => {
     this.props.onChange({target: {name: this.props.name, value: suggestion.identifier.value}});
-    this.setState({searchText: ""});
-    return this.displayName(suggestion);
+    return "";
   };
 
-  /*
-  Dispatches the search people action after being debounced
-   */
-  searchPeopleDebounced(searchText) {
-    this.props.listPeople(searchText);
-  }
-
-  /*
-  Fetch the owner's name for the lookup API.
+  /**
+   * Process property changes as follows ..
    */
   componentWillReceiveProps(nextProps) {
+
+    // .. attempts to populate suggestions from the redux mapped matchingPeopleByQuery.
     let suggestions = nextProps.matchingPeopleByQuery.get(this.state.searchText);
     if (suggestions) {
       this.setState({suggestions});
     }
+
+    // .. if the input value (CRSID) has been set - resolve the name from the lookup API
     if (nextProps.value && this.props.value !== nextProps.value) {
       this.props.getPeople(nextProps.value);
     }
   }
 
+  /**
+   * Called by Autosuggest to render the input. If the person property
+   * (resolved from the input value) is set then a Chip representing the selected user is
+   * displayed. Other a TextField is rendered allowing the user to search for a person.
+   */
   renderInput = (inputProps) => {
     const { ref, helperText, label, person, onChange, onDelete, ...other } = inputProps;
 
     if (person) {
-      return <Chip label={this.displayName(person)} onDelete={onDelete} />
+      return <Chip label={formatDisplayName(person)} onDelete={onDelete} />
     }
 
     return (
@@ -116,11 +156,14 @@ class Lookup extends Component {
         InputProps={other}
       />
     );
-  }
+  };
 
+  /**
+   * Called by Autosuggest to render individual suggestions. Text highlighting is handled here.
+   */
   renderSuggestion = (suggestion, { query, isHighlighted }) => {
-    const matches = match(this.displayName(suggestion), query);
-    const parts = parse(this.displayName(suggestion), matches);
+    const matches = match(formatDisplayName(suggestion), query);
+    const parts = parse(formatDisplayName(suggestion), matches);
 
     return (
       <MenuItem selected={isHighlighted} component="div">
@@ -135,21 +178,12 @@ class Lookup extends Component {
         </div>
       </MenuItem>
     );
-  }
-
-  renderSuggestionsContainer(options) {
-    const { containerProps, children } = options;
-
-    return (
-      <Paper {...containerProps} square>
-        {children}
-      </Paper>
-    );
-  }
-
+  };
 
   render() {
+
     const { classes } = this.props;
+
     return (
       <Autosuggest
         onSuggestionsFetchRequested={() => {}}
@@ -161,7 +195,7 @@ class Lookup extends Component {
           suggestion: classes.suggestion,
         }}
         renderInputComponent={this.renderInput}
-        renderSuggestionsContainer={this.renderSuggestionsContainer}
+        renderSuggestionsContainer={renderSuggestionsContainer}
         renderSuggestion={this.renderSuggestion}
         suggestions={this.state.suggestions}
         getSuggestionValue={this.getSuggestionValue}
@@ -176,10 +210,6 @@ class Lookup extends Component {
         }}
       />
      )
-  }
-
-  displayName(person) {
-    return person.visibleName + " (" + person.identifier.value + ")";
   }
 }
 
@@ -199,6 +229,7 @@ const mapDispatchToProps = { getPeople, listPeople };
 
 const mapStateToProps = ({ lookupApi: {peopleByCrsid, matchingPeopleByQuery} } , props) => {
 
+  // attempt to resolve the selected person from the mapped peopleByCrsid.
   let person = null;
   if (props.value) {
     person = peopleByCrsid.get(props.value);

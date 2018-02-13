@@ -22,6 +22,7 @@ const PERSON_FIXTURE = {
   isStudent: false
 };
 
+// test that a TextField is rendered there is no initial input value
 test('a TextField is rendered if no value', () => {
 
   const testInstance = render(createLookup());
@@ -32,6 +33,7 @@ test('a TextField is rendered if no value', () => {
   expect(textFieldProps.helperText).toBe('You can search by name or CRSid');
 });
 
+// test that a Chip is rendered there is an initial input value
 test('a Chip is rendered if value', () => {
 
   const testInstance = render(createLookup("msb999"), {
@@ -46,6 +48,7 @@ test('a Chip is rendered if value', () => {
   expect(testInstance.findByType(Chip).props.label).toBe('M. Bamford (msb999)');
 });
 
+// test that deleting Chip clears the input value
 test('deleting the Chip resets value', () => {
 
   let onChangeEvent;
@@ -64,6 +67,7 @@ test('deleting the Chip resets value', () => {
   expect(onChangeEvent).toEqual({target: {name: 'owner', value: null}});
 });
 
+// test a people list request is invoked when search text is typed
 test('a people list request is invoked when search text is typed', async () => {
 
   const store = createMockStore();

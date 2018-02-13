@@ -1,6 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
 import config from "../../config";
-import assert from "assert";
 
 export const PEOPLE_LIST_REQUEST = Symbol('PEOPLE_LIST_REQUEST');
 export const PEOPLE_LIST_SUCCESS = Symbol('PEOPLE_LIST_SUCCESS');
@@ -11,11 +10,10 @@ export const PEOPLE_GET_SUCCESS = Symbol('PEOPLE_GET_SUCCESS');
 export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
 
 /**
- * FIXME
+ * Fetch a list of people.
  *
- * @param query
- * @param limit
- * @returns {{}}
+ * @param query the search text used to search for people.
+ * @param limit the max size of the list to return (default 10).
  */
 export const listPeople = (query, limit = 10) => {
   const the_limit = parseInt(limit, 10);
@@ -36,10 +34,7 @@ export const listPeople = (query, limit = 10) => {
 };
 
 /**
- * FIXME
- *
- * @param crsid
- * @returns {{}}
+ * Fetch a person by their CRSID.
  */
 export const getPeople = (crsid) => ({
   [RSAA]: {

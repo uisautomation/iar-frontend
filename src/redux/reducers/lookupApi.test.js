@@ -2,13 +2,15 @@ import Cache from '../cache';
 import reducer, { initialState } from './lookupApi';
 import { PEOPLE_GET_SUCCESS, PEOPLE_LIST_SUCCESS } from '../actions/lookupApi';
 
-test('the initial state is correctly defined', () => {
+// test that the state is correctly initialised.
+test('the state is correctly initialised', () => {
   const nextState = reducer(undefined, {});
 
   expect(nextState.peopleByCrsid instanceof Map).toBe(true);
   expect(nextState.matchingPeopleByQuery instanceof Cache).toBe(true);
 });
 
+// test that a people list result is cached
 test('a people list result is cached', () => {
 
   const results = [
@@ -32,6 +34,7 @@ test('a people list result is cached', () => {
   expect(nextState.matchingPeopleByQuery.get('msb9')).toBe(results);
 });
 
+// test the people list cache doesn't grow beyond 20
 test('the people list cache is pruned', () => {
 
   const results = [
@@ -58,7 +61,8 @@ test('the people list cache is pruned', () => {
   expect(nextState.matchingPeopleByQuery.get('msb10')).toBeDefined();
 });
 
-test('', () => {
+// a retrieved person model is set in peopleByCrsid
+test('a retrieved person model is set in peopleByCrsid', () => {
 
   const payload = {
     url: "http://localhost:8080/people/crsid/msb999",
