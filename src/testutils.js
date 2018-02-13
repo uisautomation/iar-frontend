@@ -5,7 +5,8 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
+import theme from './style/CustomMaterialTheme';
 import configureMockStore from 'redux-mock-store';
 import { middlewares } from './redux/enhancer';
 import { initialState as assetsInitialState } from './redux/reducers/assetRegisterApi';
@@ -31,7 +32,6 @@ export const createMockStore = (initialState = DEFAULT_INITIAL_STATE) => mockSto
  */
 const render = (component, {store, url} = {}) => {
   if(!store) { store = createMockStore(DEFAULT_INITIAL_STATE); }
-  const theme = createMuiTheme();
 
   // Make sure this hierarchy reflects that in App.js.
   let wrapped_component = (

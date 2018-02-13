@@ -11,12 +11,12 @@ const styles = theme => ({
     borderRadius: theme.spacing.unit * 0.25,
   },
   complete: {
-    backgroundColor: theme.palette.complete,
-    color: '#fff',
+    backgroundColor: theme.customColors.complete,
+    color: theme.customColors.white,
   },
   inProgress: {
-    backgroundColor: theme.palette.inProgress,
-    color: '#fff',
+    backgroundColor: theme.customColors.inProgress,
+    color: theme.customColors.white,
   },
 });
 

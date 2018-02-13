@@ -1,23 +1,15 @@
 import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom'
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider } from 'material-ui/styles';
 import { IntlProvider } from 'react-intl';
 import Snackbar from '../components/Snackbar';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
 import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
 import ScrollToTop from '../components/ScrollToTop';
+import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
-
-const theme = createMuiTheme();
-
-// Update colours
-theme.palette = {
-  ...theme.palette,
-  complete: '#7ed321',
-  inProgress: '#f5a623',
-};
 
 /*
   IAR main app component.
