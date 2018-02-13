@@ -1,25 +1,42 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Drawer from 'material-ui/Drawer'
-import logo from '../images/logo.svg'
-import LogoutLink from './LogoutLink'
+import React from 'react';
+import { withStyles } from 'material-ui/styles';
 
-/*
-  Renders the IAR application side bar.
+import LogoutLink from './LogoutLink';
+import Divider from 'material-ui/Divider';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import List from 'material-ui/List';
+import SidebarNavLink from './SidebarNavLink';
+import Logo from '../images/cambridgeuniversity_logo.svg';
+
+const styles = theme => ({
+  drawerHeader: theme.mixins.toolbar,
+  nested: { paddingLeft: theme.spacing.unit * 4 },
+  camLogo: { width: '145px', paddingTop: '10px'},
+  tagLine: { fontSize: 12},
+  logoToolbar: { flexDirection:'column', alignItems: 'flex-start', paddingLeft: theme.spacing.unit * 2  }
+});
+
+/**
+ * The content of the IAR application side bar.
  */
-const Sidebar = () => (
-  <Drawer variant="permanent">
-    <img src={logo} className="App-logo" alt="logo" />
-    <h3>Assets</h3>
-    <ul>
-      <li><Link to="/assets/dept">My department</Link></li>
-      <li><Link to="/assets/all">All</Link></li>
-      <hr/>
-      <li><Link to="/help">Help</Link></li>
-      <hr/>
-      <li><LogoutLink>Sign out</LogoutLink></li>
-    </ul>
-  </Drawer>
+const Sidebar = ({ classes, history, logout }) => (
+  <div>
+    <div className={classes.drawerHeader}>
+      <Toolbar className={classes.logoToolbar} disableGutters={true}>
+        <img src={Logo} className={classes.camLogo} alt="Cambridge University Logo"/>
+        <div className={classes.tagLine}>Information Asset Register</div>
+      </Toolbar>
+    </div>
+    <Divider />
+
+    <List component='nav'>
+      <SidebarNavLink to='/assets/all' label='All Assets' />
+      <SidebarNavLink to='/assets/dept' label='Department of Foo' className={classes.nested} />
+      <SidebarNavLink to='/help' label='Help' />
+      <SidebarNavLink component={LogoutLink} label='Sign out' />
+    </List>
+  </div>
 );
 
-export default Sidebar
+export default withStyles(styles)(Sidebar);
