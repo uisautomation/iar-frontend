@@ -16,12 +16,13 @@ const styles = theme => ({
     height: '100%',
   },
   drawerPaper: {
-    position: 'relative',
-    height: '100%',
+    position: 'fixed',
+    height: '100vh',
     width: drawerWidth,
   },
   pageContent: {
     width: '100%',
+    marginLeft: drawerWidth,
   },
 });
 
