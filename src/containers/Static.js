@@ -45,7 +45,7 @@ const Static = ({ page, classes }) => {
         <Paper className={classes.paper}>
           <Grid container justify='center'>
             <Grid item xs={12} sm={10} md={8} lg={6} >
-              <Typography>{ content }</Typography>
+              <Typography component='div'>{ content }</Typography>
             </Grid>
           </Grid>
         </Paper>
