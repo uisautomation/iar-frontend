@@ -1,7 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import { getAssets, Direction } from './assetRegisterApi';
 import { ENDPOINT_ASSETS } from '../../config';
-import {splitUrl} from "../../testutils";
+import splitUrl from "../../test/splitUrl";
 
 // call getAssets() with the passed arguments, calls splitUrl, checks the baseUrl is the assets
 // endpoint and returns the queryItems from splitUrl()
