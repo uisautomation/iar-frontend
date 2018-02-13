@@ -133,7 +133,7 @@ class AssetForm extends Component {
     const handleHandleSave = ({ error, payload }) => {
       if (!error) {
         const { navigateOnSave, history,  snackbarOpen } = this.props;
-        snackbarOpen('"' + payload.name + '" saved.');
+        snackbarOpen('"' + (payload.name ? payload.name : payload.id) + '" saved.');
         history.push(navigateOnSave);
       }
     };
@@ -164,7 +164,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id ) : 'Create new asset'}
+          title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id) : 'Create new asset'}
         />
 
         <Grid container>

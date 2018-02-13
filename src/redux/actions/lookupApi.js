@@ -1,33 +1,45 @@
 import { RSAA } from 'redux-api-middleware';
 import config from "../../config";
 
+export const PEOPLE_LIST_REQUEST = Symbol('PEOPLE_LIST_REQUEST');
+export const PEOPLE_LIST_SUCCESS = Symbol('PEOPLE_LIST_SUCCESS');
+export const PEOPLE_LIST_FAILURE = Symbol('PEOPLE_LIST_FAILURE');
+
 export const PEOPLE_GET_REQUEST = Symbol('PEOPLE_GET_REQUEST');
 export const PEOPLE_GET_SUCCESS = Symbol('PEOPLE_GET_SUCCESS');
 export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
 
-export const SEARCH_GET_REQUEST = Symbol('SEARCH_GET_REQUEST');
-export const SEARCH_GET_SUCCESS = Symbol('SEARCH_GET_SUCCESS');
-export const SEARCH_GET_FAILURE = Symbol('SEARCH_GET_FAILURE');
+/**
+ * Fetch a list of people.
+ *
+ * @param query the search text used to search for people.
+ * @param limit the max size of the list to return (default 10).
+ */
+export const listPeople = (query, limit = 10) => {
+  const the_limit = parseInt(limit, 10);
+  if (!the_limit || the_limit <= 0) {
+    throw new Error('the limit must be > 0');
+  }
+  return {
+    [RSAA]: {
+      endpoint: config.ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
+      method: 'GET',
+      types: [
+        {type: PEOPLE_LIST_REQUEST, meta: {query}},
+        {type: PEOPLE_LIST_SUCCESS, meta: {query}},
+        {type: PEOPLE_LIST_FAILURE, meta: {query}},
+      ]
+    }
+  }
+};
 
 /**
- * Request an individual asset by URL.
+ * Fetch a person by their CRSID.
  */
-export const getPerson = (crsid) => ({
+export const getPeople = (crsid) => ({
   [RSAA]: {
-    endpoint: config.ENDPOINT_LOOKUP + 'people/crsid/' + crsid,
+    endpoint: config.ENDPOINT_PEOPLE + '/crsid/' + crsid,
     method: 'GET',
     types: [PEOPLE_GET_REQUEST, PEOPLE_GET_SUCCESS, PEOPLE_GET_FAILURE]
-  }
-});
-
-export const searchPeople = (query, limit = 10) => ({
-  [RSAA]: {
-    endpoint: config.ENDPOINT_LOOKUP + "search?limit=" + parseInt(limit, 10) + "&query=" + encodeURIComponent(query),
-    method: 'GET',
-    types: [
-      SEARCH_GET_REQUEST,
-      { type: SEARCH_GET_SUCCESS, meta: { query } },
-      SEARCH_GET_FAILURE
-    ]
   }
 });
