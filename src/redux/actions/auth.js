@@ -11,8 +11,8 @@ import { login as implicitLogin, logout as implicitLogout } from 'redux-implicit
  * OAuth2 credentials configuration for the IAR frontend application.
  */
 const config = {
-  url: "https://experimental-oauth2.gcloud.automation.uis.cam.ac.uk/oauth2/auth",
-  client: "iar-frontend-local",
+  url: "http://localhost:4444/oauth2/auth",
+  client: "testclient",
   redirect: window.location.origin + '/oauth2-callback',  // HACK: get the base URL of the website
   scope: "assetregister lookup:anonymous",
   width: 500, // Width (in pixels) of login popup window. Optional, default: 400

@@ -3,22 +3,37 @@
 
 Frontend for IAR web application. Bootstrapped with Create React App.
 
-To install dependencies:
+## Install dependencies
 
 `npm install`
 
-To run locally:
+## Run a development instance
+
+To run locally, firstly start a local copy of the IAR backend, OAuth2 endpoint
+and lookupproxy:
+
+`docker-compose up`
+
+Then create the "testclient" OAuth2 client:
+
+`./scripts/create-client.sh`
+
+Then start the local development server:
 
 `npm start`
 
-To build for production:
+**NOTE:** The "testclient" client can also be used to log into the asset register
+developer UI at http://localhost:8000/ui and also to log into the lookup proxy
+developer UI at http://localhost:8080/ui.
 
-`npm build`
+## Build for production
 
-To run the tests:
+`npm run build`
+
+## Run the tests
 
 `npm test`
 
-To serve some documentation on the components
+## Serve some documentation on the components
 
 `npm run styleguide`
