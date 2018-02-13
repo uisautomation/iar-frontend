@@ -22,7 +22,6 @@ beforeEach(() => {
 });
 
 test('asset list response updates replaces list if url does not match next or prev', () => {
-  const previousState = { ...initialState, summaries: [{url: 'x'}, {url: 'y'}] };
   const action = { type: ASSETS_LIST_SUCCESS, meta: { url: 'zzz' }, payload: {
     next: 'xxx', previous: 'yyy', results: [{url: 'a', x: 1}, {url: 'b', x: 2}] } };
   const nextState = reducer(initialState, action);

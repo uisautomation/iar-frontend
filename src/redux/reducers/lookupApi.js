@@ -3,7 +3,7 @@ import {
   PEOPLE_LIST_SUCCESS,
 } from '../actions/lookupApi';
 
-import {Cache} from 'immutable-cache';
+import Cache from '../cache';
 
 /**
  * State managed by the lookup API reducers.
@@ -13,7 +13,7 @@ export const initialState = {
   peopleByCrsid: new Map(),
   // a cache of arrays of people records returned by the lookup api search endpoint -
   // keyed on the search text that produced the result.
-  matchingPeopleByQuery: new Cache({maxSize: 50}),
+  matchingPeopleByQuery: new Cache({maxSize: 20}),
 };
 
 export default (state = initialState, action) => {
