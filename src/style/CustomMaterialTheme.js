@@ -1,5 +1,6 @@
 import { createMuiTheme } from 'material-ui/styles';
 
+const paleGreen = '#F1FBFC';
 const lightGreen = '#91B9A4';
 const coreGreen = '#00B1C1';
 const darkGreen = '#106470';
@@ -8,6 +9,15 @@ const darkGrey = '#212121';
 const mediumGrey = '#757575';
 const lightGrey = '#F0F0F0';
 const blueyGrey = '#ECEFF1';
+
+// For complete/in-progress indicators
+const complete = '#7ed321';
+const inProgress = '#f5a623';
+
+// Background of asset when hovering in asset table. We cannot use theme.action.hover since that is
+// implemented as an rgba(...) overlay colour which shows the box-shadows per cell we use to
+// implement the asset table body.
+const assetTableHover = paleGreen;
 
 const theme = createMuiTheme({
   palette: {
@@ -26,7 +36,10 @@ const theme = createMuiTheme({
     darkGrey,
     mediumGrey,
     lightGrey,
-    blueyGrey
+    blueyGrey,
+    complete,
+    inProgress,
+    assetTableHover
   }
 });
 
