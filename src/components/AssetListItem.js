@@ -16,13 +16,19 @@ import Tooltip from 'material-ui/Tooltip';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { FormattedRelative, FormattedDate, FormattedTime } from 'react-intl';
 import AssetStatus from './AssetStatus';
+import { withStyles } from 'material-ui/styles';
 
-const PrivateIcon = ({ isPrivate }) => {
+const privateIconStyles = theme => ({
+  privateIcon: {color: theme.customColors.mediumGrey}
+});
+
+const PrivateIcon = withStyles(privateIconStyles)(({ isPrivate, classes }) => {
   // this has three return values since "isPrivate" may be null/not a Boolean
-  if(isPrivate === true) { return <Tooltip title='Private'><VisibilityOffIcon /></Tooltip>; }
-  if(isPrivate === false) { return <Tooltip title='Not Private'><VisibilityIcon /></Tooltip>; }
+  if(isPrivate === true) { return <span className={classes.privateIcon}><Tooltip title='Private' ><VisibilityOffIcon /></Tooltip></span>; }
+  if(isPrivate === false) { return <span className={classes.privateIcon}><Tooltip title='Not Private'><VisibilityIcon /></Tooltip></span>; }
   return null;
-}
+})
+
 
 class MoreMenu extends Component {
   state = {
