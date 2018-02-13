@@ -87,7 +87,7 @@ class Lookup extends Component {
    * Handles the input of search text. Suggestions are shown after two characters are typed.
    * The local cache is checked for suggestions before the lookup api is called.
    */
-  handleChange = ({ }, { newValue }) => {
+  handleChange = (_, { newValue }) => {
     this.setState({searchText: newValue});
     if (newValue.length >= 2) {
       let suggestions = this.props.matchingPeopleByQuery.get(newValue);
