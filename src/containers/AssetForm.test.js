@@ -1,12 +1,6 @@
 // mock any components which are troublesome in our test suite
 import '../test/mocks';
 
-// Mock configuration for endpoints
-jest.mock('../config', () => ({
-  ENDPOINT_ASSETS: 'http://iar-backend.invalid/assets/',
-  ENDPOINT_PEOPLE: 'http://lookupproxy.invalid/people',
-}));
-
 import React from 'react';
 import fetch_mock from 'fetch-mock';
 import { AppBar, RadioGroup, TextField, Typography, FormControlLabel } from 'material-ui';
@@ -16,7 +10,6 @@ import { createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
 import {ASSET_GET_REQUEST, ASSET_PUT_REQUEST, ASSET_POST_REQUEST} from '../redux/actions/assetRegisterApi';
 import AssetForm from "./AssetForm";
 import {Route} from 'react-router-dom';
-import {ENDPOINT_ASSETS, ENDPOINT_PEOPLE} from "../config";
 import AssetFormHeader from '../components/AssetFormHeader';
 import {SNACKBAR_OPEN} from '../redux/actions/snackbar';
 
@@ -40,13 +33,13 @@ const NEW_ASSET_FIXTURE = {
   digital_storage_security: [ 'encryption', 'acl' ]
 };
 
-const ASSET_FIXTURE_URL = ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/';
+const ASSET_FIXTURE_URL = process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/';
 
 const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 beforeEach(() => {
-  fetch_mock.get(ENDPOINT_PEOPLE + '/crsid/mb2174', {});
-  fetch_mock.get(ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_PEOPLE + '/crsid/mb2174', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {});
 });
 
 /*
@@ -156,7 +149,7 @@ test('can save a new asset', async () => {
   testInstance.findByType(AssetFormHeader).props.onClick();
 
   const post_action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
-  expect(post_action.meta.url).toEqual(ENDPOINT_ASSETS);
+  expect(post_action.meta.url).toEqual(process.env.REACT_APP_ENDPOINT_ASSETS);
   expect(JSON.parse(post_action.meta.body)).toEqual(NEW_ASSET_FIXTURE);
 
   await condition(() => store.getActions().find(action => action.type === SNACKBAR_OPEN));

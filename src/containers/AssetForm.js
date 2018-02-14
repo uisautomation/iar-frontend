@@ -1,4 +1,3 @@
-import config from '../config';
 import React, { Component } from 'react'
 
 import Page from '../containers/Page';
@@ -141,7 +140,7 @@ class AssetForm extends Component {
     if (this.props.assetUrl) {
       this.props.putAsset(this.props.assetUrl, body).then(handleHandleSave);
     } else {
-      this.props.postAsset(config.ENDPOINT_ASSETS, body).then(handleHandleSave);
+      this.props.postAsset(process.env.REACT_APP_ENDPOINT_ASSETS, body).then(handleHandleSave);
     }
   }
 
@@ -425,7 +424,7 @@ const mapStateToProps = ({ assets } , { match : {params: {assetId} } } ) => {
   let assetUrl, asset = null;
 
   if (assetId !== 'create') {
-    assetUrl = config.ENDPOINT_ASSETS + assetId + '/';
+    assetUrl = process.env.REACT_APP_ENDPOINT_ASSETS + assetId + '/';
     asset = assets.assetsByUrl.get(assetUrl);
     if (asset && asset.asset.isLoading) {
       asset = null;

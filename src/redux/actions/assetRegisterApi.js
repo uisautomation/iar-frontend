@@ -1,5 +1,4 @@
 import { RSAA } from 'redux-api-middleware';
-import { ENDPOINT_ASSETS } from '../../config';
 
 export const ASSETS_LIST_REQUEST = Symbol('ASSETS_LIST_REQUEST');
 export const ASSETS_LIST_SUCCESS = Symbol('ASSETS_LIST_SUCCESS');
@@ -103,7 +102,7 @@ export const getAssets = (unsanitisedQuery = {}) => {
   }
 
   // Build the URL
-  const url = ENDPOINT_ASSETS + (
+  const url = process.env.REACT_APP_ENDPOINT_ASSETS + (
     (queryParts.length > 0)
     ? ('?' + queryParts.map(([key, value]) => key + '=' + encodeURIComponent(value)).join('&'))
     : ''

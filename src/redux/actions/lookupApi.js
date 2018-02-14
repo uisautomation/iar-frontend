@@ -1,5 +1,4 @@
 import { RSAA } from 'redux-api-middleware';
-import config from "../../config";
 
 export const PEOPLE_LIST_REQUEST = Symbol('PEOPLE_LIST_REQUEST');
 export const PEOPLE_LIST_SUCCESS = Symbol('PEOPLE_LIST_SUCCESS');
@@ -22,7 +21,7 @@ export const listPeople = (query, limit = 10) => {
   }
   return {
     [RSAA]: {
-      endpoint: config.ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
+      endpoint: process.env.REACT_APP_ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
       method: 'GET',
       types: [
         {type: PEOPLE_LIST_REQUEST, meta: {query}},
@@ -38,7 +37,7 @@ export const listPeople = (query, limit = 10) => {
  */
 export const getPeople = (crsid) => ({
   [RSAA]: {
-    endpoint: config.ENDPOINT_PEOPLE + '/crsid/' + crsid,
+    endpoint: process.env.REACT_APP_ENDPOINT_PEOPLE + '/crsid/' + crsid,
     method: 'GET',
     types: [PEOPLE_GET_REQUEST, PEOPLE_GET_SUCCESS, PEOPLE_GET_FAILURE]
   }

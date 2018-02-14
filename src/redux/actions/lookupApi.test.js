@@ -1,5 +1,4 @@
 import { RSAA } from 'redux-api-middleware';
-import { ENDPOINT_PEOPLE } from '../../config';
 import { listPeople } from "./lookupApi";
 import splitUrl from "../../test/splitUrl";
 
@@ -8,7 +7,7 @@ import splitUrl from "../../test/splitUrl";
 const listPeopleAndParse = (...args) => {
   const { [RSAA]: { endpoint = '' } } = listPeople(...args);
   const { baseUrl, queryItems } = splitUrl(endpoint);
-  expect(baseUrl).toBe(ENDPOINT_PEOPLE);
+  expect(baseUrl).toBe(process.env.REACT_APP_ENDPOINT_PEOPLE);
   return queryItems;
 };
 
