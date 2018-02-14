@@ -1,5 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
-import { listPeople } from "./lookupApi";
+import { listPeople, ENDPOINT_PEOPLE } from "./lookupApi";
 import splitUrl from "../../test/splitUrl";
 
 // call listPeople() with the passed arguments, calls splitUrl, checks the baseUrl is the people
@@ -7,7 +7,7 @@ import splitUrl from "../../test/splitUrl";
 const listPeopleAndParse = (...args) => {
   const { [RSAA]: { endpoint = '' } } = listPeople(...args);
   const { baseUrl, queryItems } = splitUrl(endpoint);
-  expect(baseUrl).toBe(process.env.REACT_APP_ENDPOINT_PEOPLE);
+  expect(baseUrl).toBe(ENDPOINT_PEOPLE);
   return queryItems;
 };
 

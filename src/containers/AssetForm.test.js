@@ -38,7 +38,7 @@ const ASSET_FIXTURE_URL = process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97
 const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 beforeEach(() => {
-  fetch_mock.get(process.env.REACT_APP_ENDPOINT_PEOPLE + '/crsid/mb2174', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_LOOKUP + 'people/crsid/mb2174', {});
   fetch_mock.get(process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {});
 });
 

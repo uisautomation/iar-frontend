@@ -11,4 +11,4 @@ jest.mock('../components/GetMoreAssets', () => () => <div />);
 
 // Mock configuration for endpoints
 process.env.REACT_APP_ENDPOINT_ASSETS = 'http://iar-backend.invalid/assets/';
-process.env.REACT_APP_ENDPOINT_PEOPLE = 'http://lookupproxy.invalid/people';
+process.env.REACT_APP_ENDPOINT_LOOKUP = 'http://lookupproxy.invalid/';

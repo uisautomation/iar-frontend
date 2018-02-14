@@ -43,5 +43,6 @@ developer UI at http://localhost:8080/ui.
 Default application configuration is in the `.env file`.
 This can be overridden locally by placing config in a `.env.local` file.
 Note that you must re-run `npm start` for config to take effect.
+Also note all vars names **must** be frefixed with `REACT_APP_`.
 See the [documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-development-environment-variables-in-env) for more information.
 

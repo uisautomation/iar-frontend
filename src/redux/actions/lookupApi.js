@@ -8,6 +8,8 @@ export const PEOPLE_GET_REQUEST = Symbol('PEOPLE_GET_REQUEST');
 export const PEOPLE_GET_SUCCESS = Symbol('PEOPLE_GET_SUCCESS');
 export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
 
+export const ENDPOINT_PEOPLE = process.env.REACT_APP_ENDPOINT_LOOKUP + 'people';
+
 /**
  * Fetch a list of people.
  *
@@ -21,7 +23,7 @@ export const listPeople = (query, limit = 10) => {
   }
   return {
     [RSAA]: {
-      endpoint: process.env.REACT_APP_ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
+      endpoint: ENDPOINT_PEOPLE + "?limit=" + the_limit + "&query=" + encodeURIComponent(query),
       method: 'GET',
       types: [
         {type: PEOPLE_LIST_REQUEST, meta: {query}},
@@ -37,7 +39,7 @@ export const listPeople = (query, limit = 10) => {
  */
 export const getPeople = (crsid) => ({
   [RSAA]: {
-    endpoint: process.env.REACT_APP_ENDPOINT_PEOPLE + '/crsid/' + crsid,
+    endpoint: ENDPOINT_PEOPLE + '/crsid/' + crsid,
     method: 'GET',
     types: [PEOPLE_GET_REQUEST, PEOPLE_GET_SUCCESS, PEOPLE_GET_FAILURE]
   }
