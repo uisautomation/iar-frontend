@@ -1,4 +1,5 @@
 import Cache from '../cache';
+import { Map } from 'immutable';
 import reducer, { initialState } from './lookupApi';
 import { PEOPLE_GET_SUCCESS, PEOPLE_LIST_SUCCESS } from '../actions/lookupApi';
 

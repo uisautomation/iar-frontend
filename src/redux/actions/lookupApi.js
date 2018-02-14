@@ -8,6 +8,11 @@ export const PEOPLE_GET_REQUEST = Symbol('PEOPLE_GET_REQUEST');
 export const PEOPLE_GET_SUCCESS = Symbol('PEOPLE_GET_SUCCESS');
 export const PEOPLE_GET_FAILURE = Symbol('PEOPLE_GET_FAILURE');
 
+export const PEOPLE_GET_SELF_REQUEST = Symbol('PEOPLE_GET_SELF_REQUEST');
+export const PEOPLE_GET_SELF_SUCCESS = Symbol('PEOPLE_GET_SELF_SUCCESS');
+export const PEOPLE_GET_SELF_FAILURE = Symbol('PEOPLE_GET_SELF_FAILURE');
+export const PEOPLE_GET_SELF_RESET = Symbol('PEOPLE_GET_SELF_RESET');
+
 export const ENDPOINT_PEOPLE = process.env.REACT_APP_ENDPOINT_LOOKUP + 'people';
 
 /**
@@ -43,4 +48,22 @@ export const getPeople = (crsid) => ({
     method: 'GET',
     types: [PEOPLE_GET_REQUEST, PEOPLE_GET_SUCCESS, PEOPLE_GET_FAILURE]
   }
+});
+
+/**
+ * Fetch the authenticated user's profile.
+ */
+export const getSelf = () => ({
+  [RSAA]: {
+    endpoint: ENDPOINT_PEOPLE + '/token/self?fetch=all_insts',
+    method: 'GET',
+    types: [PEOPLE_GET_SELF_REQUEST, PEOPLE_GET_SELF_SUCCESS, PEOPLE_GET_SELF_FAILURE]
+  }
+});
+
+/**
+ * Reset the authenticated user's profile.
+ */
+export const resetSelf = () => ({
+  type: PEOPLE_GET_SELF_RESET,
 });
