@@ -6,6 +6,7 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
+import NavigateBackButton from '../containers/NavigateBackButton';
 
 const styles = theme => ({
   flex: { flex: 1 },
@@ -19,6 +20,7 @@ const styles = theme => ({
 const AssetFormHeader = ({ title, onClick, classes }) => (
   <AppBar position="static">
     <Toolbar>
+      <NavigateBackButton />
       <Typography variant="title" color="inherit" className={classes.flex}>
         { title }
       </Typography>

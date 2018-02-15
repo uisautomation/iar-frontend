@@ -2,11 +2,12 @@
  * Top-level page for IAR containing sidebar and content.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const styles = theme => ({
   appFrame: {
@@ -22,19 +23,42 @@ const styles = theme => ({
   },
   pageContent: {
     width: '100%',
+  },
+  pageContentWithSidebar: {
+    width: '100%',
     marginLeft: drawerWidth,
   },
 });
 
-const Page = ({ children, classes }) => (
+const FullPage = withStyles(styles)(({ children, classes }) => (
   <div className={classes.appFrame}>
-    <Drawer variant="permanent" classes={{paper: classes.drawerPaper}}>
-      <Sidebar />
-    </Drawer>
     <div className={classes.pageContent}>
       { children }
     </div>
   </div>
+));
+
+const SidebarPage = withStyles(styles)(({ children, classes }) => (
+  <div className={classes.appFrame}>
+    <Drawer variant="permanent" classes={{paper: classes.drawerPaper}}>
+      <Sidebar />
+    </Drawer>
+    <div className={classes.pageContentWithSidebar}>
+      { children }
+    </div>
+  </div>
+));
+
+const Page = ({ children, withSidebar }) => (
+  withSidebar ? <SidebarPage children={children} /> : <FullPage children={children} />
 );
 
-export default withStyles(styles)(Page);
+Page.propTypes = {
+  withSidebar: PropTypes.bool
+};
+
+Page.defaultProps = {
+  withSidebar: true
+};
+
+export default Page;
