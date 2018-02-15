@@ -29,8 +29,8 @@ class Sidebar extends Component {
    * TODO doesn't need to be here - but it needs to be somewhere
    */
   componentDidMount() {
-    const { isLoggedIn, self, getSelf } = this.props;
-    if (isLoggedIn && !self) {
+    const { isLoggedIn, self, selfLoading, getSelf } = this.props;
+    if (isLoggedIn && !self && !selfLoading) {
       getSelf();
     }
   }
@@ -66,10 +66,10 @@ class Sidebar extends Component {
 
 const mapDispatchToProps = { getSelf };
 
-const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self } }) => {
+const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self, selfLoading } }) => {
 
   const institutions = (self && self.institutions ? self.institutions : []);
-  return { isLoggedIn, self, institutions };
+  return { isLoggedIn, self, selfLoading, institutions };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Sidebar));

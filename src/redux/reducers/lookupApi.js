@@ -17,8 +17,10 @@ export const initialState = {
   // a cache of arrays of people records returned by the lookup api search endpoint -
   // keyed on the search text that produced the result.
   matchingPeopleByQuery: new Cache({maxSize: 20}),
-  // the authenticated user's profile - an empty object is used to indicate loading
-  self: null
+  // the authenticated user's profile
+  self: null,
+  // whether or not the authenticated user's profile is being loaded
+  selfLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -36,16 +38,16 @@ export default (state = initialState, action) => {
 
     case PEOPLE_GET_SELF_REQUEST:
       // use an empty object is indicate loading
-      return { ...state, self: {} };
+      return { ...state, selfLoading: true };
 
     case PEOPLE_GET_SELF_RESET:
     case PEOPLE_GET_SELF_FAILURE:
-      // reset self.
-      return { ...state, self: null };
+      // reset self in case of reset and failure.
+      return { ...state, self: null, selfLoading: false };
 
     case PEOPLE_GET_SELF_SUCCESS:
       // Add the person to the peopleByCrsid map
-      return { ...state, self: action.payload};
+      return { ...state, self: action.payload, selfLoading: false};
 
     default:
       return state;
