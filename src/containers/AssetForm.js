@@ -7,6 +7,8 @@ import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../compon
 import Grid from 'material-ui/Grid';
 import Switch from 'material-ui/Switch';
 import { FormControlLabel } from 'material-ui/Form';
+import Paper from 'material-ui/Paper';
+import OwnInstitutionField from '../components/OwnInstitutionField';
 
 import { connect } from 'react-redux';
 import { getAsset, postAsset, putAsset } from '../redux/actions/assetRegisterApi';
@@ -198,7 +200,7 @@ class AssetForm extends Component {
         </Grid>
         <Grid container>
           <Grid item xs={6}>
-            <TextField
+            <OwnInstitutionField
               fullWidth
               label="Asset department"
               name='department'
