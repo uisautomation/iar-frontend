@@ -8,3 +8,7 @@ import React from 'react';
 // GetMoreAssets needs mocking here because of the VisibilitySensor component it uses which requires
 // more of the DOM to be present than is provided by our test suite.
 jest.mock('../components/GetMoreAssets', () => () => <div />);
+
+// Mock configuration for endpoints
+process.env.REACT_APP_ENDPOINT_ASSETS = 'http://iar-backend.invalid/assets/';
+process.env.REACT_APP_ENDPOINT_LOOKUP = 'http://lookupproxy.invalid/';
