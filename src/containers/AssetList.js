@@ -10,19 +10,15 @@ import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 
 import '../style/App.css';
 
-const TITLES = {
-  '/assets/dept': 'Assets: My department',
-  '/assets/all': 'Assets: All',
-};
-
 // Default query to use if none has previously been set by the user.
 export const DEFAULT_QUERY = {
   sort: { field: 'updated_at', direction: Direction.descending },
 };
 
 class AssetList extends Component {
+
   componentDidMount() {
-    const { getAssets, fetchedAt } = this.props;
+    const { fetchedAt } = this.props;
 
     // Fetch an asset list if one has not already been fetched. We detect an existing fetch by
     // looking at the "fetchedAt" value on the asset list which should be non-NULL if a fetch
@@ -33,18 +29,39 @@ class AssetList extends Component {
       const { query } = this.props;
       const { sort: { field } } = query;
       if(field !== null) {
-        getAssets(query);
+        this.getFilteredAssets(query);
       } else {
-        getAssets({ ...query, ...DEFAULT_QUERY });
+        this.getFilteredAssets({ ...query, ...DEFAULT_QUERY });
       }
     }
   }
 
+  componentWillReceiveProps({match : {params: {filter: nextFilter}} }) {
+    const {match : {params: {filter}}} = this.props;
+    if (nextFilter !== filter) {
+      this.getFilteredAssets(this.props.query, nextFilter);
+    }
+  }
+
+  getFilteredAssets(query, filter = null) {
+    if (!filter) {
+      filter = this.props.match.params.filter;
+    }
+
+    if (filter === 'all') {
+      delete query.filter.department
+    } else {
+      query.filter = {...query.filter, department: filter}
+    }
+
+    this.props.getAssets(query);
+  }
+
   render() {
-    const { match } = this.props;
+    const { institution } = this.props;
     return (
       <Page>
-        <AssetListHeader title={TITLES[match.url]} />
+        <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
 
         {/* Table of currently loaded assets. */}
         <AssetTable />
@@ -56,7 +73,7 @@ class AssetList extends Component {
       </Page>
     );
   }
-};
+}
 
 AssetList.propTypes = {
   match: PropTypes.object.isRequired,
@@ -64,9 +81,11 @@ AssetList.propTypes = {
   query: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ assets: { fetchedAt, query } }) => (
-  { fetchedAt, query }
-);
+const mapStateToProps = ({assets: {fetchedAt, query}, lookupApi: {self}}, {match : {params: {filter}}}) => {
+  const institutions = (self && self.institutions ? self.institutions : []);
+  const institution = institutions.find(institution => institution.instid === filter);
+  return { fetchedAt, query, institution };
+};
 
 const mapDispatchToProps = { getAssets };
 

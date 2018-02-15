@@ -419,7 +419,7 @@ AssetForm.propTypes = {
 
 const mapDispatchToProps = { snackbarOpen, getAsset, postAsset, putAsset };
 
-const mapStateToProps = ({ assets } , { match : {params: {assetId} } } ) => {
+const mapStateToProps = ({ assets }, { match : {params: {assetId} } } ) => {
 
   let assetUrl, asset = null;
 

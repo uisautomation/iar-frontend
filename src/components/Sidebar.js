@@ -14,8 +14,9 @@ const styles = theme => ({
   drawerHeader: theme.mixins.toolbar,
   nested: { paddingLeft: theme.spacing.unit * 4 },
   camLogo: { width: '145px', paddingTop: '10px'},
-  tagLine: { fontSize: 12},
-  logoToolbar: { flexDirection:'column', alignItems: 'flex-start', paddingLeft: theme.spacing.unit * 2  }
+  tagLine: { fontSize: 12 },
+  logoToolbar: { flexDirection:'column', alignItems: 'flex-start', paddingLeft: theme.spacing.unit * 2 },
+  assetHeading: { padding: '12px 16px' }
 });
 
 /**
@@ -35,8 +36,8 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { classes, self } = this.props;
-    const institutions = (self && self.institutions ? self.institutions : []);
+    const { classes, institutions } = this.props;
+
     return <div>
       <div className={classes.drawerHeader}>
         <Toolbar className={classes.logoToolbar} disableGutters={true}>
@@ -47,12 +48,13 @@ class Sidebar extends Component {
       <Divider />
 
       <List component='nav'>
-        <SidebarNavLink to='/assets/all' label='All Assets' />
+        <div className={classes.assetHeading}>Assets:</div>
         {
           institutions.map(({ instid, name }) => (
-            <SidebarNavLink key={instid} to={'/assets/dept/' + instid} label={name} className={classes.nested} />
+            <SidebarNavLink key={instid} to={'/assets/' + instid} label={name} className={classes.nested} />
           ))
         }
+        <SidebarNavLink to='/assets/all' label='All departments' className={classes.nested} />
         <SidebarNavLink to='/help' label='Help' />
         <SidebarNavLink component={LogoutLink} label='Sign out' />
       </List>
@@ -62,9 +64,9 @@ class Sidebar extends Component {
 
 const mapDispatchToProps = { getSelf };
 
-const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self } } ) => {
-
-  return { isLoggedIn, self };
+const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self } }) => {
+  const institutions = (self && self.institutions ? self.institutions : []);
+  return { isLoggedIn, self, institutions };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Sidebar));

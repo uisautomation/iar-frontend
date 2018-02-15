@@ -20,7 +20,7 @@ const AppRoutes = () => (
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />
-    <Redirect from='/' exact to='/assets/dept' />
+    <Redirect from='/' exact to='/assets/all' />
 
     { /* Catch all route for "not found" */ }
     <Route path="*" component={NotFoundPage} />
