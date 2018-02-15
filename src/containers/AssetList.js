@@ -29,21 +29,27 @@ class AssetList extends Component {
       const { query } = this.props;
       const { sort: { field } } = query;
       if(field !== null) {
-        this.getFilteredAssets(query);
+        this.getAssetsFilteredByDept(query);
       } else {
-        this.getFilteredAssets({ ...query, ...DEFAULT_QUERY });
+        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY });
       }
     }
   }
 
+  /**
+   * If the department filter has changed then re-fetch the list.
+   */
   componentWillReceiveProps({match : {params: {filter: nextFilter}} }) {
-    const {match : {params: {filter}}} = this.props;
+    const {match : {params: {filter}}, query} = this.props;
     if (nextFilter !== filter) {
-      this.getFilteredAssets(this.props.query, nextFilter);
+      this.getAssetsFilteredByDept(query, nextFilter);
     }
   }
 
-  getFilteredAssets(query, filter = null) {
+  /**
+   * Method to apply or remove a department filter to a getAssets() call.
+   */
+  getAssetsFilteredByDept(query, filter = null) {
     if (!filter) {
       filter = this.props.match.params.filter;
     }
@@ -82,6 +88,7 @@ AssetList.propTypes = {
 };
 
 const mapStateToProps = ({assets: {fetchedAt, query}, lookupApi: {self}}, {match : {params: {filter}}}) => {
+  // map the institution selected by the filter - if any.
   const institutions = (self && self.institutions ? self.institutions : []);
   const institution = institutions.find(institution => institution.instid === filter);
   return { fetchedAt, query, institution };

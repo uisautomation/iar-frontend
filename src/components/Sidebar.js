@@ -24,12 +24,12 @@ const styles = theme => ({
  */
 class Sidebar extends Component {
 
-  /*
-  TODO doesn't need to be here - but it needs to be somewhere
+  /**
+   * If we are signed in and we haven't retrieved the profile - then retrieve the profile.
+   * TODO doesn't need to be here - but it needs to be somewhere
    */
   componentDidMount() {
     const { isLoggedIn, self, getSelf } = this.props;
-    // if we are signed in and we haven't retrieved the profile - then retrieve the profile.
     if (isLoggedIn && !self) {
       getSelf();
     }
@@ -67,6 +67,7 @@ class Sidebar extends Component {
 const mapDispatchToProps = { getSelf };
 
 const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self } }) => {
+
   const institutions = (self && self.institutions ? self.institutions : []);
   return { isLoggedIn, self, institutions };
 };
