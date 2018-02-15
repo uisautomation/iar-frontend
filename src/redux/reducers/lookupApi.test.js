@@ -1,7 +1,10 @@
 import Cache from '../cache';
 import { Map } from 'immutable';
 import reducer, { initialState } from './lookupApi';
-import { PEOPLE_GET_SUCCESS, PEOPLE_LIST_SUCCESS } from '../actions/lookupApi';
+import {
+  PEOPLE_GET_SELF_REQUEST, PEOPLE_GET_SELF_SUCCESS, PEOPLE_GET_SUCCESS,
+  PEOPLE_LIST_SUCCESS
+} from '../actions/lookupApi';
 
 // test that the state is correctly initialised.
 test('the state is correctly initialised', () => {
@@ -31,8 +34,9 @@ test('a people list result is cached', () => {
 
   const nextState = reducer(initialState, action);
 
-  expect(Object.is(initialState.matchingPeopleByQuery, nextState.matchingPeopleByQuery)).toBe(false);
   expect(nextState.matchingPeopleByQuery.get('msb9')).toBe(results);
+  // check the state wasn't mutated
+  expect(Object.is(initialState.matchingPeopleByQuery, nextState.matchingPeopleByQuery)).toBe(false);
 });
 
 // test the people list cache doesn't grow beyond 20
@@ -62,7 +66,7 @@ test('the people list cache is pruned', () => {
   expect(nextState.matchingPeopleByQuery.get('msb10')).toBeDefined();
 });
 
-// a retrieved person model is set in peopleByCrsid
+// check that a retrieved person model is set in peopleByCrsid
 test('a retrieved person model is set in peopleByCrsid', () => {
 
   const payload = {
@@ -76,6 +80,40 @@ test('a retrieved person model is set in peopleByCrsid', () => {
 
   const nextState = reducer(initialState, {type: PEOPLE_GET_SUCCESS, payload: payload});
 
-  expect(Object.is(initialState.peopleByCrsid, nextState.peopleByCrsid)).toBe(false);
   expect(nextState.peopleByCrsid.get('msb999')).toBe(payload);
+  // check the state wasn't mutated
+  expect(Object.is(initialState.peopleByCrsid, nextState.peopleByCrsid)).toBe(false);
+});
+
+// check that the selfLoading flag is set when the self is requested
+test("the selfLoading flag is set", () => {
+
+  const nextState = reducer(initialState, {type: PEOPLE_GET_SELF_REQUEST});
+
+  expect(nextState.self).toBeNull();
+  expect(nextState.selfLoading).toBe(true);
+});
+
+// check that the authenticated user's profile is set in self
+test("the authenticated user's profile is set in self", () => {
+
+  const payload = {
+    url: "http://localhost:8080/people/crsid/msb999",
+    cancelled: false,
+    identifier: {scheme: "crsid", value: "msb999"},
+    visibleName: "M. Bamford",
+    isStaff: true,
+    isStudent: false,
+    institutions:[
+      {instid:"CL",name:"Department of Computer Science and Technology"},
+      {instid:"UIS",name:"University Information Services"}
+    ]
+  };
+
+  const nextState = reducer(initialState, {type: PEOPLE_GET_SELF_SUCCESS, payload: payload});
+
+  expect(nextState.self).toBe(payload);
+  expect(nextState.selfLoading).toBe(false);
+  // check the state wasn't mutated
+  expect(Object.is(initialState.self, nextState.self)).toBe(false);
 });
