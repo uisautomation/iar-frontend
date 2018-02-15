@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import LogoutLink from './LogoutLink';
 import Divider from 'material-ui/Divider';
 import Toolbar from 'material-ui/Toolbar';
-import List from 'material-ui/List';
+import { List, ListItem } from 'material-ui';
 import SidebarNavLink from './SidebarNavLink';
 import Logo from '../images/cambridgeuniversity_logo.svg';
 import {connect} from "react-redux";
@@ -36,7 +36,7 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { classes, institutions } = this.props;
+    const { classes, institutions, pathname } = this.props;
 
     return <div>
       <div className={classes.drawerHeader}>
@@ -48,13 +48,15 @@ class Sidebar extends Component {
       <Divider />
 
       <List component='nav'>
-        <div className={classes.assetHeading}>Assets:</div>
+        <ListItem className={classes.assetHeading}>Assets:</ListItem>
         {
+          /* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */
           institutions.map(({ instid, name }) => (
-            <SidebarNavLink key={instid} to={'/assets/' + instid} label={name} className={classes.nested} />
+            <SidebarNavLink key={instid} to={'/assets/' + instid} label={name} className={classes.nested} pathname={pathname} />
           ))
         }
-        <SidebarNavLink to='/assets/all' label='All departments' className={classes.nested} />
+        {/* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */}
+        <SidebarNavLink to='/assets/all' label='All departments' className={classes.nested} pathname={pathname} />
         <SidebarNavLink to='/help' label='Help' />
         <SidebarNavLink component={LogoutLink} label='Sign out' />
       </List>
