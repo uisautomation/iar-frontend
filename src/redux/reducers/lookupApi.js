@@ -3,6 +3,7 @@ import {
   PEOPLE_GET_SELF_REQUEST, PEOPLE_GET_SELF_RESET, PEOPLE_GET_SELF_SUCCESS,
   PEOPLE_GET_SUCCESS,
   PEOPLE_LIST_SUCCESS,
+  INSTITUTIONS_LIST_SUCCESS,
 } from '../actions/lookupApi';
 
 import Cache from '../cache';
@@ -17,10 +18,19 @@ export const initialState = {
   // a cache of arrays of people records returned by the lookup api search endpoint -
   // keyed on the search text that produced the result.
   matchingPeopleByQuery: new Cache({maxSize: 20}),
+
   // the authenticated user's profile
   self: null,
   // whether or not the authenticated user's profile is being loaded
   selfLoading: false,
+
+  institutions: {
+    // If non-NULL, a JS Date object indicating when this was last fetched.
+    fetchedAt: null,
+
+    // A map of all institution records keyed by institution id.
+    byInstid: new Map(),
+  },
 };
 
 export default (state = initialState, action) => {
@@ -48,6 +58,19 @@ export default (state = initialState, action) => {
     case PEOPLE_GET_SELF_SUCCESS:
       // Add the person to the peopleByCrsid map
       return { ...state, self: action.payload, selfLoading: false};
+
+    case INSTITUTIONS_LIST_SUCCESS:
+      // Replace current institution list with returned results
+      return {
+        ...state,
+        institutions: {
+          ...state.institutions,
+          fetchedAt: new Date(),
+          byInstid: new Map(action.payload.results.map(
+            institution => [institution.instid, institution]
+          )),
+        },
+      };
 
     default:
       return state;

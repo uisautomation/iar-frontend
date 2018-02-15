@@ -16,6 +16,7 @@ import Tooltip from 'material-ui/Tooltip';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { FormattedRelative, FormattedDate, FormattedTime } from 'react-intl';
 import AssetStatus from './AssetStatus';
+import LookupInstitution from './LookupInstitution';
 import { withStyles } from 'material-ui/styles';
 
 const privateIconStyles = theme => ({
@@ -98,7 +99,7 @@ const AssetListItem = ({confirmDelete, asset, history}) => {
       <EditCell>
         {asset.is_complete !== null ? <AssetStatus isComplete={asset.is_complete} /> : null}
       </EditCell>
-      <EditCell>{asset.department}</EditCell>
+      <EditCell><LookupInstitution instid={asset.department} /></EditCell>
       <EditCell><PrivateIcon isPrivate={asset.private} /></EditCell>
       <EditCell>
         <Tooltip
