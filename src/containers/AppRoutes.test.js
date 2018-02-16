@@ -21,22 +21,30 @@ test('can render /help', () => {
   expect(appBarTitle(testInstance)).toBe('Help')
 });
 
-test('can render /assets/dept', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/assets/dept'});
+test('can render /assets/UIS', () => {
+  const self = {
+    institutions: [
+      {instid: 'UIS', name: 'University Information Services'}
+    ]
+  };
+  const testInstance = render(<AppRoutes/>, {
+    url: '/assets/UIS',
+    store: createMockStore({...DEFAULT_INITIAL_STATE, lookupApi: {self}})
+  });
 
-  expect(appBarTitle(testInstance)).toBe('Assets: My department')
+  expect(appBarTitle(testInstance)).toBe('Assets: University Information Services')
 });
 
 test('can render /assets/all', () => {
   const testInstance = render(<AppRoutes/>, {url: '/assets/all'});
 
-  expect(appBarTitle(testInstance)).toBe('Assets: All')
+  expect(appBarTitle(testInstance)).toBe('Assets: All departments')
 });
 
-test('/ redirects to /assets/dept', () => {
+test('/ redirects to /assets/all', () => {
   const testInstance = render(<AppRoutes/>, {url: '/'});
 
-  expect(appBarTitle(testInstance)).toBe('Assets: My department')
+  expect(appBarTitle(testInstance)).toBe('Assets: All departments')
 });
 
 test('can render /asset/create', () => {

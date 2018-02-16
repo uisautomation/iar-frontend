@@ -5,6 +5,7 @@ import React from 'react';
 import { withStyles } from 'material-ui/styles';
 import { Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
+import {withRouter} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -26,10 +27,11 @@ const styles = theme => ({
   },
 });
 
-const Page = ({ children, classes }) => (
+const Page = ({ children, classes, location: {pathname} }) => (
   <div className={classes.appFrame}>
     <Drawer variant="permanent" classes={{paper: classes.drawerPaper}}>
-      <Sidebar />
+      {/* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */}
+      <Sidebar pathname={pathname} />
     </Drawer>
     <div className={classes.pageContent}>
       { children }
@@ -37,4 +39,4 @@ const Page = ({ children, classes }) => (
   </div>
 );
 
-export default withStyles(styles)(Page);
+export default withRouter(withStyles(styles)(Page));

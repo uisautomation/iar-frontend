@@ -12,6 +12,7 @@ import AssetForm from "./AssetForm";
 import {Route} from 'react-router-dom';
 import AssetFormHeader from '../components/AssetFormHeader';
 import {SNACKBAR_OPEN} from '../redux/actions/snackbar';
+import {PEOPLE_GET_SELF_REQUEST} from "../redux/actions/lookupApi";
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -39,6 +40,7 @@ const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 beforeEach(() => {
   fetch_mock.get(process.env.REACT_APP_ENDPOINT_LOOKUP + 'people/crsid/mb2174', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_LOOKUP + 'people/token/self?fetch=all_insts', {});
   fetch_mock.get(process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {});
 });
 
@@ -85,7 +87,9 @@ test('can populate a form with data', () => {
     url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', store
   });
 
-  expect(store.getActions()).toEqual([{meta: {url: ASSET_FIXTURE_URL}, type: ASSET_GET_REQUEST}]);
+  expect(store.getActions()).toEqual([
+    {meta: {url: ASSET_FIXTURE_URL}, type: ASSET_GET_REQUEST}
+  ]);
 
   // test the ASSET_GET_REQUEST is dispatched
 

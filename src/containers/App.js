@@ -3,11 +3,9 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom'
 import { MuiThemeProvider } from 'material-ui/styles';
 import { IntlProvider } from 'react-intl';
-import Snackbar from '../components/Snackbar';
+import { DeleteConfirmationDialog, FetchSelf, ScrollToTop, Snackbar } from '../components';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
-import DeleteConfirmationDialog from '../components/DeleteConfirmationDialog';
-import ScrollToTop from '../components/ScrollToTop';
 import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
 
@@ -26,6 +24,7 @@ const App = ({ store }) => (
           </Router>
           <DeleteConfirmationDialog />
           <Snackbar />
+          <FetchSelf />
         </div>
       </ReduxProvider>
     </IntlProvider>
