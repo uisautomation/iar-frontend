@@ -1,6 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
-import { ENDPOINT_PEOPLE } from '../../config';
-import { listPeople } from "./lookupApi";
+import { listPeople, ENDPOINT_PEOPLE } from "./lookupApi";
 import splitUrl from "../../test/splitUrl";
 
 // call listPeople() with the passed arguments, calls splitUrl, checks the baseUrl is the people

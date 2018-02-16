@@ -48,7 +48,7 @@ test('can render /asset/create', () => {
 test('can render /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', () => {
 
   const assetsByUrl = new Map([[
-    'http://localhost:8000/assets/e20f4cd4-9f97-4829-8178-476c7a67eb97/', {
+    process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {
       asset: {name: 'Super Secret Medical Data'}
     }
   ]]);
