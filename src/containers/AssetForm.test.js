@@ -205,3 +205,26 @@ afterEach(() => {
 function setDataOnInput(testInstance, name, value) {
   testInstance.findByProps({name: name}).props.onChange({target: {name: name, value}}, value);
 }
+
+/*
+  Default asset posted by form has non-null values where necessary.
+ */
+test('default asset has non-null values set correctly', () => {
+  fetch_mock.post(() => true, ASSET_FIXTURE);
+
+  const assetForm = <Route path="/asset/:assetId" component={AssetForm} />;
+
+  const store = createMockStore();
+  const testInstance = render(assetForm, {store, url: '/asset/create'});
+
+  // "click" the save button
+  testInstance.findByType(AssetFormHeader).props.onClick();
+
+  // Extract body of new asset
+  const post_action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
+  expect(post_action.meta.url).toEqual(process.env.REACT_APP_ENDPOINT_ASSETS);
+  const newAsset = JSON.parse(post_action.meta.body);
+
+  // Check fields which should have values have values
+  expect(newAsset.private).toBe(false);
+});
