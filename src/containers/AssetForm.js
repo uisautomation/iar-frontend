@@ -78,7 +78,7 @@ export const NEW_ASSET = {
   purpose: null,
   research: null,
   owner: null,
-  private: null,
+  private: false,
   personal_data: null,
   data_subject: [],
   data_category: [],
