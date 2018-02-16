@@ -26,7 +26,7 @@ class Sidebar extends Component {
 
   /**
    * If we are signed in and we haven't retrieved the profile - then retrieve the profile.
-   * TODO doesn't need to be here - but it needs to be somewhere
+   * TODO I guess we need to find a better place for this as Sidebar won't always be rendered.
    */
   componentDidMount() {
     const { isLoggedIn, self, selfLoading, getSelf } = this.props;
