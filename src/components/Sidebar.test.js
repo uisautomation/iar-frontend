@@ -23,7 +23,7 @@ test('Sidebar items are rendered', () => {
   const sidebarNavLinks = testInstance.findAllByType(SidebarNavLink);
   expect(sidebarNavLinks).toHaveLength(4);
   expect(sidebarNavLinks.find(link => link.props.label === 'University Information Services').props.to).toBe("/assets/UIS");
-  expect(sidebarNavLinks.find(link => link.props.label === 'All departments').props.to).toBe("/assets/all");
+  expect(sidebarNavLinks.find(link => link.props.label === 'All departments').props.to).toBe("/assets");
   expect(sidebarNavLinks.find(link => link.props.label === 'Help').props.to).toBe("/help");
   expect(sidebarNavLinks.find(link => link.props.label === 'Sign out')).not.toBeNull();
 });

@@ -26,12 +26,12 @@ class AssetList extends Component {
     if(!fetchedAt) {
       // If there is currently a sort query set by the user, use that otherwise update the query
       // with a default sort.
-      const { query } = this.props;
+      const { query, match : {params: {filter: filter}} } = this.props;
       const { sort: { field } } = query;
       if(field !== null) {
-        this.getAssetsFilteredByDept(query);
+        this.getAssetsFilteredByDept(query, filter);
       } else {
-        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY });
+        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY }, filter);
       }
     }
   }
@@ -50,14 +50,10 @@ class AssetList extends Component {
    * Method to apply or remove a department filter to a getAssets() call.
    */
   getAssetsFilteredByDept(query, filter = null) {
-    if (!filter) {
-      filter = this.props.match.params.filter;
-    }
-
-    if (filter === 'all') {
-      delete query.filter.department
-    } else {
+    if (filter) {
       query.filter = {...query.filter, department: filter}
+    } else {
+      delete query.filter.department
     }
 
     this.props.getAssets(query);

@@ -6,14 +6,14 @@ import {
 } from '../actions/lookupApi';
 
 import Cache from '../cache';
-import { Map } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 
 /**
  * State managed by the lookup API reducers.
  */
 export const initialState = {
   // a map of people records retrieved from the lookup api - keyed on crsid
-  peopleByCrsid: Map(),
+  peopleByCrsid: ImmutableMap(),
   // a cache of arrays of people records returned by the lookup api search endpoint -
   // keyed on the search text that produced the result.
   matchingPeopleByQuery: new Cache({maxSize: 20}),

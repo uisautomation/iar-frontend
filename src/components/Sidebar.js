@@ -56,7 +56,7 @@ class Sidebar extends Component {
           ))
         }
         {/* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */}
-        <SidebarNavLink to='/assets/all' label='All departments' className={classes.nested} pathname={pathname} />
+        <SidebarNavLink to='/assets' label='All departments' className={classes.nested} pathname={pathname} />
         <SidebarNavLink to='/help' label='Help' />
         <SidebarNavLink component={LogoutLink} label='Sign out' />
       </List>
