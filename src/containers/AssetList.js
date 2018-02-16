@@ -26,7 +26,7 @@ class AssetList extends Component {
     if(!fetchedAt) {
       // If there is currently a sort query set by the user, use that otherwise update the query
       // with a default sort.
-      const { query, match : {params: {filter: filter}} } = this.props;
+      const { query, match : {params: {filter}} } = this.props;
       const { sort: { field } } = query;
       if(field !== null) {
         this.getAssetsFilteredByDept(query, filter);

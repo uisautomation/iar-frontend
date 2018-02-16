@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { withStyles } from 'material-ui/styles';
 
 import LogoutLink from './LogoutLink';
@@ -8,7 +8,6 @@ import { List, ListItem } from 'material-ui';
 import SidebarNavLink from './SidebarNavLink';
 import Logo from '../images/cambridgeuniversity_logo.svg';
 import {connect} from "react-redux";
-import {getSelf} from "../redux/actions/lookupApi";
 
 const styles = theme => ({
   drawerHeader: theme.mixins.toolbar,
@@ -22,23 +21,8 @@ const styles = theme => ({
 /**
  * The content of the IAR application side bar.
  */
-class Sidebar extends Component {
-
-  /**
-   * If we are signed in and we haven't retrieved the profile - then retrieve the profile.
-   * TODO I guess we need to find a better place for this as Sidebar won't always be rendered.
-   */
-  componentDidMount() {
-    const { isLoggedIn, self, selfLoading, getSelf } = this.props;
-    if (isLoggedIn && !self && !selfLoading) {
-      getSelf();
-    }
-  }
-
-  render() {
-    const { classes, institutions, pathname } = this.props;
-
-    return <div>
+const Sidebar = ({ classes, institutions, pathname }) => (
+    <div>
       <div className={classes.drawerHeader}>
         <Toolbar className={classes.logoToolbar} disableGutters={true}>
           <img src={Logo} className={classes.camLogo} alt="Cambridge University Logo"/>
@@ -61,15 +45,10 @@ class Sidebar extends Component {
         <SidebarNavLink component={LogoutLink} label='Sign out' />
       </List>
     </div>
-  }
-}
+)
 
-const mapDispatchToProps = { getSelf };
+const mapStateToProps = ({ lookupApi: { self } }) => ({
+  institutions: self && self.institutions ? self.institutions : []
+});
 
-const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self, selfLoading } }) => {
-
-  const institutions = (self && self.institutions ? self.institutions : []);
-  return { isLoggedIn, self, selfLoading, institutions };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Sidebar));
+export default connect(mapStateToProps)(withStyles(styles)(Sidebar));

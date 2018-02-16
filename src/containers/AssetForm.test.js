@@ -88,7 +88,6 @@ test('can populate a form with data', () => {
   });
 
   expect(store.getActions()).toEqual([
-    {type: PEOPLE_GET_SELF_REQUEST},
     {meta: {url: ASSET_FIXTURE_URL}, type: ASSET_GET_REQUEST}
   ]);
 
