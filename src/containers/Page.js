@@ -38,7 +38,7 @@ const FullPage = withStyles(styles)(({ children, classes }) => (
   </div>
 ));
 
-const SidebarPage = withStyles(styles)(({ children, classes, location: {pathname} }) => (
+const SidebarPage = withRouter(withStyles(styles)(({ children, classes, location: {pathname} }) => (
   <div className={classes.appFrame}>
     <Drawer variant="permanent" classes={{paper: classes.drawerPaper}}>
       {/* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */}
@@ -48,7 +48,7 @@ const SidebarPage = withStyles(styles)(({ children, classes, location: {pathname
       { children }
     </div>
   </div>
-);
+)));
 
 const Page = ({ children, withSidebar }) => (
   withSidebar ? <SidebarPage children={children} /> : <FullPage children={children} />
@@ -62,4 +62,4 @@ Page.defaultProps = {
   withSidebar: true
 };
 
-export default withRouter(withStyles(styles)(Page));
+export default Page;
