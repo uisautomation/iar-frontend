@@ -137,3 +137,19 @@ test('institutions are copied from institution list success action', () => {
   expect(nextState.institutions.byInstid.get('AAA')).toEqual({ instid: 'AAA', name: 'Dept of A' });
   expect(nextState.institutions.byInstid.get('BBB')).toEqual({ instid: 'BBB', name: 'Dept of B' });
 });
+
+test('byInstid is an immutable map after update', () => {
+  const initialState = reducer(undefined, { type: 'not-an-action' });
+  expect(initialState.institutions.byInstid).toBeInstanceOf(Map);
+
+  const action = {
+    type: INSTITUTIONS_LIST_SUCCESS,
+    payload: { results: [
+      { instid: 'AAA', name: 'Dept of A' },
+      { instid: 'BBB', name: 'Dept of B' },
+    ] },
+  };
+
+  const nextState = reducer(initialState, action);
+  expect(nextState.institutions.byInstid).toBeInstanceOf(Map);
+});
