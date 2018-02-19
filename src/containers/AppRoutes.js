@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { LoginRequiredRoute } from '../components';
 
 import AssetList from './AssetList';
-import AssetForm from './AssetForm';
+import AssetForm from '../AssetForm';
 import Static from './Static';
 import NotFoundPage from './NotFoundPage';
 
