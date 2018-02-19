@@ -42,4 +42,10 @@ const mapStateToProps = ({ lookupApi: { institutions: { byInstid } } }, { instid
 
 // we pass a trivial function to the mapDispatchToProps argument so that the dispatch function is
 // not implicitly passed to the component and then on to the underlying TextField.
-export default connect(mapStateToProps, () => ({}))(InstitutionField);
+const ConnectedInstitutionField = connect(mapStateToProps, () => ({}))(InstitutionField);
+
+ConnectedInstitutionField.propTypes = {
+  instids: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+export default ConnectedInstitutionField;
