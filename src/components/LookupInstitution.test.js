@@ -1,4 +1,5 @@
 import React from 'react';
+import { Map } from 'immutable';
 import { render, createMockStore, DEFAULT_INITIAL_STATE as initialState } from '../testutils';
 import LookupInstitution from './LookupInstitution';
 
@@ -10,7 +11,7 @@ const stateWithInstitutions = {
       ...initialState.lookupApi.institutions,
 
       fetchedAt: new Date(),
-      byInstid: new Map([
+      byInstid: Map([
         ['AAA', {
           cancelled: false, instid: 'AAA', name: 'Department of AAA',
           url: 'http://lookup.invalid/institutions/AAA'

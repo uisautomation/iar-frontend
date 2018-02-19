@@ -29,7 +29,7 @@ export const initialState = {
     fetchedAt: null,
 
     // A map of all institution records keyed by institution id.
-    byInstid: new ImmutableMap(),
+    byInstid: ImmutableMap(),
   },
 };
 
@@ -66,7 +66,7 @@ export default (state = initialState, action) => {
         institutions: {
           ...state.institutions,
           fetchedAt: new Date(),
-          byInstid: new ImmutableMap(action.payload.results.map(
+          byInstid: ImmutableMap(action.payload.results.map(
             institution => [institution.instid, institution]
           )),
         },

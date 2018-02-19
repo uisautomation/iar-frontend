@@ -8,6 +8,7 @@ jest.mock('../redux/actions/lookupApi', () => {
 });
 
 import React from 'react';
+import { Map } from 'immutable';
 import FetchLookupInstitutions from './FetchLookupInstitutions';
 import { listInstitutions } from '../redux/actions/lookupApi';
 import { render, createMockStore, DEFAULT_INITIAL_STATE as initialState } from '../testutils';
@@ -23,7 +24,7 @@ const MOCK_STATE = {
 
       fetchedAt: new Date(),
 
-      byInstid: new Map([
+      byInstid: Map([
         ['AAA', { instid: 'AAA', name: 'Dept of A' }],
         ['BBB', { instid: 'BBB', name: 'Dept of B' }],
       ]),
