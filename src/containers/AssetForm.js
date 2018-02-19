@@ -3,12 +3,10 @@ import React, { Component } from 'react'
 import Page from '../containers/Page';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { TextField } from 'material-ui';
-import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../components'
+import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup, OwnInstitutionField } from '../components'
 import Grid from 'material-ui/Grid';
 import Switch from 'material-ui/Switch';
 import { FormControlLabel } from 'material-ui/Form';
-import Paper from 'material-ui/Paper';
-import OwnInstitutionField from '../components/OwnInstitutionField';
 
 import { connect } from 'react-redux';
 import { getAsset, postAsset, putAsset } from '../redux/actions/assetRegisterApi';
