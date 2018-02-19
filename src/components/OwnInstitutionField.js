@@ -1,12 +1,8 @@
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import InstitutionField from './InstitutionField';
 
 const mapStateToProps = ({ lookupApi: { self } }, { extraInstids = [] }) => ({
-  instids: [
-    ...(self ? self.institutions.map(({ instid }) => instid) : []),
-    ...extraInstids,
-  ],
+  instids: self ? self.institutions.map(({ instid }) => instid) : [],
 });
 
 /**
@@ -17,9 +13,5 @@ const mapStateToProps = ({ lookupApi: { self } }, { extraInstids = [] }) => ({
  * extraInstids may be passed to extend the list of instids
  */
 const OwnInstitutionField = connect(mapStateToProps, () => ({ }))(InstitutionField);
-
-OwnInstitutionField.propTypes = {
-  extraInstids: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default OwnInstitutionField;
