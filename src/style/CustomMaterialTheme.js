@@ -40,7 +40,8 @@ const theme = createMuiTheme({
     complete,
     inProgress,
     assetTableHover
-  }
+  },
+  drawerWidth: 280
 });
 
 export default theme;

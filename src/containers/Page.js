@@ -7,8 +7,6 @@ import { withStyles } from 'material-ui/styles';
 import { Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
 
-const drawerWidth = 280;
-
 const styles = theme => ({
   appFrame: {
     position: 'relative',
@@ -19,14 +17,14 @@ const styles = theme => ({
   drawerPaper: {
     position: 'fixed',
     height: '100vh',
-    width: drawerWidth,
+    width: theme.drawerWidth,
   },
   pageContent: {
     width: '100%',
   },
   pageContentWithSidebar: {
     width: '100%',
-    marginLeft: drawerWidth,
+    marginLeft: theme.drawerWidth,
   },
 });
 
