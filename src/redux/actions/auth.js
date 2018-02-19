@@ -11,10 +11,10 @@ import { login as implicitLogin, logout as implicitLogout } from 'redux-implicit
  * OAuth2 credentials configuration for the IAR frontend application.
  */
 const config = {
-  url: "http://localhost:4444/oauth2/auth",
-  client: "testclient",
+  url: process.env.REACT_APP_OAUTH_ENDPOINT,
+  client: process.env.REACT_APP_OAUTH_CLIENT,
   redirect: window.location.origin + '/oauth2-callback',  // HACK: get the base URL of the website
-  scope: "assetregister lookup:anonymous",
+  scope: process.env.REACT_APP_OAUTH_SCOPES,
   width: 500, // Width (in pixels) of login popup window. Optional, default: 400
   height: 400 // Height (in pixels) of login popup window. Optional, default: 400
 };

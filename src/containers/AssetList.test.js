@@ -25,12 +25,12 @@ beforeEach(() => {
 // re-worked, we can move to testing the AssetList component directly.
 
 test('AssetList can render', () => {
-  const testInstance = render(<AppRoutes />, { url: '/assets/all' });
+  render(<AppRoutes />, { url: '/assets/all' });
 });
 
 test('AssetList sends a default query if none is set', () => {
   const store = createMockStore(DEFAULT_INITIAL_STATE);
-  const testInstance = render(<AppRoutes />, { store, url: '/assets/all' });
+  render(<AppRoutes />, { store, url: '/assets/all' });
 
   // getAssets was called once
   expect(getAssets.mock.calls).toHaveLength(1);
@@ -53,7 +53,7 @@ test('AssetList respects the current query', () => {
   initialState.assets = { ...initialState.assets, query: initialQuery };
 
   const store = createMockStore(initialState);
-  const testInstance = render(<AppRoutes />, { store, url: '/assets/all' });
+  render(<AppRoutes />, { store, url: '/assets/all' });
 
   // getAssets was called once
   expect(getAssets.mock.calls).toHaveLength(1);
@@ -65,4 +65,14 @@ test('AssetList respects the current query', () => {
   Object.getOwnPropertyNames(initialQuery).forEach(name => {
     expect(query[name]).toEqual(initialQuery[name]);
   });
+});
+
+// check that a department filter is set
+test('A department filter is set', () => {
+  render(<AppRoutes />, { url: '/assets/UIS' });
+
+  expect(getAssets.mock.calls).toHaveLength(1);
+
+  const [ [ query ] ] = getAssets.mock.calls;
+  expect(query.filter.department).toEqual('UIS');
 });

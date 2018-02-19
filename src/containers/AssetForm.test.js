@@ -1,12 +1,6 @@
 // mock any components which are troublesome in our test suite
 import '../test/mocks';
 
-// Mock configuration for endpoints
-jest.mock('../config', () => ({
-  ENDPOINT_ASSETS: 'http://iar-backend.invalid/assets/',
-  ENDPOINT_PEOPLE: 'http://lookupproxy.invalid/people',
-}));
-
 import React from 'react';
 import fetch_mock from 'fetch-mock';
 import { AppBar, RadioGroup, TextField, Typography, FormControlLabel } from 'material-ui';
@@ -16,9 +10,9 @@ import { createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
 import {ASSET_GET_REQUEST, ASSET_PUT_REQUEST, ASSET_POST_REQUEST} from '../redux/actions/assetRegisterApi';
 import AssetForm from "./AssetForm";
 import {Route} from 'react-router-dom';
-import {ENDPOINT_ASSETS, ENDPOINT_PEOPLE} from "../config";
 import AssetFormHeader from '../components/AssetFormHeader';
 import {SNACKBAR_OPEN} from '../redux/actions/snackbar';
+import {PEOPLE_GET_SELF_REQUEST} from "../redux/actions/lookupApi";
 
 const NEW_ASSET_FIXTURE = {
   name: 'Super Secret Medical Data',
@@ -40,13 +34,14 @@ const NEW_ASSET_FIXTURE = {
   digital_storage_security: [ 'encryption', 'acl' ]
 };
 
-const ASSET_FIXTURE_URL = ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/';
+const ASSET_FIXTURE_URL = process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/';
 
 const ASSET_FIXTURE = {...NEW_ASSET_FIXTURE, url: ASSET_FIXTURE_URL};
 
 beforeEach(() => {
-  fetch_mock.get(ENDPOINT_PEOPLE + '/crsid/mb2174', {});
-  fetch_mock.get(ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_LOOKUP + 'people/crsid/mb2174', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_LOOKUP + 'people/token/self?fetch=all_insts', {});
+  fetch_mock.get(process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {});
 });
 
 /*
@@ -92,7 +87,9 @@ test('can populate a form with data', () => {
     url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', store
   });
 
-  expect(store.getActions()).toEqual([{meta: {url: ASSET_FIXTURE_URL}, type: ASSET_GET_REQUEST}]);
+  expect(store.getActions()).toEqual([
+    {meta: {url: ASSET_FIXTURE_URL}, type: ASSET_GET_REQUEST}
+  ]);
 
   // test the ASSET_GET_REQUEST is dispatched
 
@@ -156,7 +153,7 @@ test('can save a new asset', async () => {
   testInstance.findByType(AssetFormHeader).props.onClick();
 
   const post_action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
-  expect(post_action.meta.url).toEqual(ENDPOINT_ASSETS);
+  expect(post_action.meta.url).toEqual(process.env.REACT_APP_ENDPOINT_ASSETS);
   expect(JSON.parse(post_action.meta.body)).toEqual(NEW_ASSET_FIXTURE);
 
   await condition(() => store.getActions().find(action => action.type === SNACKBAR_OPEN));
@@ -208,3 +205,26 @@ afterEach(() => {
 function setDataOnInput(testInstance, name, value) {
   testInstance.findByProps({name: name}).props.onChange({target: {name: name, value}}, value);
 }
+
+/*
+  Default asset posted by form has non-null values where necessary.
+ */
+test('default asset has non-null values set correctly', () => {
+  fetch_mock.post(() => true, ASSET_FIXTURE);
+
+  const assetForm = <Route path="/asset/:assetId" component={AssetForm} />;
+
+  const store = createMockStore();
+  const testInstance = render(assetForm, {store, url: '/asset/create'});
+
+  // "click" the save button
+  testInstance.findByType(AssetFormHeader).props.onClick();
+
+  // Extract body of new asset
+  const post_action = store.getActions().find(action => action.type === ASSET_POST_REQUEST);
+  expect(post_action.meta.url).toEqual(process.env.REACT_APP_ENDPOINT_ASSETS);
+  const newAsset = JSON.parse(post_action.meta.body);
+
+  // Check fields which should have values have values
+  expect(newAsset.private).toBe(false);
+});
