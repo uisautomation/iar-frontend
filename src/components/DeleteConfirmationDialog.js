@@ -25,10 +25,10 @@ const DeleteConfirmationDialog = ({ url, name, id, isOpen, deleteAsset, handleCo
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button color="primary" onClick={() => handleConfirmDelete(url)}>
+      <Button color="primary" onClick={() => handleConfirmDelete(url, false)}>
         Cancel
       </Button>
-      <Button color="primary" onClick={() => { deleteAsset(url); handleConfirmDelete(url); }}>
+      <Button color="primary" onClick={() => handleConfirmDelete(url, true)}>
         Delete
       </Button>
     </DialogActions>
