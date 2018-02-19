@@ -3,7 +3,7 @@ import { Map } from 'immutable';
 import reducer, { initialState } from './lookupApi';
 import {
   PEOPLE_GET_SELF_REQUEST, PEOPLE_GET_SELF_SUCCESS, PEOPLE_GET_SUCCESS,
-  PEOPLE_LIST_SUCCESS
+  PEOPLE_LIST_SUCCESS, INSTITUTIONS_LIST_SUCCESS
 } from '../actions/lookupApi';
 
 // test that the state is correctly initialised.
@@ -116,4 +116,40 @@ test("the authenticated user's profile is set in self", () => {
   expect(nextState.selfLoading).toBe(false);
   // check the state wasn't mutated
   expect(Object.is(initialState.self, nextState.self)).toBe(false);
+});
+
+test('institutions are copied from institution list success action', () => {
+  const initialState = reducer(undefined, { type: 'not-an-action' });
+  expect(initialState.institutions.fetchedAt).toBeNull();
+  expect(initialState.institutions.byInstid.get('AAA')).toBeUndefined();
+
+  const action = {
+    type: INSTITUTIONS_LIST_SUCCESS,
+    payload: { results: [
+      { instid: 'AAA', name: 'Dept of A' },
+      { instid: 'BBB', name: 'Dept of B' },
+    ] },
+  };
+
+  const nextState = reducer(initialState, action);
+
+  expect(nextState.institutions.fetchedAt).not.toBeNull();
+  expect(nextState.institutions.byInstid.get('AAA')).toEqual({ instid: 'AAA', name: 'Dept of A' });
+  expect(nextState.institutions.byInstid.get('BBB')).toEqual({ instid: 'BBB', name: 'Dept of B' });
+});
+
+test('byInstid is an immutable map after update', () => {
+  const initialState = reducer(undefined, { type: 'not-an-action' });
+  expect(initialState.institutions.byInstid).toBeInstanceOf(Map);
+
+  const action = {
+    type: INSTITUTIONS_LIST_SUCCESS,
+    payload: { results: [
+      { instid: 'AAA', name: 'Dept of A' },
+      { instid: 'BBB', name: 'Dept of B' },
+    ] },
+  };
+
+  const nextState = reducer(initialState, action);
+  expect(nextState.institutions.byInstid).toBeInstanceOf(Map);
 });

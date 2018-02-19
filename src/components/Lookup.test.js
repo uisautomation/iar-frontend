@@ -1,5 +1,6 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
+import { Map } from 'immutable';
 import { Chip, TextField } from 'material-ui';
 import {render, createMockStore, DEFAULT_INITIAL_STATE, condition} from '../testutils';
 import Lookup from "./Lookup";
@@ -40,7 +41,7 @@ test('a Chip is rendered if value', () => {
     store: createMockStore({
       lookupApi: {
         ...DEFAULT_INITIAL_STATE.lookupApi,
-        peopleByCrsid: new Map([["msb999", PERSON_FIXTURE]])
+        peopleByCrsid: Map([["msb999", PERSON_FIXTURE]])
       }
     })
   });
@@ -57,7 +58,7 @@ test('deleting the Chip resets value', () => {
     store: createMockStore({
       lookupApi: {
         ...DEFAULT_INITIAL_STATE.lookupApi,
-        peopleByCrsid: new Map([["msb999", PERSON_FIXTURE]])
+        peopleByCrsid: Map([["msb999", PERSON_FIXTURE]])
       }
     })
   });

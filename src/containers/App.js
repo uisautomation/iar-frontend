@@ -6,6 +6,7 @@ import { IntlProvider } from 'react-intl';
 import { DeleteConfirmationDialog, FetchSelf, ScrollToTop, Snackbar } from '../components';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
+import FetchLookupInstitutions from '../components/FetchLookupInstitutions';
 import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
 
@@ -25,6 +26,7 @@ const App = ({ store }) => (
           <DeleteConfirmationDialog />
           <Snackbar />
           <FetchSelf />
+          <FetchLookupInstitutions />
         </div>
       </ReduxProvider>
     </IntlProvider>
