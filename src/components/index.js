@@ -6,6 +6,7 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog';
 import FetchSelf from './FetchSelf';
 import Lookup from './Lookup';
 import LoginRequiredRoute from './LoginRequiredRoute';
+import OwnInstitutionField from './OwnInstitutionField';
 import ScrollToTop from './ScrollToTop';
 import Sidebar from './Sidebar';
 import Snackbar from './Snackbar';
@@ -17,6 +18,7 @@ export {
   DeleteConfirmationDialog,
   FetchSelf,
   LoginRequiredRoute, Lookup,
+  OwnInstitutionField,
   ScrollToTop,
   Sidebar,
   Snackbar
