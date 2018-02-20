@@ -163,7 +163,7 @@ class AssetForm extends Component {
       <Page>
         <AssetFormHeader
           onClick={() => this.handleSave()}
-          title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id) : 'Create new asset'}
+          asset={this.props.assetUrl ? this.state : null}
         />
 
         <Grid container>
