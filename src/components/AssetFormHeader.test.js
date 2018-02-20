@@ -14,10 +14,7 @@ test('"create new asset" header is created with correct title and buttons', () =
   const testInstance = render(<AssetFormHeader onClick={() => {}}/>, { store, url: '/' });
 
   expect(testInstance.findByType(Typography).props.children).toBe('Create new asset');
-  const buttons = testInstance.findAllByType(Button);
-  expect(buttons).toHaveLength(2);
-  expect(buttons[0].props.children).toBe('Cancel');
-  expect(buttons[1].props.children).toBe('Save');
+  expect(testInstance.findByType(Button).props.children).toBe('Save');
 });
 
 test('"view asset" header is created with correct title and buttons', () => {
@@ -25,7 +22,7 @@ test('"view asset" header is created with correct title and buttons', () => {
   const testInstance = render(HEADER_WITH_ASSET, { store: createMockStore(), url: '/' });
 
   expect(testInstance.findByType(Typography).props.children).toBe('Viewing: An asset');
-  expect(testInstance.findByType(Button).props.children).toBe('Back');
+  expect(testInstance.findAllByType(Button)).toHaveLength(0);
 });
 
 test('"edit asset" header is created with correct title and buttons', () => {
@@ -42,8 +39,5 @@ test('"edit asset" header is created with correct title and buttons', () => {
   const testInstance = render(HEADER_WITH_ASSET, { store, url: '/' });
 
   expect(testInstance.findByType(Typography).props.children).toBe('Editing: An asset');
-  const buttons = testInstance.findAllByType(Button);
-  expect(buttons).toHaveLength(2);
-  expect(buttons[0].props.children).toBe('Cancel');
-  expect(buttons[1].props.children).toBe('Save');
+  expect(testInstance.findByType(Button).props.children).toBe('Save');
 });

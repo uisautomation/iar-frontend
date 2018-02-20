@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -38,12 +37,7 @@ const AssetFormHeader = ({ onClick, asset, ownsAsset, classes }) => {
       title = 'Editing: ' + name;
     } else {
       title = 'Viewing: ' + name;
-      // overrides the default buttons with a simple back button
-      button = (
-        <Link className='App-raised-button-link' to="/">
-          <Button className={classes.cancelButton} color='primary'>Back</Button>
-        </Link>
-      );
+      button = <span/>;
     }
   }
 
