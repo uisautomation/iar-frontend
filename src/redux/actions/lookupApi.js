@@ -13,7 +13,12 @@ export const PEOPLE_GET_SELF_SUCCESS = Symbol('PEOPLE_GET_SELF_SUCCESS');
 export const PEOPLE_GET_SELF_FAILURE = Symbol('PEOPLE_GET_SELF_FAILURE');
 export const PEOPLE_GET_SELF_RESET = Symbol('PEOPLE_GET_SELF_RESET');
 
+export const INSTITUTIONS_LIST_REQUEST = Symbol('INSTITUTIONS_LIST_REQUEST');
+export const INSTITUTIONS_LIST_SUCCESS = Symbol('INSTITUTIONS_LIST_SUCCESS');
+export const INSTITUTIONS_LIST_FAILURE = Symbol('INSTITUTIONS_LIST_FAILURE');
+
 export const ENDPOINT_PEOPLE = process.env.REACT_APP_ENDPOINT_LOOKUP + 'people';
+export const ENDPOINT_INSTUTITIONS = process.env.REACT_APP_ENDPOINT_LOOKUP + 'institutions';
 
 /**
  * Fetch a list of people.
@@ -66,4 +71,15 @@ export const getSelf = () => ({
  */
 export const resetSelf = () => ({
   type: PEOPLE_GET_SELF_RESET,
+});
+
+/**
+ * Fetch a list of all institutions
+ */
+export const listInstitutions = () => ({
+  [RSAA]: {
+    endpoint: ENDPOINT_INSTUTITIONS,
+    method: 'GET',
+    types: [INSTITUTIONS_LIST_REQUEST, INSTITUTIONS_LIST_SUCCESS, INSTITUTIONS_LIST_FAILURE]
+  }
 });
