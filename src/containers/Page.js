@@ -2,12 +2,11 @@
  * Top-level page for IAR containing sidebar and content.
  */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
 import {withRouter} from "react-router-dom";
-
-const drawerWidth = 240;
 
 const styles = theme => ({
   appFrame: {
@@ -19,24 +18,48 @@ const styles = theme => ({
   drawerPaper: {
     position: 'fixed',
     height: '100vh',
-    width: drawerWidth,
+    width: theme.drawerWidth,
   },
   pageContent: {
     width: '100%',
-    marginLeft: drawerWidth,
+  },
+  pageContentWithSidebar: {
+    width: '100%',
+    marginLeft: theme.drawerWidth,
   },
 });
 
-const Page = ({ children, classes, location: {pathname} }) => (
+
+const FullPage = withStyles(styles)(({ children, classes }) => (
+  <div className={classes.appFrame}>
+    <div className={classes.pageContent}>
+      { children }
+    </div>
+  </div>
+));
+
+const SidebarPage = withRouter(withStyles(styles)(({ children, classes, location: {pathname} }) => (
   <div className={classes.appFrame}>
     <Drawer variant="permanent" classes={{paper: classes.drawerPaper}}>
       {/* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */}
       <Sidebar pathname={pathname} />
     </Drawer>
-    <div className={classes.pageContent}>
+    <div className={classes.pageContentWithSidebar}>
       { children }
     </div>
   </div>
+)));
+
+const Page = ({ children, withSidebar }) => (
+  withSidebar ? <SidebarPage children={children} /> : <FullPage children={children} />
 );
 
-export default withRouter(withStyles(styles)(Page));
+Page.propTypes = {
+  withSidebar: PropTypes.bool
+};
+
+Page.defaultProps = {
+  withSidebar: true
+};
+
+export default Page;

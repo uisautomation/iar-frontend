@@ -5,7 +5,7 @@ import React from 'react';
 import fetch_mock from 'fetch-mock';
 import { AppBar, RadioGroup, TextField, Typography, FormControlLabel } from 'material-ui';
 import {condition, render} from '../testutils';
-import { BooleanChoice, CheckboxGroup, Lookup } from '../components'
+import { BooleanChoice, CheckboxGroup, Lookup, OwnInstitutionField } from '../components'
 import { createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
 import {ASSET_GET_REQUEST, ASSET_PUT_REQUEST, ASSET_POST_REQUEST} from '../redux/actions/assetRegisterApi';
 import AssetForm from "./AssetForm";
@@ -54,7 +54,7 @@ test('can render a blank form', () => {
   });
 
   expect(testInstance.findByProps({name: 'name'}).type).toBe(TextField);
-  expect(testInstance.findByProps({name: 'department'}).type).toBe(TextField);
+  expect(testInstance.findByProps({name: 'department'}).type).toBe(OwnInstitutionField);
   expect(testInstance.findByProps({name: 'purpose'}).type).toBe(TextField);
   expect(testInstance.findByProps({name: "research"}).type).toBe(BooleanChoice);
   expect(testInstance.findByProps({name: 'owner'}).type).toBe(Lookup);

@@ -7,6 +7,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import {connect} from "react-redux";
+import NavigateBackButton from '../containers/NavigateBackButton';
 
 const styles = theme => ({
   flex: { flex: 1 },
@@ -25,14 +26,8 @@ const AssetFormHeader = ({ onClick, asset, ownsAsset, classes }) => {
 
   // the default title/buttons are for creating an asset
   let title = 'Create new asset';
-  let buttons = (
-    <div>
-      <Link className='App-raised-button-link' to="/">
-        <Button className={classes.cancelButton} color='primary'>Cancel</Button>
-      </Link>
-      &nbsp;
-      <Button className={classes.saveButton} variant="raised" onClick={onClick}>Save</Button>
-    </div>
+  let button = (
+    <Button className={classes.saveButton} variant="raised" onClick={onClick}>Save</Button>
   );
 
   if (asset) {
@@ -44,7 +39,7 @@ const AssetFormHeader = ({ onClick, asset, ownsAsset, classes }) => {
     } else {
       title = 'Viewing: ' + name;
       // overrides the default buttons with a simple back button
-      buttons = (
+      button = (
         <Link className='App-raised-button-link' to="/">
           <Button className={classes.cancelButton} color='primary'>Back</Button>
         </Link>
@@ -54,10 +49,11 @@ const AssetFormHeader = ({ onClick, asset, ownsAsset, classes }) => {
 
   return <AppBar position="static">
     <Toolbar>
+      <NavigateBackButton />
       <Typography variant="title" color="inherit" className={classes.flex}>
         { title }
       </Typography>
-      {buttons}
+      {button}
     </Toolbar>
   </AppBar>;
 };
