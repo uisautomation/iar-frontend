@@ -16,10 +16,6 @@ const styles = theme => ({
       position: 'relative',
       backgroundColor: theme.palette.background.paper,
     },
-    '& tr:hover td': {
-      backgroundColor: theme.customColors.assetTableHover,
-      cursor: 'pointer'
-    },
     '& td:after': {
       content: "''",
       position: 'absolute',
@@ -53,7 +49,7 @@ UnconnectedAssetTableBody.propTypes = {
 export const ZeroAssetsRow = () => (
   <TableRow>
     <TableCell colSpan={6} style={{textAlign: 'center'}}>
-      There are no assets to display
+      There are no asset entries to display for this institution
     </TableCell>
   </TableRow>
 );
