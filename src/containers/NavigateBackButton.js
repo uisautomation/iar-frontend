@@ -6,17 +6,30 @@ import IconButton from 'material-ui/IconButton';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import {connect} from "react-redux";
 
-// TODO: Check for history, if false redirect to /assets/dept
-const NavigateBackButton = ({history}) => (
-  <IconButton color="inherit" aria-label="Go back" onClick={() => history.goBack()}>
+const NavigateBackButton = ({goBack}) => {
+  return <IconButton color="inherit" aria-label="Go back" onClick={() => goBack()}>
     <ArrowBack />
   </IconButton>
-);
+};
 
-export const UnconnectedNavigateBackButton = NavigateBackButton;
+const mapStateToProps = ({ assets: { fetchedAt }}, { history } ) => {
 
-export default withRouter(NavigateBackButton);
+  // closure to implement a safe history.goBack()
+  const goBack = () => {
+    if (fetchedAt) {
+      // only go back if an asset list has previously been visited
+      history.goBack();
+    } else {
+      history.push('/');
+    }
+  };
+
+  return { goBack }
+};
+
+export default withRouter(connect(mapStateToProps)(NavigateBackButton));
 
 NavigateBackButton.propTypes = {
   history: PropTypes.object.isRequired,

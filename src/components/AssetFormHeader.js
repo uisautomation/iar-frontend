@@ -24,10 +24,6 @@ const AssetFormHeader = ({ title, onClick, classes }) => (
       <Typography variant="title" color="inherit" className={classes.flex}>
         { title }
       </Typography>
-      <Link className='App-raised-button-link' to="/">
-        <Button className={classes.cancelButton} color='primary'>Cancel</Button>
-      </Link>
-      &nbsp;
       <Button className={classes.saveButton} variant="raised" onClick={onClick}>Save</Button>
     </Toolbar>
   </AppBar>
