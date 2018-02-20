@@ -19,6 +19,9 @@ const inProgress = '#f5a623';
 // implement the asset table body.
 const assetTableHover = paleGreen;
 
+// Custom Appbar colour, instead of using the main primary colour
+const appBarBackground = darkGreen;
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -39,7 +42,8 @@ const theme = createMuiTheme({
     blueyGrey,
     complete,
     inProgress,
-    assetTableHover
+    assetTableHover,
+    appBarBackground
   }
 });
 

@@ -12,19 +12,20 @@ const styles = theme => ({
   createButton: {
     backgroundColor: theme.customColors.white,
   },
+  appBarBackground: {backgroundColor: theme.customColors.appBarBackground, boxShadow: theme.shadows[2]}
 });
 
 /*
   Renders the app bar of the list view of Assets.
   */
 const AssetListHeader = ({ title, classes }) => (
-  <AppBar position="static">
+  <AppBar position="static" className={classes.appBarBackground}>
     <Toolbar>
       <Typography variant="title" color="inherit" className={classes.flex}>
         { title }
       </Typography>
       <Link className='App-raised-button-link' to="/asset/create">
-        <Button variant='raised' className={classes.createButton}>Create Asset</Button>
+        <Button variant='raised' className={classes.createButton}>Add new entry</Button>
       </Link>
     </Toolbar>
   </AppBar>
