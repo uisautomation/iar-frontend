@@ -13,6 +13,7 @@ import { initialState as assetsInitialState } from './redux/reducers/assetRegist
 import { initialState as deleteConfirmationInitialState } from './redux/reducers/deleteConfirmation';
 import { initialState as snackbarInitialState } from './redux/reducers/snackbar';
 import { initialState as lookupApiInitialState } from './redux/reducers/lookupApi';
+import { initialState as editAssetInitialState } from './redux/reducers/editAsset';
 
 export const mockStore = configureMockStore(middlewares);
 
@@ -22,6 +23,7 @@ export const DEFAULT_INITIAL_STATE = {
   deleteConfirmation: deleteConfirmationInitialState,
   snackbar: snackbarInitialState,
   lookupApi: lookupApiInitialState,
+  editAsset: editAssetInitialState,
 };
 
 export const createMockStore = (initialState = DEFAULT_INITIAL_STATE) => mockStore(initialState);

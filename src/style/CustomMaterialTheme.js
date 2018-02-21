@@ -41,7 +41,19 @@ const theme = createMuiTheme({
     inProgress,
     assetTableHover
   },
-  drawerWidth: 280
+  drawerWidth: 280,
+  customMixins: {
+    formSection: {
+      fontFamily: ['RobotoMono', 'monospace'],
+      minHeight: 48,
+      display: 'flex',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 177, 193, 0.08)',
+      borderBottom: [[
+        '2px', 'solid', 'rgba(0, 177, 193, 0.17)',
+      ]],
+    },
+  },
 });
 
 export default theme;

@@ -1,5 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 
+const ASSETS_URL = process.env.REACT_APP_ENDPOINT_ASSETS;
+
 export const ASSETS_LIST_REQUEST = Symbol('ASSETS_LIST_REQUEST');
 export const ASSETS_LIST_SUCCESS = Symbol('ASSETS_LIST_SUCCESS');
 export const ASSETS_LIST_FAILURE = Symbol('ASSETS_LIST_FAILURE');
@@ -102,7 +104,7 @@ export const getAssets = (unsanitisedQuery = {}) => {
   }
 
   // Build the URL
-  const url = process.env.REACT_APP_ENDPOINT_ASSETS + (
+  const url = ASSETS_URL + (
     (queryParts.length > 0)
     ? ('?' + queryParts.map(([key, value]) => key + '=' + encodeURIComponent(value)).join('&'))
     : ''
@@ -179,16 +181,16 @@ export const getAsset = (url) => ({
 });
 
 /**
- * Update an asset.
+ * Update an asset. Takes an asset resource object.
  */
-export const putAsset = (url, body) => ({
+export const putAsset = (url, asset) => ({
   [RSAA]: {
     endpoint: url,
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
-    body: body,
+    body: JSON.stringify(asset),
     types: [
-      { type: ASSET_PUT_REQUEST, meta: { url, body } },
+      { type: ASSET_PUT_REQUEST, meta: { url, asset } },
         // body added for testing TODO: find a better way of checking body
       { type: ASSET_PUT_SUCCESS, meta: { url } },
       { type: ASSET_PUT_FAILURE, meta: { url } },
@@ -197,19 +199,19 @@ export const putAsset = (url, body) => ({
 });
 
 /**
- * Create an asset.
+ * Create an asset. Takes an asset resource object.
  */
-export const postAsset = (url, body) => ({
+export const postAsset = (asset) => ({
   [RSAA]: {
-    endpoint: url,
+    endpoint: ASSETS_URL,
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: body,
+    body: JSON.stringify(asset),
     types: [
-      { type: ASSET_POST_REQUEST, meta: { url, body } },
+      { type: ASSET_POST_REQUEST, meta: { url: ASSETS_URL , asset } },
         // body added for testing TODO: find a better way of checking body
-      { type: ASSET_POST_SUCCESS, meta: { url } },
-      { type: ASSET_POST_FAILURE, meta: { url } },
+      { type: ASSET_POST_SUCCESS, meta: { url: ASSETS_URL } },
+      { type: ASSET_POST_FAILURE, meta: { url: ASSETS_URL } },
     ]
   }
 });
