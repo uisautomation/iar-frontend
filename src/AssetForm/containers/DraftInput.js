@@ -66,8 +66,8 @@ DraftInput.propTypes = {
 export default DraftInput;
 
 /**
- * Version of DraftInput pre-configured to work with <input type="checkbox"> components. Accesses a
- * textural field on the draft.
+ * Version of DraftInput pre-configured to work with <input type="text"> components. Accesses a
+ * textual field on the draft.
  *
  * The input component's value prop is set to draft[name] if it is defined and non-null or the
  * empty string otherwise.
@@ -144,7 +144,6 @@ DraftArrayCheckboxInput.propTypes = {
  * Version of DraftInput pre-configured to work with <input type="checkbox"> components. Accesses
  * an array field on the draft. When checked the array is cleared to ["none"]. If the array has any
  * other value, the control is unchecked.
- *
  */
 export const DraftClearArrayCheckboxInput = props => (
   <DraftInput
