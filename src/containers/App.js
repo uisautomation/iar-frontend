@@ -10,6 +10,10 @@ import FetchLookupInstitutions from '../components/FetchLookupInstitutions';
 import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
 
+// Allow configuration of basename via REACT_APP_BASENAME environment variable. Defaults to "/".
+// Make sure to have leading *and* trailing slashes if you configure this setting.
+const basename = process.env.REACT_APP_BASENAME || '/';
+
 /*
   IAR main app component.
   */
@@ -18,7 +22,7 @@ const App = ({ store }) => (
     <IntlProvider locale={navigator.language}>
       <ReduxProvider store={ store }>
         <div>
-          <Router>
+          <Router basename={basename}>
             <ScrollToTop>
               <AppRoutes />
             </ScrollToTop>
