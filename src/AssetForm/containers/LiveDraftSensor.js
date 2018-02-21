@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 //
 // Unrecognised props are spread to the root.
 const LiveDraftSensor = connect(
-  ({ editAsset: { isLive } }) => ({ isLive }), () => ({ })
+  ({ editAsset: { isLive } }) => ({ isLive: Boolean(isLive) }), () => ({ })
 )(({ component : Component = 'div', isLive, classes = { }, children, ...rest }) => (
   <Component
     className={[

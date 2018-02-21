@@ -1,10 +1,9 @@
 import { getAsset, putAsset, postAsset } from './assetRegisterApi';
 
-export const NEW_DRAFT = Symbol('NEW_DRAFT');
+export const SET_DRAFT = Symbol('SET_DRAFT');
 export const PATCH_DRAFT = Symbol('PATCH_DRAFT');
-export const LOAD_DRAFT_REQUEST = Symbol('LOAD_DRAFT_REQUEST');
-export const LOAD_DRAFT_RESPONSE = Symbol('LOAD_DRAFT_RESPONSE');
-export const CLEAR_DRAFT = Symbol('CLEAR_DRAFT');
+export const FETCH_DRAFT_REQUEST = Symbol('FETCH_DRAFT_REQUEST');
+export const FETCH_DRAFT_SUCCESS = Symbol('FETCH_DRAFT_SUCCESS');
 
 // Default values for a new asset
 export const DEFAULT_ASSET = {
@@ -34,7 +33,7 @@ export const DEFAULT_ASSET = {
  *
  * Implemented as a thunk action so requires the redux-thunk middleware.
  */
-export const loadDraft = (url = null) => (dispatch, getState) => {
+export const fetchOrCreateDraft = (url = null) => (dispatch, getState) => {
   // If no url was provided, start an empty draft.
   if(url === null) {
     const draftAsset = { ...DEFAULT_ASSET };
@@ -48,7 +47,7 @@ export const loadDraft = (url = null) => (dispatch, getState) => {
       }
     }
 
-    dispatch(newDraft(draftAsset));
+    dispatch(setDraft(draftAsset));
     return;
   }
 
@@ -57,37 +56,35 @@ export const loadDraft = (url = null) => (dispatch, getState) => {
   const assetRecord = assetsByUrl.get(url);
 
   if(assetRecord) {
-    // If we succeeded, start the new draft immeditely.
-    dispatch(newDraft(assetRecord.asset));
+    // If we succeeded, start the new draft immediately.
+    dispatch(setDraft(assetRecord.asset));
   } else {
     // Fetch the asset from the API.
-    dispatch(loadDraftRequest(url));
+    dispatch(fetchOrCreateDraftRequest(url));
     dispatch(getAsset(url))
     .then(() => {
       const { assets: { assetsByUrl } } = getState();
       const assetRecord = assetsByUrl.get(url);
       if(assetRecord) {
-        dispatch(loadDraftResponse(assetRecord.asset));
-      } else {
-        // TODO: show error in snackbar?
+        dispatch(fetchOrCreateDraftResponse(assetRecord.asset));
       }
     });
   }
 };
 
 /**
- * Internal action dispatched by loadDraft when a network request has been made.
+ * Internal action dispatched by fetchOrCreateDraft when a network request has been made.
  */
-const loadDraftRequest = url => ({
-  type: LOAD_DRAFT_REQUEST,
+const fetchOrCreateDraftRequest = url => ({
+  type: FETCH_DRAFT_REQUEST,
   payload: { url },
 });
 
 /**
- * Internal action dispatched by loadDraft when a network response has been received.
+ * Internal action dispatched by fetchOrCreateDraft when a network response has been received.
  */
-const loadDraftResponse = asset => ({
-  type: LOAD_DRAFT_RESPONSE,
+const fetchOrCreateDraftResponse = asset => ({
+  type: FETCH_DRAFT_SUCCESS,
   payload: { asset },
 });
 
@@ -95,8 +92,8 @@ const loadDraftResponse = asset => ({
  * Replace the current asset draft. Have the url field of the asset be set if this is editing a
  * current asset, otherwise a new asset will be created.
  */
-export const newDraft = (draft = {}) => ({
-  type: NEW_DRAFT,
+const setDraft = (draft = {}) => ({
+  type: SET_DRAFT,
   payload: { draft },
 });
 
@@ -131,10 +128,3 @@ export const saveDraft = () => (dispatch, getState) => {
     return dispatch(postAsset(draft));
   }
 };
-
-/**
- * Clear the current asset draft to an empty object. The draft is no longer "live".
- */
-export const clearDraft = () => ({
-  type: CLEAR_DRAFT,
-});

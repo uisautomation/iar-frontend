@@ -1,5 +1,5 @@
 import {
-  NEW_DRAFT, PATCH_DRAFT, LOAD_DRAFT_REQUEST, LOAD_DRAFT_RESPONSE, CLEAR_DRAFT
+  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS
 } from '../actions/editAsset';
 
 export const initialState = {
@@ -11,24 +11,24 @@ export const initialState = {
   // points to the asset being loaded but no other fields are populated.
   isLoading: false,
 
-  // True if the draft is "live", i.e. it was set via newDraft or loaded via loadDraft
+  // True if the draft is "live", i.e. it was successfully set via fetchOrCreateDraft
   isLive: false,
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case NEW_DRAFT:
+    case SET_DRAFT:
       // replace the entire draft
       return { ...state, draft: action.payload.draft, isLoading: false, isLive: true };
-    case LOAD_DRAFT_REQUEST: {
+    case FETCH_DRAFT_REQUEST: {
       // a new draft is loading
       const { url } = action.payload;
       return { ...state, draft: { url }, isLoading: true, isLive: false };
     }
-    case LOAD_DRAFT_RESPONSE: {
-      // draft was loaded (or it failed)
-      const { asset, error = false } = action.payload;
-      return { ...state, draft: asset, isLoading: false, isLive: !error };
+    case FETCH_DRAFT_SUCCESS: {
+      // draft was loaded
+      const { asset } = action.payload;
+      return { ...state, draft: asset, isLoading: false, isLive: true };
     }
     case PATCH_DRAFT: {
       // update fields in the current draft based on the patch or the value returned from the patch
@@ -38,9 +38,6 @@ export default (state = initialState, action) => {
         ? action.payload.patch(state.draft) : action.payload.patch;
       return { ...state, draft: { ...state.draft, ...patch } };
     }
-    case CLEAR_DRAFT:
-      // reset the entire draft
-      return { ...state, draft: { }, isLoading: false, isLive: false };
     default:
       return state;
   }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { loadDraft } from '../../redux/actions/editAsset';
+import { fetchOrCreateDraft } from '../../redux/actions/editAsset';
 
 /**
  * A component which examines the current matched route and fetches or creates a new draft as
@@ -24,14 +24,14 @@ class FetchOrCreateDraft extends Component {
   // Called when there is a new asset id, either because we just received a new one or because the
   // component was just mounted
   handleNewAssetId = assetId => {
-    const { loadDraft } = this.props;
+    const { fetchOrCreateDraft } = this.props;
 
     // construct URL for asset or null if we're creating a new asset
     const url = (assetId === 'create')
       ? null : process.env.REACT_APP_ENDPOINT_ASSETS + assetId + '/';
 
-    // pass this URL (or null) to loadDraft to populate a new draft
-    loadDraft(url);
+    // pass this URL (or null) to fetchOrCreateDraft to populate a new draft
+    fetchOrCreateDraft(url);
   }
 
   render = () => null;
@@ -39,7 +39,7 @@ class FetchOrCreateDraft extends Component {
 
 FetchOrCreateDraft.propTypes = {
   match: PropTypes.object.isRequired,
-  loadDraft: PropTypes.func.isRequired,
+  fetchOrCreateDraft: PropTypes.func.isRequired,
 };
 
-export default withRouter(connect(null, { loadDraft })(FetchOrCreateDraft));
+export default withRouter(connect(null, { fetchOrCreateDraft })(FetchOrCreateDraft));
