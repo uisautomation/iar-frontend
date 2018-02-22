@@ -76,14 +76,24 @@
 .static-page a {
   color: #00B1C1;
   font-weight: 700;
+  text-decoration: none;
 }
 
 .static-page h1, .static-page h2, .static-page h3, .static-page h4, .static-page h5 {
   color: #00B1C1;
+  font-weight: 300;
 }
 
 .static-page h1 {
-  font-weight: 300;
   font-size: 48px;
   margin-bottom: 48px;
+}
+
+.static-page i {
+  color: #00B1C1;
+  font-size: 16px;
+}
+
+.static-page section {
+  margin: 48px 0px;
 }
