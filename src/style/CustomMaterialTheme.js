@@ -12,7 +12,7 @@ const blueyGrey = '#ECEFF1';
 
 // For complete/in-progress indicators
 const complete = '#7ed321';
-const inComplete = '#f5a623';
+const incomplete = '#f5a623';
 
 // Background of asset when hovering in asset table. We cannot use theme.action.hover since that is
 // implemented as an rgba(...) overlay colour which shows the box-shadows per cell we use to
@@ -41,7 +41,7 @@ const theme = createMuiTheme({
     lightGrey,
     blueyGrey,
     complete,
-    inComplete,
+    incomplete,
     assetTableHover,
     appBarBackground,
   },
