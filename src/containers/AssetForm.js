@@ -3,10 +3,11 @@ import React, { Component } from 'react'
 import Page from '../containers/Page';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import { TextField } from 'material-ui';
-import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup } from '../components'
+import { AssetFormHeader, BooleanChoice, CheckboxGroup, Lookup, OwnInstitutionField } from '../components'
 import Grid from 'material-ui/Grid';
 import Switch from 'material-ui/Switch';
 import { FormControlLabel } from 'material-ui/Form';
+import Paper from 'material-ui/Paper';
 
 import { connect } from 'react-redux';
 import { getAsset, postAsset, putAsset } from '../redux/actions/assetRegisterApi';
@@ -160,12 +161,12 @@ class AssetForm extends Component {
     const nullToBlank = v => ( v === null ? '' : v );
 
     return (
-      <Page>
+      <Page withSidebar={false}>
         <AssetFormHeader
           onClick={() => this.handleSave()}
           title={this.props.assetUrl ? 'Editing: ' + (this.state.name ? this.state.name : this.state.id) : 'Create new asset'}
         />
-
+        <Paper elevation={4} style={{padding: '60px', margin: '60px'}}>
         <Grid container>
           <Grid item xs={6}>
             <TextField
@@ -198,7 +199,7 @@ class AssetForm extends Component {
         </Grid>
         <Grid container>
           <Grid item xs={6}>
-            <TextField
+            <OwnInstitutionField
               fullWidth
               label="Asset department"
               name='department'
@@ -227,12 +228,12 @@ class AssetForm extends Component {
             <BooleanChoice name="research" value={this.state.research} onChange={event => this.handleBooleanChange(event)} />
           </Grid>
           <Grid item xs={6}>
-            Who is the Principle Investigator of this research activity?
+            Who is the Principal Investigator of this research activity?
           </Grid>
           <Grid item xs={6}>
             <Lookup
               disabled={!this.state.research}
-              label="Principle Investigator"
+              label="Principal Investigator"
               helperText="You can search by name or CRSid"
               name="owner"
               value={this.state.owner}
@@ -401,6 +402,7 @@ class AssetForm extends Component {
             />
           </Grid>
         </Grid>
+        </Paper>
       </Page>
     )
   }

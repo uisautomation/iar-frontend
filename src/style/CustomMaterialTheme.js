@@ -43,8 +43,9 @@ const theme = createMuiTheme({
     complete,
     inComplete,
     assetTableHover,
-    appBarBackground
-  }
+    appBarBackground,
+  },
+  drawerWidth: 280
 });
 
 export default theme;

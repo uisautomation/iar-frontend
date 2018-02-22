@@ -46,3 +46,9 @@ Note that you must re-run `npm start` for config to take effect.
 Also note all vars names **must** be frefixed with `REACT_APP_`.
 See the [documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-development-environment-variables-in-env) for more information.
 
+Settings which are not included in the [shipped .env file](.env) but which may
+also be of use are:
+
+* **REACT_APP_BASENAME**: basename of app if not served from the web server
+    root. Make sure to include trailing and leading slashes.
+* **REACT_APP_OAUTH_REDIRECT**: redirect URL passed to OAuth2 server.
