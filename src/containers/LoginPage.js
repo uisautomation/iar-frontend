@@ -34,10 +34,6 @@ const styles = theme => ({
     paddingTop: '60px',
     width: '960px',
     margin: 'auto',
-    '& span': {
-      fontSize: 14,
-      fontWeight: 400
-    },
     '& h1': {
       fontSize: 32,
       fontWeight: 300,
@@ -69,14 +65,15 @@ const LoginPage = ({classes}) => (
       </span>
     </div>
     <div className={classes.productDescription}>
-      <span>Welcome to the</span>
-      <h1>Information Asset Register</h1>
+      <h1>Information asset register:<br /> record details of data held by your organisation</h1>
       <p>
-        The information asset register is a way to record information about the University of
-        Cambridge's information assets.
+      You must record details of certain information assets (databases, lists or other collections of data) held by your department - do this by 30 April 2018.
+      </p>
+      <p>
+      This will help the University meet its duties under the General Data Processing Regulation which becomes law on 25 May 2018.
       </p>
       <p style={{paddingBottom: '15px'}}>
-        The register does not store any of the assets, and cannot be used for such purpose. The register only holds a record that an asset exists and a high level description of it's contents.
+      Use the information asset register (IAR) to add, edit and view the details of these information assets. You don’t need to upload the data itself.
       </p>
       <LoginButton />
     </div>
