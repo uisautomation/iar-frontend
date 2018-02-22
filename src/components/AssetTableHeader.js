@@ -94,14 +94,14 @@ export const AssetTableHeader = () => (
       <SortCell style={{width: '50%'}} field='name' label='Name' />
       <SortCell style={{width: 8*10}} field='is_complete' label={
         <TooltipText title="Status">
-          The status is automatically set to complete when the record has a value in all
+          The status is automatically set to complete when the entry has a value in all
           required fields.
         </TooltipText>
       }/>
       <SortCell style={{width: '50%'}} field='department' label='Department' />
       <SortCell style={{width: 8*3}} field='private' label={
         <TooltipText title="Private">
-          "Private" marks whether the record should be hidden from users outside of the record's
+          Private marks whether the entry should be hidden from users outside of the entry's
           assigned department.
         </TooltipText>
       }/>
