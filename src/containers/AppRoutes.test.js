@@ -29,7 +29,9 @@ test('can render /assets/UIS', () => {
   };
   const testInstance = render(<AppRoutes/>, {
     url: '/assets/UIS',
-    store: createMockStore({...DEFAULT_INITIAL_STATE, lookupApi: {self}})
+    store: createMockStore({...DEFAULT_INITIAL_STATE, lookupApi: {
+      ...DEFAULT_INITIAL_STATE.lookupApi, self
+    }})
   });
 
   expect(appBarTitle(testInstance)).toBe('Assets: University Information Services')
@@ -57,13 +59,25 @@ test('can render /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', () => {
 
   const assetsByUrl = new Map([[
     process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {
-      asset: {name: 'Super Secret Medical Data'}
+      asset: {
+        name: 'Super Secret Medical Data',
+        department: 'UIS'
+      }
     }
   ]]);
 
   const testInstance = render(<AppRoutes/>, {
     url: '/asset/e20f4cd4-9f97-4829-8178-476c7a67eb97',
-    store: createMockStore({...DEFAULT_INITIAL_STATE, assets: {assetsByUrl}})
+    store: createMockStore({
+      ...DEFAULT_INITIAL_STATE,
+      assets: {assetsByUrl},
+      lookupApi: {
+        ...DEFAULT_INITIAL_STATE.lookupApi,
+        self: {
+          institutions: [{instid: 'UIS', name: 'University Information Services'}]
+        }
+      }
+    })
   });
 
   expect(appBarTitle(testInstance)).toBe('Editing: Super Secret Medical Data')
