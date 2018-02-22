@@ -10,9 +10,9 @@ import { login, logout } from '../redux/actions/auth';
  */
 const LoginButton = ({ isLoggedIn, login, logout }) => {
   if (isLoggedIn) {
-    return <Button variant="raised" type='Button' color={"primary"} onClick={logout}>Sign Out</Button>
+    return <Button variant="raised" type='Button' color={"primary"} onClick={logout}>Sign out</Button>
   } else {
-    return <Button variant="raised" type='Button' color={"primary"} onClick={login}>Sign In</Button>
+    return <Button variant="raised" type='Button' color={"primary"} onClick={login}>Sign in with Raven</Button>
   }
 };
 
