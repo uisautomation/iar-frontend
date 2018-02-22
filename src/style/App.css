@@ -78,7 +78,7 @@
   font-weight: 700;
 }
 
-.static-page h1, h2, h3, h4, h5 {
+.static-page h1, .static-page h2, .static-page h3, .static-page h4, .static-page h5 {
   color: #00B1C1;
 }
 
