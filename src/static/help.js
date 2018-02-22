@@ -5,7 +5,7 @@ import React from 'react';
 
 export const title = 'Help';
 
-export const content = (<div>
+export const content = (<div class="static-page">
 
 <h1>The information asset</h1>
 

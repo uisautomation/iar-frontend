@@ -64,3 +64,26 @@
 .App-grid-item {
   padding: 20px;
 }
+
+/* Static pages */
+.static-page {
+  margin: 60px 0px 120px 0px;
+  line-height: 1.6em;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.static-page a {
+  color: #00B1C1;
+  font-weight: 700;
+}
+
+.static-page h1, h2, h3, h4, h5 {
+  color: #00B1C1;
+}
+
+.static-page h1 {
+  font-weight: 300;
+  font-size: 48px;
+  margin-bottom: 48px;
+}

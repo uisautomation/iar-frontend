@@ -16,7 +16,7 @@ import feedback from '../static/feedback';
 const pages = { help, feedback };
 
 const styles = theme => ({
-  paper: { padding: '16px 24px' },
+  paper: { padding: '16px 24px', margin: '60px' },
   staticAppBar: {backgroundColor: theme.customColors.appBarBackground}
 });
 
