@@ -10,26 +10,28 @@ import { withStyles } from 'material-ui/styles';
 
 // Import static page contents
 import help from '../static/help';
+import feedback from '../static/feedback';
 
 // Initialise object mapping page names to their content.
-const pages = { help };
+const pages = { help, feedback };
 
-const styles = {
-  paper: { padding: '16px 24px' },
-};
+const styles = theme => ({
+  paper: { padding: '16px 24px', margin: '60px 120px' },
+  staticAppBar: {backgroundColor: theme.customColors.appBarBackground}
+});
 
 /*
   Renders the app bar of the IAR app's static pages.
  */
-const StaticHeader = ({ title }) => (
-  <AppBar position="static">
+const StaticHeader = withStyles(styles)(({ title, classes }) => (
+  <AppBar position="static" className={classes.staticAppBar}>
     <Toolbar>
       <Typography variant="title" color="inherit">
         { title }
       </Typography>
     </Toolbar>
   </AppBar>
-);
+));
 
 /**
  * Renders the IAR app's static pages.
