@@ -19,6 +19,7 @@ const AppRoutes = () => (
                         component={routeProps => <AssetForm navigateOnSave='/' {...routeProps} />}
     />
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
+    <LoginRequiredRoute path="/feedback" exact component={() => <Static page='feedback' />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />
     <Redirect from='/' exact to='/assets' />
