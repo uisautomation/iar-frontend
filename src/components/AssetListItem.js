@@ -81,7 +81,13 @@ MoreMenu.propTypes = {
   onDelete: PropTypes.func,
 };
 
-const AssetListItem = ({confirmDelete, asset, history}) => {
+const assetListItemStyles = theme => ({
+  entryRow: {
+    '&:hover td': {cursor: 'pointer', backgroundColor: theme.customColors.assetTableHover}
+  }
+});
+
+const AssetListItem = withStyles(assetListItemStyles)(({confirmDelete, asset, history, classes}) => {
   // parse "update at" date
   const updatedAt = new Date(asset.updated_at);
 
@@ -94,7 +100,7 @@ const AssetListItem = ({confirmDelete, asset, history}) => {
   const EditCell = ({ children }) => <TableCell onClick={editAsset}>{ children }</TableCell>;
 
   return (
-    <TableRow>
+    <TableRow className={classes.entryRow}>
       <EditCell>{asset.name ? asset.name : asset.id}</EditCell>
       <EditCell>
         {asset.is_complete !== null ? <AssetStatus isComplete={asset.is_complete} /> : null}
@@ -117,7 +123,7 @@ const AssetListItem = ({confirmDelete, asset, history}) => {
       /></TableCell>
     </TableRow>
   );
-};
+});
 
 AssetListItem.propTypes = {
   asset: PropTypes.object.isRequired,

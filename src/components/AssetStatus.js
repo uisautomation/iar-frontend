@@ -14,8 +14,8 @@ const styles = theme => ({
     backgroundColor: theme.customColors.complete,
     color: theme.customColors.white,
   },
-  inProgress: {
-    backgroundColor: theme.customColors.inProgress,
+  incomplete: {
+    backgroundColor: theme.customColors.incomplete,
     color: theme.customColors.white,
   },
 });
@@ -24,8 +24,8 @@ const styles = theme => ({
  * Display the complete/in progress status of an asset.
  */
 const AssetStatus = ({ isComplete, classes }) => (
-  <div className={[classes.base, isComplete ? classes.complete : classes.inProgress].join(' ')}>{
-    isComplete ? 'Complete' : 'In\u2011progress'
+  <div className={[classes.base, isComplete ? classes.complete : classes.incomplete].join(' ')}>{
+    isComplete ? 'Complete' : 'Incomplete'
   }</div>
 );
 
