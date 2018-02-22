@@ -12,6 +12,7 @@ import {
 } from 'material-ui/Form';
 import Radio, { RadioGroup } from 'material-ui/Radio';
 import Checkbox from 'material-ui/Checkbox';
+import TextField from 'material-ui/TextField';
 
 import Collapse from '../containers/Collapse';
 import DraftInput, { DraftTextInput, DraftArrayCheckboxInput } from '../../draft/DraftInput';
@@ -122,6 +123,95 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
         <Grid item xs={12}>
           TODO: sharing (requires backend changes)
         </Grid>
+
+        <Grid item xs={12}>
+          <FormControl component='fieldset' fullWidth required>
+            <Grid container spacing={40}>
+              <Grid item xs={6}>
+                <FormLabel component="legend" classes={{ root: classes.booleanLabel }}>
+                  Is the asset shared with someone outside the University?
+                </FormLabel>
+                <FormHelperText>
+                  This could be a company or an individual.
+                </FormHelperText>
+              </Grid>
+              <Grid item xs={4}>
+                <RadioGroup
+                  row name="todo_1" classes={{ root: classes.group }}
+                >
+                  <FormControlLabel
+                    classes={{ root: classes.booleanFormControlLabel }}
+                    control={<Radio />} value="yes" label="Yes"
+                  />
+                  <FormControlLabel
+                    classes={{ root: classes.booleanFormControlLabel }}
+                    control={<Radio />} value="no" label="No"
+                  />
+                  <FormControlLabel
+                    classes={{ root: classes.booleanFormControlLabel }}
+                    control={<Radio />} value="not_sure" label="Not sure"
+                  />
+                </RadioGroup>
+              </Grid>
+            </Grid>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            name="todo_2"
+            required
+            fullWidth
+            label="Who is it shared with outside the University?"
+            helperText="This could be a company or individual."
+          />
+        </Grid>
+        <Grid item xs={6} />
+
+        <Grid item xs={12}>
+          <FormControl component='fieldset' fullWidth required>
+            <Grid container spacing={40}>
+              <Grid item xs={6}>
+                <FormLabel component="legend" classes={{ root: classes.booleanLabel }}>
+                  Is the asset shared outside of the EEA (European Economic Area)?
+                </FormLabel>
+                <FormHelperText>
+                  This could be a company or an individual. More information regards the EEA can be
+                  found here.
+                </FormHelperText>
+              </Grid>
+              <Grid item xs={4}>
+                <RadioGroup
+                  row name="todo_3" classes={{ root: classes.group }}
+                >
+                  <FormControlLabel
+                    classes={{ root: classes.booleanFormControlLabel }}
+                    control={<Radio />} value="yes" label="Yes"
+                  />
+                  <FormControlLabel
+                    classes={{ root: classes.booleanFormControlLabel }}
+                    control={<Radio />} value="no" label="No"
+                  />
+                  <FormControlLabel
+                    classes={{ root: classes.booleanFormControlLabel }}
+                    control={<Radio />} value="not_sure" label="Not sure"
+                  />
+                </RadioGroup>
+              </Grid>
+            </Grid>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            name="todo_4"
+            required
+            fullWidth
+            label="Who is it shared with outside of the EEA?"
+            helperText="This could be a company or individual."
+          />
+        </Grid>
+        <Grid item xs={6} />
 
         <Grid item xs={6}>
           <FormControl component="fieldset" fullWidth>
