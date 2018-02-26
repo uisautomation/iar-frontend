@@ -21,7 +21,7 @@ const styles = theme => ({
 
   complete: { backgroundColor: theme.customColors.complete },
 
-  inProgress: { backgroundColor: theme.customColors.inProgress },
+  incomplete: { backgroundColor: theme.customColors.incomplete },
 
   notSpecified: { opacity: 0 },
 
@@ -52,7 +52,7 @@ const CompleteIndicator = ({ isComplete, classes, className = '', ...rest }) => 
       iconContainerClassNames.push(classes.iconContainerShowComplete);
       break;
     case false:
-      classNames.push(classes.inProgress);
+      classNames.push(classes.incomplete);
       iconContainerClassNames.push(classes.iconContainerShowInProgress);
       break;
     default:
