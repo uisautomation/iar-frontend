@@ -20,8 +20,8 @@ const config = {
   client: process.env.REACT_APP_OAUTH_CLIENT,
   redirect: redirect,
   scope: process.env.REACT_APP_OAUTH_SCOPES,
-  width: 500, // Width (in pixels) of login popup window. Optional, default: 400
-  height: 400 // Height (in pixels) of login popup window. Optional, default: 400
+  width: 640, // Width (in pixels) of login popup window.
+  height: 512 // Height (in pixels) of login popup window.
 };
 
 /**
