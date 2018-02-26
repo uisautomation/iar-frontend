@@ -4,13 +4,16 @@ import assets from './assetRegisterApi';
 import deleteConfirmation from './deleteConfirmation';
 import snackbar from './snackbar';
 import lookupApi from './lookupApi';
+import editAsset from './editAsset';
 
 import { LOGOUT } from 'redux-implicit-oauth2';
 
 /**
  * Combine all reducers used in the application together into one reducer.
  */
-export const reducers = combineReducers({ auth, assets, deleteConfirmation, snackbar, lookupApi });
+export const reducers = combineReducers({
+  auth, assets, deleteConfirmation, snackbar, lookupApi, editAsset
+});
 
 /**
  * The default export wraps all reducers in a catch all reducer which resets state on LOGOUT. This

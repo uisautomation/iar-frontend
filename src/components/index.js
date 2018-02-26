@@ -1,4 +1,3 @@
-import AssetFormHeader from './AssetFormHeader';
 import AssetListItem from './AssetListItem';
 import BooleanChoice from './BooleanChoice';
 import CheckboxGroup from './CheckboxGroup';
@@ -12,7 +11,7 @@ import Sidebar from './Sidebar';
 import Snackbar from './Snackbar';
 
 export {
-  AssetFormHeader, AssetListItem,
+  AssetListItem,
   BooleanChoice,
   CheckboxGroup,
   DeleteConfirmationDialog,
