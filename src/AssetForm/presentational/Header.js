@@ -23,7 +23,7 @@ const HeaderButton = ({ component: Component = Button, children, ...rest }) => (
   <Component color="primary" size="large" variant="raised" {...rest}>{ children }</Component>
 );
 
-const mapScrollToProps = ({ pageY }) => ({ hasScrolled: pageY > 0});
+const mapScrollToProps = () => ({ hasScrolled: window.scrollY > 0});
 
 /**
  * A version of AppBar which changes its elevation depending on whether the current page has
