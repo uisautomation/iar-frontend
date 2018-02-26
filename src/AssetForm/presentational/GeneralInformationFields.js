@@ -102,7 +102,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           name="private"
           component={FormControlLabel}
           control={<Switch />}
-          label="Make this record private to your deparment"
+          label="Make this record private to your department"
         />
       </Grid>
       <Grid item xs={6} />
