@@ -12,7 +12,7 @@ import { withDraft } from '.';
  * The mapDraftToInputProps and mapOnChangeToPatch determine how the draft is mapped to and from
  * the input props. They are both functions.
  *
- * mapDraftToInputProps takes the current draft resource object and the component's props as
+ * mapDraftToInputProps takes the component's props and the current draft resource object as
  * arguments and returns an object which will be used to set the props on the wrapped input
  * control.
  *
@@ -27,7 +27,7 @@ class UnconnectedDraftInput extends Component {
   handleChange = (...args) => {
     const { patchDraft, mapOnChangeToPatch } = this.props;
     patchDraft(mapOnChangeToPatch(this.props, ...args));
-  }
+  };
 
   render = () => {
     // We swallow map{...} and patchDraft to avoid passing them through to the wrapped component.
@@ -42,7 +42,7 @@ class UnconnectedDraftInput extends Component {
 
     return <Component {...rest} onChange={this.handleChange}>{ children }</Component>;
   }
-};
+}
 
 UnconnectedDraftInput.propTypes = {
   component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),

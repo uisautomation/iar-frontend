@@ -32,7 +32,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           label="Asset name"
           helperText={
             "Give the asset a unique name so you can easily identify it, for example, " +
-            "'Visting academics database'."
+            "'Visiting academics database'."
           }
         />
       </Grid>
@@ -83,9 +83,9 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
         </ShowOnlyWhenDraftFieldIs>
 
         <ShowOnlyWhenDraftFieldIs name="purpose" expectedValue="other">
-          {/* TODO: this needs backend change to support purpose: other? */}
-          <TextField
+          <DraftTextInput
             name="purpose_other"
+            component={TextField}
             required
             fullWidth
             label="Other purpose"

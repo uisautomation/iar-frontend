@@ -19,6 +19,7 @@ import DraftInput, { DraftTextInput, DraftArrayCheckboxInput } from '../../draft
 import sharedStyles from '../styles';
 
 import { DATA_SUBJECT_LABELS, DATA_CATEGORY_LABELS, RETENTION_LABELS } from '../data';
+import ShowOnlyWhenDraftFieldIs from '../containers/ShowOnlyWhenDraftFieldIs';
 
 const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) => (
   <Component {...rest}>
@@ -121,10 +122,6 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
         </Grid>
 
         <Grid item xs={12}>
-          TODO: sharing (requires backend changes)
-        </Grid>
-
-        <Grid item xs={12}>
           <FormControl component='fieldset' fullWidth required>
             <Grid container spacing={40}>
               <Grid item xs={6}>
@@ -136,8 +133,11 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
                 </FormHelperText>
               </Grid>
               <Grid item xs={4}>
-                <RadioGroup
-                  row name="todo_1" classes={{ root: classes.group }}
+                <DraftTextInput
+                  row
+                  name="recipients_outside_uni"
+                  component={RadioGroup}
+                  classes={{ root: classes.group }}
                 >
                   <FormControlLabel
                     classes={{ root: classes.booleanFormControlLabel }}
@@ -151,20 +151,23 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
                     classes={{ root: classes.booleanFormControlLabel }}
                     control={<Radio />} value="not_sure" label="Not sure"
                   />
-                </RadioGroup>
+                </DraftTextInput>
               </Grid>
             </Grid>
           </FormControl>
         </Grid>
 
         <Grid item xs={6}>
-          <TextField
-            name="todo_2"
-            required
-            fullWidth
-            label="Who is it shared with outside the University?"
-            helperText="This could be a company or individual."
-          />
+          <ShowOnlyWhenDraftFieldIs name="recipients_outside_uni" expectedValue="yes">
+            <DraftTextInput
+              name="recipients_outside_uni_description"
+              component={TextField}
+              required
+              fullWidth
+              label="Who is it shared with outside the University?"
+              helperText="This could be a company or individual."
+            />
+          </ShowOnlyWhenDraftFieldIs>
         </Grid>
         <Grid item xs={6} />
 
@@ -181,8 +184,11 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
                 </FormHelperText>
               </Grid>
               <Grid item xs={4}>
-                <RadioGroup
-                  row name="todo_3" classes={{ root: classes.group }}
+                <DraftTextInput
+                  row
+                  name="recipients_outside_eea"
+                  component={RadioGroup}
+                  classes={{ root: classes.group }}
                 >
                   <FormControlLabel
                     classes={{ root: classes.booleanFormControlLabel }}
@@ -196,20 +202,23 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
                     classes={{ root: classes.booleanFormControlLabel }}
                     control={<Radio />} value="not_sure" label="Not sure"
                   />
-                </RadioGroup>
+                </DraftTextInput>
               </Grid>
             </Grid>
           </FormControl>
         </Grid>
 
         <Grid item xs={6}>
-          <TextField
-            name="todo_4"
-            required
-            fullWidth
-            label="Who is it shared with outside of the EEA?"
-            helperText="This could be a company or individual."
-          />
+          <ShowOnlyWhenDraftFieldIs name="recipients_outside_eea" expectedValue="yes">
+            <DraftTextInput
+              name="recipients_outside_eea_description"
+              component={TextField}
+              required
+              fullWidth
+              label="Who is it shared with outside of the EEA?"
+              helperText="This could be a company or individual."
+            />
+          </ShowOnlyWhenDraftFieldIs>
         </Grid>
         <Grid item xs={6} />
 
