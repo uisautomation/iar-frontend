@@ -24,7 +24,7 @@ const AssetListHeader = ({ title, classes }) => (
       <Typography variant="title" color="inherit" className={classes.flex}>
         { title }
       </Typography>
-      <Link className='App-raised-button-link' to="/asset/create">
+      <Link className='App-raised-button-link' to="/asset/">
         <Button variant='raised' className={classes.createButton}>Add new entry</Button>
       </Link>
     </Toolbar>

@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { LoginRequiredRoute } from '../components';
 
 import AssetList from './AssetList';
-import AssetForm from '../AssetForm';
+import { AssetForm, AssetView } from '../AssetDetail';
 import Static from './Static';
 import NotFoundPage from './NotFoundPage';
 
@@ -13,11 +13,11 @@ import NotFoundPage from './NotFoundPage';
  */
 const AppRoutes = () => (
   <Switch>
-    <LoginRequiredRoute path="/assets/:filter" exact component={AssetList}/>
+    <LoginRequiredRoute path="/assets/:filter" exact component={AssetList} />
     <LoginRequiredRoute path="/assets" exact component={AssetList}/>
-    <LoginRequiredRoute path="/asset/:assetId" exact
-                        component={routeProps => <AssetForm navigateOnSave='/' {...routeProps} />}
-    />
+    <LoginRequiredRoute path="/asset" exact component={AssetForm} />
+    <LoginRequiredRoute path="/asset/:assetId/edit" exact component={AssetForm} />
+    <LoginRequiredRoute path="/asset/:assetId" exact component={AssetView} />
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
     <LoginRequiredRoute path="/feedback" exact component={() => <Static page='feedback' />}/>
 
