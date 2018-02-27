@@ -16,12 +16,13 @@ const isNotEmpty = v => (typeof v !== 'undefined') && v !== null;
  */
 export const isGeneralInformationComplete = asset => {
   if(!asset) { return false; }
-  const { name, purpose, department, owner, private: isPrivate } = asset;
+  const { name, purpose, purpose_other, department, owner } = asset;
   return (
-    isNotEmpty(name) && isNotEmpty(purpose) && isNotEmpty(department) && isNotEmpty(isPrivate) &&
-    ((purpose !== 'research') || isNotEmpty(owner))
+    isNotEmpty(name) && isNotEmpty(purpose) && isNotEmpty(department) &&
+    ((purpose !== 'research') || isNotEmpty(owner)) &&
+    ((purpose !== 'other') || isNotEmpty(purpose_other))
   );
-}
+};
 
 /**
  * Function which takes an asset and returns a boolean indicating if the personal data section
@@ -29,17 +30,26 @@ export const isGeneralInformationComplete = asset => {
  */
 export const isPersonalDataComplete = asset => {
   if(!asset) { return false; }
-  const { personal_data, data_subject, data_category, retention } = asset;
+  const {
+    personal_data, data_subject, data_category,
+    recipients_outside_uni, recipients_outside_uni_description,
+    recipients_outside_eea, recipients_outside_eea_description,
+    retention
+  } = asset;
   return (
     (isNotEmpty(personal_data) && !personal_data)
     ||
     (
       isNotEmpty(data_subject) && (data_subject.length > 0) &&
       isNotEmpty(data_category) && (data_category.length > 0) &&
+      isNotEmpty(recipients_outside_uni) &&
+      (recipients_outside_uni !== 'yes' || isNotEmpty(recipients_outside_uni_description)) &&
+      isNotEmpty(recipients_outside_eea) &&
+      (recipients_outside_eea !== 'yes' || isNotEmpty(recipients_outside_eea_description)) &&
       isNotEmpty(retention)
     )
   );
-}
+};
 
 /**
  * Function which takes an asset and returns a boolean indicating if the risk section
@@ -51,7 +61,7 @@ export const isRiskComplete = asset => {
   return (
     isNotEmpty(risk_type) && (risk_type.length > 0)
   );
-}
+};
 
 /**
  * Function which takes an asset and returns a boolean indicating if the storage section
@@ -80,7 +90,7 @@ export const isStorageComplete = asset => {
   }
 
   return true;
-}
+};
 
 /**
  * Function which takes an asset and returns a boolean if the asset is complete. If asset is "null"

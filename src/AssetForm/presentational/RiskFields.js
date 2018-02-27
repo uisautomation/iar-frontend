@@ -13,7 +13,7 @@ import {
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 
-import { DraftArrayCheckboxInput, DraftClearArrayCheckboxInput } from '../../draft/DraftInput';
+import {DraftArrayCheckboxInput, DraftClearArrayCheckboxInput, DraftTextInput} from '../../draft/DraftInput';
 import { RISK_TYPE_LABELS } from '../data';
 import styles from '../styles';
 
@@ -50,7 +50,9 @@ const RiskFields = ({ component: Component = 'div', classes, ...rest }) => (
         </FormControl>
       </Grid>
       <Grid item xs={12}>
-        <TextField
+        <DraftTextInput
+          name="risk_type_additional"
+          component={TextField}
           fullWidth
           multiline
           label="Additional information"

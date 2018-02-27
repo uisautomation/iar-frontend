@@ -15,7 +15,9 @@ const COMPLETE_ASSET = {
 // Complete asset with personal data
 const COMPLETE_PERSONAL_DATA_ASSET = {
   ...COMPLETE_ASSET,
-  personal_data: true,  data_subject: ['foo'],  data_category: ['bar'],  retention: 'buzz'
+  personal_data: true,  data_subject: ['foo'],  data_category: ['bar'],  retention: 'buzz',
+  recipients_outside_uni: 'no',
+  recipients_outside_eea: 'no'
 };
 
 // Tests that sections of an expected to be {in,}complete are so. Takes a asset and a
@@ -62,7 +64,7 @@ describe('a asset whose purpose is research', () => {
   describe('with an owner', () => expectCompleteness({...asset, owner: 'ddd'}, ALL_COMPLETE));
 });
 
-describe('a asset', () => {
+describe('an asset', () => {
   // Required fields for general information
   ['name', 'purpose', 'department'].forEach(missingField => {
     describe('missing ' + missingField, () => {
@@ -73,11 +75,14 @@ describe('a asset', () => {
   });
 });
 
-describe('a asset with personal data', () => {
+describe('an asset with personal data', () => {
   expectCompleteness(COMPLETE_PERSONAL_DATA_ASSET, ALL_COMPLETE);
 
   // Required fields
-  ['data_subject', 'data_category', 'retention'].forEach(missingField => {
+  [
+    'data_subject', 'data_category', 'retention',
+    'recipients_outside_uni', 'recipients_outside_eea'
+  ].forEach(missingField => {
     describe('missing ' + missingField, () => {
       const asset = { ...COMPLETE_PERSONAL_DATA_ASSET };
       delete asset[missingField];
@@ -94,31 +99,31 @@ describe('a asset with personal data', () => {
   });
 });
 
-describe('a asset with null risk_type', () => {
+describe('an asset with null risk_type', () => {
   expectCompleteness({ ...COMPLETE_ASSET, risk_type: null }, {
     ...ALL_COMPLETE, risk: false, all: false
   });
 });
 
-describe('a asset with empty risk_type', () => {
+describe('an asset with empty risk_type', () => {
   expectCompleteness({ ...COMPLETE_ASSET, risk_type: [] }, {
     ...ALL_COMPLETE, risk: false, all: false
   });
 });
 
-describe('a asset with no storage location', () => {
+describe('an asset with no storage location', () => {
   expectCompleteness({ ...COMPLETE_ASSET, storage_location: null }, {
     ...ALL_COMPLETE, storage: false, all: false
   });
 });
 
-describe('a asset with empty storage format', () => {
+describe('an asset with empty storage format', () => {
   expectCompleteness({ ...COMPLETE_ASSET, storage_format: [] }, {
     ...ALL_COMPLETE, storage: false, all: false
   });
 });
 
-describe('a asset with null storage format', () => {
+describe('an asset with null storage format', () => {
   expectCompleteness({ ...COMPLETE_ASSET, storage_format: null }, {
     ...ALL_COMPLETE, storage: false, all: false
   });
