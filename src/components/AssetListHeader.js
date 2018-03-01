@@ -11,7 +11,6 @@ const styles = theme => ({
   flex: { flex: 1 },
   createButton: {
     backgroundColor: theme.customColors.white,
-    textDecoration: 'none',
     color: theme.customColors.coreGreen,
   },
   appBar: {
@@ -29,9 +28,12 @@ const AssetListHeader = ({ title, classes }) => (
       <Typography variant="title" color="inherit" className={classes.flex}>
         { title }
       </Typography>
-      <Link to="/asset/create">
-        <Button variant='raised' className={classes.createButton}>Add new entry</Button>
-      </Link>
+      <Button
+        component={Link} to="/asset/create" variant='raised'
+        className={classes.createButton}
+      >
+        Add new entry
+      </Button>
     </Toolbar>
   </AppBar>
 );
