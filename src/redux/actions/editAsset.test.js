@@ -6,6 +6,17 @@ jest.mock('./assetRegisterApi', () => {
   return {
     ...original,
     getAsset: jest.fn(() => ({ type: 'mock-get-asset-action' })),
+    putAsset: jest.fn(() => ({ type: 'mock-put-asset-action' })),
+    postAsset: jest.fn(() => ({ type: 'mock-post-asset-action' })),
+  };
+});
+
+// mock the assets utility module
+jest.mock('../../assets', () => {
+  const original = require.requireActual('../../assets');
+  return {
+    ...original,
+    sanitise: jest.fn(draft => draft),
   };
 });
 
@@ -13,13 +24,14 @@ import globalReducer from '../reducers';
 import { DEFAULT_INITIAL_STATE } from '../../testutils';
 import {
   SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS,
-  fetchOrCreateDraft
+  fetchOrCreateDraft, saveDraft, DEFAULT_ASSET
 } from './editAsset';
 
 import {
   ASSET_GET_REQUEST, ASSET_GET_SUCCESS,
-  getAsset,
+  getAsset, putAsset, postAsset,
 } from './assetRegisterApi';
+import { sanitise } from '../../assets';
 
 // mock GET-ing an asset. Returns new state.
 const mockGetAsset = (state, url, asset) => {
@@ -32,6 +44,9 @@ const mockGetAsset = (state, url, asset) => {
 
 beforeEach(() => {
   getAsset.mockClear();
+  putAsset.mockClear();
+  postAsset.mockClear();
+  sanitise.mockClear();
 });
 
 describe('fetchOrCreateDraft', () => {
@@ -105,6 +120,65 @@ describe('fetchOrCreateDraft', () => {
       const requestAction = dispatch.mock.calls[2][0];
       expect(requestAction.type).toBe(FETCH_DRAFT_SUCCESS);
       expect(requestAction.payload.asset).toBe(mockAsset);
+    });
+  });
+});
+
+describe('saveDraft', () => {
+  let draft, getState, dispatch;
+
+  beforeEach(() => {
+    draft = { ...DEFAULT_ASSET };
+
+    // mock up enough of the editAsset state for the actions to work.
+    getState = () => ({
+      editAsset: { draft },
+    });
+
+    // mock the dispatch function
+    dispatch = jest.fn();
+  });
+
+  test('is a thunk', () => {
+    expect(typeof saveDraft()).toBe('function');
+  });
+
+  test('calls sanitise on the draft before saving', () => {
+    saveDraft()(dispatch, getState);
+    expect(sanitise).toHaveBeenCalledWith(draft);
+  });
+
+  describe('when given draft with URL', () => {
+    beforeEach(() => {
+      draft.url = 'http://iar-backend.invalid/xxx';
+    });
+
+    test('PUTs it', () => {
+      saveDraft()(dispatch, getState);
+      expect(putAsset).toHaveBeenCalledWith(draft);
+      expect(dispatch).toHaveBeenCalledWith({ type: 'mock-put-asset-action' });
+    });
+
+    test('PUTs the sanitised draft', () => {
+      const sanitisedDraft = { name: 'test draft' };
+      sanitise.mockImplementationOnce(() => sanitisedDraft);
+      saveDraft()(dispatch, getState);
+      expect(putAsset).toHaveBeenCalledWith(sanitisedDraft);
+    });
+  });
+
+  describe('when given draft with no URL', () => {
+    test('POSTs it', () => {
+      saveDraft()(dispatch, getState);
+      expect(postAsset).toHaveBeenCalledWith(draft);
+      expect(dispatch).toHaveBeenCalledWith({ type: 'mock-post-asset-action' });
+    });
+
+    test('POSTs the sanitised draft', () => {
+      const sanitisedDraft = { name: 'test draft' };
+      sanitise.mockImplementationOnce(() => sanitisedDraft);
+      saveDraft()(dispatch, getState);
+      expect(postAsset).toHaveBeenCalledWith(sanitisedDraft);
     });
   });
 });

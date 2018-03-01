@@ -1,4 +1,5 @@
 import { getAsset, putAsset, postAsset } from './assetRegisterApi';
+import { sanitise } from '../../assets';
 
 export const SET_DRAFT = Symbol('SET_DRAFT');
 export const PATCH_DRAFT = Symbol('PATCH_DRAFT');
@@ -120,11 +121,14 @@ export const patchDraft = patch => ({
 export const saveDraft = () => (dispatch, getState) => {
   const { editAsset: { draft } } = getState();
 
+  // Make any fixes to the draft prior to saving
+  const sanitisedDraft = sanitise(draft);
+
   if(draft.url) {
     // asset has an existing URL so it should be PUT
-    return dispatch(putAsset(draft));
+    return dispatch(putAsset(sanitisedDraft));
   } else {
     // asset does not have an existing URL, so it should be POST-ed
-    return dispatch(postAsset(draft));
+    return dispatch(postAsset(sanitisedDraft));
   }
 };
