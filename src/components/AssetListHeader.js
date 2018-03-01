@@ -11,11 +11,13 @@ const styles = theme => ({
   flex: { flex: 1 },
   createButton: {
     backgroundColor: theme.customColors.white,
+    textDecoration: 'none',
+    color: theme.customColors.coreGreen,
   },
   appBar: {
     backgroundColor: theme.customColors.appBarBackground,
     paddingLeft: theme.drawerWidth,
-  }
+  },
 });
 
 /*
