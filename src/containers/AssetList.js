@@ -9,8 +9,6 @@ import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 
-import '../style/App.css';
-
 // Default query to use if none has previously been set by the user.
 export const DEFAULT_QUERY = {
   sort: { field: 'updated_at', direction: Direction.descending },
