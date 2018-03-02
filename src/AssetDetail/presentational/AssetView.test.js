@@ -8,17 +8,6 @@ import { ViewHeader } from './Header';
 import ViewBody from './ViewBody';
 
 describe('AssetView', () => {
-  describe('with nothing loaded', () => {
-    let store, testInstance, url;
-    beforeEach(() => {
-      store = createMockStore(initialState);
-      testInstance = render(<AppRoutes />, { url: '/asset/xxx', store });
-    });
-    test('Does not render page', () => {
-      expect(testInstance.findAllByType(AssetPage)).toHaveLength(0);
-    });
-  });
-
   describe('with assets loaded', () => {
     let store, testInstance, asset, url;
     beforeEach(() => {

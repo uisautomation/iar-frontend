@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
-import WaitForGlobals from '../../containers/WaitForGlobals';
 import FetchOrCreateDraft from '../containers/FetchOrCreateDraft';
 
 import AssetPage from './AssetPage';
@@ -16,7 +15,6 @@ import styles from '../styles';
  * body.
  */
 const AssetForm = ({ classes }) => (
-  <WaitForGlobals>
     <AssetPage>
       <EditHeader className={classes.header} />
       <EditBody className={classes.body} />
@@ -25,7 +23,6 @@ const AssetForm = ({ classes }) => (
         * or loads an existing asset. */}
       <FetchOrCreateDraft />
     </AssetPage>
-  </WaitForGlobals>
 );
 
 AssetForm.propTypes = {

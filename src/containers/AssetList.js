@@ -6,7 +6,6 @@ import Page from '../containers/Page';
 import GetMoreAssets from '../components/GetMoreAssets';
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
-import WaitForGlobals from './WaitForGlobals';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 
 import '../style/App.css';
@@ -63,19 +62,17 @@ class AssetList extends Component {
   render() {
     const { institution } = this.props;
     return (
-      <WaitForGlobals>
-        <Page>
-          <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
+      <Page>
+        <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
 
-          {/* Table of currently loaded assets. */}
-          <AssetTable />
+        {/* Table of currently loaded assets. */}
+        <AssetTable />
 
-          <div style={{textAlign: 'center'}}>
-            {/* When this component becomes visible more assets are loaded to populate the table. */}
-            <GetMoreAssets />
-          </div>
-        </Page>
-      </WaitForGlobals>
+        <div style={{textAlign: 'center'}}>
+          {/* When this component becomes visible more assets are loaded to populate the table. */}
+          <GetMoreAssets />
+        </div>
+      </Page>
     );
   }
 }
