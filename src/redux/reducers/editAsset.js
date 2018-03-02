@@ -13,22 +13,27 @@ export const initialState = {
 
   // True if the draft is "live", i.e. it was successfully set via fetchOrCreateDraft
   isLive: false,
+
+  // True if the draft has been modified from its initial fetched or set state.
+  isModified: false,
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
     case SET_DRAFT:
       // replace the entire draft
-      return { ...state, draft: action.payload.draft, isLoading: false, isLive: true };
+      return {
+        ...state, draft: action.payload.draft, isLoading: false, isLive: true, isModified: false
+      };
     case FETCH_DRAFT_REQUEST: {
       // a new draft is loading
       const { url } = action.payload;
-      return { ...state, draft: { url }, isLoading: true, isLive: false };
+      return { ...state, draft: { url }, isLoading: true, isLive: false, isModified: false };
     }
     case FETCH_DRAFT_SUCCESS: {
       // draft was loaded
       const { asset } = action.payload;
-      return { ...state, draft: asset, isLoading: false, isLive: true };
+      return { ...state, draft: asset, isLoading: false, isLive: true, isModified: false };
     }
     case PATCH_DRAFT: {
       // update fields in the current draft based on the patch or the value returned from the patch
@@ -36,7 +41,7 @@ export default (state = initialState, action) => {
       const patch =
         (typeof action.payload.patch === 'function')
         ? action.payload.patch(state.draft) : action.payload.patch;
-      return { ...state, draft: { ...state.draft, ...patch } };
+      return { ...state, draft: { ...state.draft, ...patch }, isModified: true };
     }
     default:
       return state;

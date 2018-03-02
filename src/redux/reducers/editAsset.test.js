@@ -13,40 +13,49 @@ beforeEach(() => {
 });
 
 describe('a SET_DRAFT action', () => {
-  let state;
   beforeEach(() => {
+    state.isLoading = true;
+    state.isModified = true;
+    state.isLive = false;
     state = reducer(state, { type: SET_DRAFT, payload: { draft: mockDraft } });
   });
 
   test('sets draft', () => { expect(state.draft).toBe(mockDraft); });
   test('clears isLoading', () => { expect(state.isLoading).toBe(false); });
   test('sets isLive', () => { expect(state.isLive).toBe(true); });
+  test('clears isModified', () => { expect(state.isModified).toBe(false); });
 });
 
 describe('a FETCH_DRAFT_REQUEST action', () => {
-  let state;
   beforeEach(() => {
+    state.isLoading = false;
+    state.isModified = true;
+    state.isLive = true;
     state = reducer(state, { type: FETCH_DRAFT_REQUEST, payload: { url: mockDraft.url } });
   });
 
   test('sets draft', () => { expect(state.draft).toEqual({ url: mockDraft.url }); });
   test('sets isLoading', () => { expect(state.isLoading).toBe(true); });
   test('clears isLive', () => { expect(state.isLive).toBe(false); });
+  test('clears isModified', () => { expect(state.isModified).toBe(false); });
 });
 
 describe('a FETCH_DRAFT_SUCCESS action', () => {
-  let state;
   beforeEach(() => {
+    state.isLoading = true;
+    state.isModified = true;
+    state.isLive = false;
     state = reducer(state, { type: FETCH_DRAFT_SUCCESS, payload: { asset: mockDraft } });
   });
 
   test('sets draft', () => { expect(state.draft).toEqual(mockDraft); });
   test('clears isLoading', () => { expect(state.isLoading).toBe(false); });
   test('sets isLive', () => { expect(state.isLive).toBe(true); });
+  test('clears isModified', () => { expect(state.isModified).toBe(false); });
 });
 
 describe('a PATCH_DRAFT action', () => {
-  let state, previousMockDraft, expectedMockDraft;
+  let previousMockDraft, expectedMockDraft;
   beforeEach(() => {
     // shallow copy mock draft
     previousMockDraft = {...mockDraft};
@@ -68,5 +77,13 @@ describe('a PATCH_DRAFT action', () => {
     expectedMockDraft = { ...expectedMockDraft, ...patchFunc(previousMockDraft) };
     state = reducer(state, patchDraft(patchFunc));
     expect(state.draft).toEqual(expectedMockDraft);
+  });
+
+  test('sets isModified', () => {
+    const patch = { foo: 1, bar: 'xxx' };
+    expectedMockDraft = { ...expectedMockDraft, ...patch };
+    expect(state.isModified).toBe(false);
+    state = reducer(state, patchDraft(patch));
+    expect(state.isModified).toBe(true);
   });
 });
