@@ -1,5 +1,5 @@
 import {
-  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS
+  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS, SAVE_DRAFT_SUCCESS
 } from '../actions/editAsset';
 
 export const initialState = {
@@ -43,6 +43,8 @@ export default (state = initialState, action) => {
         ? action.payload.patch(state.draft) : action.payload.patch;
       return { ...state, draft: { ...state.draft, ...patch }, isModified: true };
     }
+    case SAVE_DRAFT_SUCCESS:
+      return { ...state, isModified: false };
     default:
       return state;
   }

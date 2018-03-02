@@ -5,6 +5,7 @@ export const SET_DRAFT = Symbol('SET_DRAFT');
 export const PATCH_DRAFT = Symbol('PATCH_DRAFT');
 export const FETCH_DRAFT_REQUEST = Symbol('FETCH_DRAFT_REQUEST');
 export const FETCH_DRAFT_SUCCESS = Symbol('FETCH_DRAFT_SUCCESS');
+export const SAVE_DRAFT_SUCCESS = Symbol('SAVE_DRAFT_SUCCESS');
 
 // Default values for a new asset
 export const DEFAULT_ASSET = {
@@ -113,11 +114,17 @@ export const saveDraft = () => (dispatch, getState) => {
   // Make any fixes to the draft prior to saving
   const sanitisedDraft = sanitise(draft);
 
-  if(draft.url) {
-    // asset has an existing URL so it should be PUT
-    return dispatch(putAsset(sanitisedDraft));
-  } else {
-    // asset does not have an existing URL, so it should be POST-ed
-    return dispatch(postAsset(sanitisedDraft));
-  }
+  // Depending on whether draft.url is set, PUT or POST the asset saving the resulting promise.
+  const savePromise = dispatch(
+    draft.url ? putAsset(sanitisedDraft) : postAsset(sanitisedDraft)
+  );
+
+  return savePromise.then(action => {
+    const { error } = action;
+
+    // if save was successful, dispatch an action to indicate that the draft was saved
+    if(!error) { dispatch({ type: SAVE_DRAFT_SUCCESS }); }
+
+    return action;
+  });
 };

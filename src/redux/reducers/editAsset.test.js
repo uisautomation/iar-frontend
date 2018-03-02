@@ -1,6 +1,6 @@
 import reducer, { initialState } from './editAsset';
 import {
-  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS,
+  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS, SAVE_DRAFT_SUCCESS,
   patchDraft
 } from '../actions/editAsset';
 
@@ -85,5 +85,19 @@ describe('a PATCH_DRAFT action', () => {
     expect(state.isModified).toBe(false);
     state = reducer(state, patchDraft(patch));
     expect(state.isModified).toBe(true);
+  });
+});
+
+describe('a SAVE_DRAFT_SUCCESS action', () => {
+  let previousMockDraft, expectedMockDraft;
+  beforeEach(() => {
+    state = reducer(state, { type: SET_DRAFT, payload: { draft: mockDraft } });
+    state.isModified = true;
+  });
+
+  test('resets isModified', () => {
+    expect(state.isModified).toBe(true);
+    state = reducer(state, { type: SAVE_DRAFT_SUCCESS });
+    expect(state.isModified).toBe(false);
   });
 });
