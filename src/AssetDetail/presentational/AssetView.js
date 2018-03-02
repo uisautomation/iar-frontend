@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import FetchAsset from '../containers/FetchAsset';
 
 import AssetPage from './AssetPage';
-import { ViewHeader } from './Header';
+import ViewHeader from './ViewHeader';
 import ViewBody from './ViewBody';
 
 import styles from '../styles';

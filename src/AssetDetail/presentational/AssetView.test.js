@@ -4,7 +4,7 @@ import { populatedState } from '../../test/fixtures';
 
 import AppRoutes from '../../containers/AppRoutes';
 import AssetPage from './AssetPage';
-import { ViewHeader } from './Header';
+import ViewHeader from './ViewHeader';
 import ViewBody from './ViewBody';
 
 describe('AssetView', () => {

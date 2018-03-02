@@ -5,7 +5,7 @@ import { withStyles } from 'material-ui/styles';
 import FetchOrCreateDraft from '../containers/FetchOrCreateDraft';
 
 import AssetPage from './AssetPage';
-import { EditHeader } from './Header';
+import EditHeader from './EditHeader';
 import EditBody from './EditBody';
 
 import styles from '../styles';
