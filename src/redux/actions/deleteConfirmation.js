@@ -1,7 +1,7 @@
 import { deleteAsset } from './assetRegisterApi';
 
-export const CONFIRM_DELETE = Symbol('CONFIRM_DELETE');
-export const HANDLE_CONFIRM_DELETE = Symbol('HANDLE_CONFIRM_DELETE');
+export const CONFIRM_DELETE = 'CONFIRM_DELETE';
+export const HANDLE_CONFIRM_DELETE = 'HANDLE_CONFIRM_DELETE';
 
 /**
  * Confirm delete of an asset. Pass the asset URL to the action to open a modal confirmation

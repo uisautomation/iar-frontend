@@ -8,7 +8,7 @@ import { withDraft} from '.';
 describe('withDraft', () => {
   test('passes draft to mapDraftToProps function', () => {
     const mapDraftToProps = jest.fn(() => ({ }));
-    const draftSymbol = Symbol('MOCK_DRAFT');
+    const draftSymbol = 'MOCK_DRAFT';
     const state = { ...initialState, editAsset: {
       ...initialState.editAsset, draft: draftSymbol, isLive: true,
     } };
