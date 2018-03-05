@@ -2,26 +2,26 @@ import { RSAA } from 'redux-api-middleware';
 
 const ASSETS_URL = process.env.REACT_APP_ENDPOINT_ASSETS;
 
-export const ASSETS_LIST_REQUEST = Symbol('ASSETS_LIST_REQUEST');
-export const ASSETS_LIST_SUCCESS = Symbol('ASSETS_LIST_SUCCESS');
-export const ASSETS_LIST_FAILURE = Symbol('ASSETS_LIST_FAILURE');
-export const ASSETS_LIST_RESET = Symbol('ASSETS_LIST_RESET');
+export const ASSETS_LIST_REQUEST = 'ASSETS_LIST_REQUEST';
+export const ASSETS_LIST_SUCCESS = 'ASSETS_LIST_SUCCESS';
+export const ASSETS_LIST_FAILURE = 'ASSETS_LIST_FAILURE';
+export const ASSETS_LIST_RESET = 'ASSETS_LIST_RESET';
 
-export const ASSETS_DELETE_SUCCESS = Symbol('ASSETS_DELETE_SUCCESS');
-export const ASSETS_DELETE_REQUEST = Symbol('ASSETS_DELETE_REQUEST');
-export const ASSETS_DELETE_FAILURE = Symbol('ASSETS_DELETE_FAILURE');
+export const ASSETS_DELETE_SUCCESS = 'ASSETS_DELETE_SUCCESS';
+export const ASSETS_DELETE_REQUEST = 'ASSETS_DELETE_REQUEST';
+export const ASSETS_DELETE_FAILURE = 'ASSETS_DELETE_FAILURE';
 
-export const ASSET_GET_REQUEST = Symbol('ASSET_GET_REQUEST');
-export const ASSET_GET_SUCCESS = Symbol('ASSET_GET_SUCCESS');
-export const ASSET_GET_FAILURE = Symbol('ASSET_GET_FAILURE');
+export const ASSET_GET_REQUEST = 'ASSET_GET_REQUEST';
+export const ASSET_GET_SUCCESS = 'ASSET_GET_SUCCESS';
+export const ASSET_GET_FAILURE = 'ASSET_GET_FAILURE';
 
-export const ASSET_PUT_REQUEST = Symbol('ASSET_PUT_REQUEST');
-export const ASSET_PUT_SUCCESS = Symbol('ASSET_PUT_SUCCESS');
-export const ASSET_PUT_FAILURE = Symbol('ASSET_PUT_FAILURE');
+export const ASSET_PUT_REQUEST = 'ASSET_PUT_REQUEST';
+export const ASSET_PUT_SUCCESS = 'ASSET_PUT_SUCCESS';
+export const ASSET_PUT_FAILURE = 'ASSET_PUT_FAILURE';
 
-export const ASSET_POST_REQUEST = Symbol('ASSET_POST_REQUEST');
-export const ASSET_POST_SUCCESS = Symbol('ASSET_POST_SUCCESS');
-export const ASSET_POST_FAILURE = Symbol('ASSET_POST_FAILURE');
+export const ASSET_POST_REQUEST = 'ASSET_POST_REQUEST';
+export const ASSET_POST_SUCCESS = 'ASSET_POST_SUCCESS';
+export const ASSET_POST_FAILURE = 'ASSET_POST_FAILURE';
 
 // Shared fields between FILTER_FIELDS and SORT_FIELDS.
 const COMMON_FIELDS = [
@@ -38,7 +38,7 @@ export const FILTER_FIELDS = new Set(COMMON_FIELDS);
 export const SORT_FIELDS = new Set([...COMMON_FIELDS, 'created_at', 'updated_at']);
 
 export const Direction = Object.freeze({
-  ascending: Symbol('ascending'), descending: Symbol('descending')
+  ascending: 'ascending', descending: 'descending'
 });
 
 /**

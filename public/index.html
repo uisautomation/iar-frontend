@@ -21,6 +21,24 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Information Asset Register - Cambridge University</title>
+
+    <!-- Polyfill support for modern JS features, mainly for IE11 -->
+    <script src="//cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+    <!--
+      Notify users of IE11 and below that they may not get the full experience
+      on our site.
+    -->
+    <script>
+      var $buoop = {notify:{e:11,f:-4,o:-4,s:-2,c:-4},insecure:true,unsupported:true,api:5}; 
+      function $buo_f(){ 
+       var e = document.createElement("script"); 
+       e.src = "//browser-update.org/update.min.js"; 
+       document.body.appendChild(e);
+      };
+      try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+      catch(e){window.attachEvent("onload", $buo_f)}
+    </script>
   </head>
   <body>
     <noscript>
