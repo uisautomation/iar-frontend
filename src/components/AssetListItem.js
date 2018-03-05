@@ -19,6 +19,8 @@ import AssetStatus from './AssetStatus';
 import LookupInstitution from './LookupInstitution';
 import { withStyles } from 'material-ui/styles';
 
+import { canEditAsset } from '../permissions';
+
 const privateIconStyles = theme => ({
   privateIcon: {color: theme.customColors.mediumGrey}
 });
@@ -87,7 +89,9 @@ const assetListItemStyles = theme => ({
   }
 });
 
-const AssetListItem = withStyles(assetListItemStyles)(({confirmDelete, asset, history, classes}) => {
+const AssetListItem = withStyles(assetListItemStyles)((
+  {confirmDelete, asset, history, classes, canEdit}
+) => {
   if(!asset) { return null; }
 
   // parse "update at" date
@@ -95,7 +99,7 @@ const AssetListItem = withStyles(assetListItemStyles)(({confirmDelete, asset, hi
 
   const editAsset = () => {
     if(asset && asset.id && history) {
-      history.push('/asset/' + asset.id);
+      history.push('/asset/' + asset.id + (canEdit ? '/edit' : ''));
     }
   };
 
@@ -131,14 +135,19 @@ AssetListItem.propTypes = {
   asset: PropTypes.object,
   assetUrl: PropTypes.string.isRequired,
   confirmDelete: PropTypes.func.isRequired,
+  canEdit: PropTypes.bool.isRequired,
 };
 
 // Export unconnected version of component to aid testing.
 export const UnconnectedAssetListItem = AssetListItem;
 
-const mapStateToProps = ({ assets: { assetsByUrl } }, { assetUrl }) => ({
-  asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
-});
+const mapStateToProps = (state, { assetUrl }) => {
+  const { assets: { assetsByUrl } } = state;
+  return ({
+    asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
+    canEdit: canEditAsset(state, assetUrl),
+  });
+};
 
 const mapDispatchToProps = { confirmDelete };
 

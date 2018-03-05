@@ -38,17 +38,17 @@ export const content = (<div class="static-page">
     <li>Confirm you're sure you want to delete the entry</li>
   </ol>
 
-  <p><i>Pleaste note: deleting an entry is permanent, so please only do so if you're sure you no longer need to keep an entry of the corresponding asset. Deleting an entry will not delete the asset itself.</i></p>
+  <p><i>Please note: deleting an entry is permanent, so please only do so if you're sure you no longer need to keep an entry of the corresponding asset. Deleting an entry will not delete the asset itself.</i></p>
 </section>
 
 <section>
   <h2>Making an entry private or public</h2>
 
-  <p>Entries have the ability to be set to private or public in the register. By default, entries are public and viewable to anyone that has access to the register. These entries are read-only for anyone outside of the assigned instiution. Setting an entry to private will hide it from others outside of your instiution.</p>
+  <p>Entries have the ability to be set to private or public in the register. By default, entries are public and viewable to anyone that has access to the register. These entries are read-only for anyone outside of the assigned institution. Setting an entry to private will hide it from others outside of your institution.</p>
 
   <p>Entries can be set as private or public using the action button, located on the far right of the entry row in the table, or by using the switch in the editing form.</p>
 
-  <p><i>Pleaste note: an entry is just a record that an asset exists and a high-level description of it's contents. User's outside your instiution can read an entry when it's set to public, however this does not mean they can view the asset itself, or any of the data within it.</i></p>
+  <p><i>Please note: an entry is just a record that an asset exists and a high-level description of its contents. Users outside your institution can read an entry when it's set to public, however this does not mean they can view the asset itself, or any of the data within it.</i></p>
 </section>
 
 <section>

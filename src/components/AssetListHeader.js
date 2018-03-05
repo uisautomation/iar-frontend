@@ -29,7 +29,7 @@ const AssetListHeader = ({ title, classes }) => (
         { title }
       </Typography>
       <Button
-        component={Link} to="/asset/create" variant='raised'
+        component={Link} to="/asset/" variant='raised'
         className={classes.createButton}
       >
         Add new entry
