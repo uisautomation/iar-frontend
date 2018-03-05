@@ -50,6 +50,7 @@ const theme = createMuiTheme({
     formSection: {
       fontFamily: ['RobotoMono', 'monospace'],
       minHeight: 48,
+      height: 48, // required due to IE11 bug
       display: 'flex',
       alignItems: 'center',
       backgroundColor: 'rgba(0, 177, 193, 0.08)',
