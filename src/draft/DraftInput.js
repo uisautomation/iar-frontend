@@ -132,7 +132,7 @@ export const DraftArrayCheckboxInput = ({ clearValue, ...props }) => (
       } else {
         values.delete(value);
       }
-      return { [name]: [...values].sort() };
+      return { [name]: [...values.values()].sort() };
     }}
     { ...props }
   />
