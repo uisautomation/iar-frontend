@@ -33,6 +33,7 @@ export const RETENTION_LABELS = [
   { value: '>=1,<=5', label: '1 - 5 years' },
   { value: '>5,<=10', label: '6 - 10 years' },
   { value: '>10,<=75', label: '10 - 75 years' },
+  { value: 'forever', label: 'Forever' },
 ];
 
 export const RISK_TYPE_LABELS = [
