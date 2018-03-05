@@ -12,6 +12,9 @@ import MultiSelectViewGroup from './MultiSelectViewGroup';
 import { RISK_TYPE_LABELS } from '../data';
 import styles from '../styles';
 
+// An explicit "none of the above" answer to augment RISK_TYPE_LABELS
+const noneOfTheAboveLabel = { value: 'none', label: 'None of the above' };
+
 /**
  * The "personal data" section of the asset form.
  */
@@ -26,7 +29,8 @@ const RiskView = (
             What are the risks if the information in this asset were lost or compromised?
           </FormLabel>
           <MultiSelectViewGroup
-            labels={RISK_TYPE_LABELS} values={asset ? asset.risk_type : []}
+            labels={[...RISK_TYPE_LABELS, noneOfTheAboveLabel]}
+            values={asset ? asset.risk_type : []}
           />
         </FormControl>
       </Grid>
