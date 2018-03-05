@@ -38,13 +38,13 @@ test('can render /assets/UIS', () => {
 test('can render /assets/all', () => {
   const testInstance = render(<AppRoutes/>, {url: '/assets/all'});
 
-  expect(appBarTitle(testInstance)).toBe('Assets: All departments')
+  expect(appBarTitle(testInstance)).toBe('Assets: All institutions')
 });
 
 test('/ redirects to /assets/all', () => {
   const testInstance = render(<AppRoutes/>, {url: '/'});
 
-  expect(appBarTitle(testInstance)).toBe('Assets: All departments')
+  expect(appBarTitle(testInstance)).toBe('Assets: All institutions')
 });
 
 test('can render /asset/create', () => {

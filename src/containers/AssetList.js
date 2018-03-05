@@ -62,7 +62,7 @@ class AssetList extends Component {
     const { institution, classes } = this.props;
     return (
       <Page>
-        <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
+        <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All institutions')} />
 
         {/* Table of currently loaded assets. */}
         <div className={classes.content}>
