@@ -5,10 +5,9 @@ import AssetTable from '../components/AssetTable';
 import Page from '../containers/Page';
 import GetMoreAssets from '../components/GetMoreAssets';
 import { withRouter } from 'react-router'
+import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
-
-import '../style/App.css';
 
 // Default query to use if none has previously been set by the user.
 export const DEFAULT_QUERY = {
@@ -60,13 +59,15 @@ class AssetList extends Component {
   }
 
   render() {
-    const { institution } = this.props;
+    const { institution, classes } = this.props;
     return (
       <Page>
         <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
 
         {/* Table of currently loaded assets. */}
-        <AssetTable />
+        <div className={classes.content}>
+          <AssetTable />
+        </div>
 
         <div style={{textAlign: 'center'}}>
           {/* When this component becomes visible more assets are loaded to populate the table. */}
@@ -92,4 +93,12 @@ const mapStateToProps = ({assets: {fetchedAt, query}, lookupApi: {self}}, {match
 
 const mapDispatchToProps = { getAssets };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AssetList));
+const styles = theme => ({
+  content: {
+    paddingTop: theme.spacing.unit * 8,
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(withRouter(AssetList))
+);
