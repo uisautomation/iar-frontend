@@ -62,9 +62,6 @@ class MoreMenu extends Component {
           <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
             Edit
           </MenuItem>
-          <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
-            Make {isPrivate ? 'Public' : 'Private'}
-          </MenuItem>
           <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
             Delete
           </MenuItem>
