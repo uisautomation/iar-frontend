@@ -7,6 +7,7 @@
 //
 // https://tc39.github.io/ecma262/#sec-array.prototype.find
 if (!Array.prototype.find) {
+  // eslint-disable-next-line
   Object.defineProperty(Array.prototype, 'find', {
     value: function(predicate) {
      // 1. Let O be ? ToObject(this value).
@@ -54,6 +55,7 @@ if (!Array.prototype.find) {
 //
 // Production steps of ECMA-262, Edition 6, 22.1.2.1
 if (!Array.from) {
+  // eslint-disable-next-line
   Array.from = (function () {
     var toStr = Object.prototype.toString;
     var isCallable = function (fn) {
