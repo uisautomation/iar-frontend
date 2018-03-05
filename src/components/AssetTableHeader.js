@@ -98,7 +98,7 @@ export const AssetTableHeader = () => (
           required fields.
         </TooltipText>
       }/>
-      <SortCell style={{width: '50%'}} field='department' label='Department' />
+      <SortCell style={{width: '50%'}} field='department' label='Institution' />
       <SortCell style={{width: 8*3}} field='private' label={
         <TooltipText title="Private">
           Private marks whether the entry should be hidden from users outside of the entry's
