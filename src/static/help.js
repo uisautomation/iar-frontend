@@ -5,7 +5,7 @@ import React from 'react';
 
 export const title = 'Help';
 
-export const content = (<div class="static-page">
+export const content = (<div className="static-page">
 
 <h1>Help</h1>
 
