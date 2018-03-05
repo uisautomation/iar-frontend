@@ -34,7 +34,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
           fullWidth
           label="Where is the asset stored?"
           helperText={
-            "For example, on a virtual machine, in a shared drive, in cloud storage. " +
+            "For example, on a virtual machine, in a shared drive, in an office in your building. Please give us much detail as you can. " +
             "Ask your computer officer if you're not sure."
           }
         />
@@ -98,7 +98,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
         <Grid item xs={12}>
           <FormControl component="fieldset" fullWidth required>
             <FormLabel component="legend">
-              What security measures are followed to be keep the digital asset safe?
+              What security measures are followed to keep the digital asset safe?
             </FormLabel>
             <FormHelperText>
               Tick all that apply.
@@ -189,7 +189,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
         <Grid item xs={12}>
           <FormControl component="fieldset" fullWidth required>
             <FormLabel component="legend">
-              What security measures are followed to be keep the physical asset safe?
+              What security measures are followed to keep the physical asset safe?
             </FormLabel>
             <FormHelperText>
               Tick all that apply.
