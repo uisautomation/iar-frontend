@@ -178,7 +178,7 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
                   Is the asset shared outside of the EEA (European Economic Area)?
                 </FormLabel>
                 <FormHelperText>
-                  This could be a company or an individual. More information regards the EEA <a href="https://www.gov.uk/eu-eea" target="_blank">can be
+                  This could be a company or an individual. More information regards the EEA <a href="https://www.gov.uk/eu-eea" target="_blank" rel="noopener noreferrer">can be
                   found here</a>.
                 </FormHelperText>
               </Grid>
@@ -228,7 +228,7 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
             </FormLabel>
             <FormHelperText>
               Please tell us realistically how long you intend to keep each individual record for. If you're not sure
-              how long records should be kept, and what to do with when you no longer need them; see the <a href="https://www.information-compliance.admin.cam.ac.uk/records-management">records management guidance</a>.
+              how long records should be kept, and what to do with when you no longer need them; see the <a href="https://www.information-compliance.admin.cam.ac.uk/records-management" target="_blank" rel="noopener noreferrer">records management guidance</a>.
             </FormHelperText>
             <DraftTextInput
               name="retention" component={RadioGroup}

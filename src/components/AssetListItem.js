@@ -46,9 +46,7 @@ class MoreMenu extends Component {
 
   render() {
     const {
-      isPrivate = false,
       onEdit = () => null,
-      onTogglePrivacy = () => null,
       onDelete = () => null,
     } = this.props;
     const { anchorEl } = this.state;
@@ -72,9 +70,7 @@ class MoreMenu extends Component {
 };
 
 MoreMenu.propTypes = {
-  isPrivate: PropTypes.bool,
   onEdit: PropTypes.func,
-  onTogglePrivacy: PropTypes.func,
   onDelete: PropTypes.func,
 };
 
