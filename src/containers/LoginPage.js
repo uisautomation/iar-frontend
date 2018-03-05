@@ -19,7 +19,8 @@ const styles = theme => ({
     alignItems: 'center'
   },
   camLogo: {
-    width: '180px'
+    width: '180px',
+    height: '80px'
   },
   productName: {
     display: 'flex',
