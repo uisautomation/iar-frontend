@@ -55,7 +55,8 @@ const RiskFields = ({ component: Component = 'div', classes, ...rest }) => (
           component={TextField}
           fullWidth
           multiline
-          label="Additional information"
+          label="Supporting information"
+          helperText="Please tell us a bit more detail about why these risks exist and how it could impact your institution or the University"
         />
       </Grid>
     </Grid>
