@@ -67,7 +67,7 @@ const LoginPage = ({classes}) => (
     <div className={classes.productDescription}>
       <h1>Information asset register:<br /> record details of information held by your institution</h1>
       <p>
-      You must record details of certain information assets (databases, lists or other collections of data) held by your institution — do this by 30 April 2018.
+      You must record details of certain information assets (databases, lists or other collections of data) held by your institution — do this by <strong>30 April 2018</strong>.
       </p>
       <p>
       This will help the University meet its duties under the General Data Protection Regulation which becomes law on 25 May 2018.
