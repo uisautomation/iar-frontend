@@ -29,6 +29,10 @@ class AssetList extends Component {
       const { sort: { field } } = query;
 
       // HACK: allow ?q=<....> to be added to URLs to enable search feature
+      // This HACK is intended to aid the UX team in searching through entries to evaluate how
+      // people are getting on adding entries. It makes use of URLSearchParams which is not
+      // supported on IE11 and also exposes functionality which has not been fully baked so, once
+      // UX are done, this needs to be removed.
       let search = null;
       if(location.search && (location.search !== '')) {
         // there was some query string added to the URL, parse it
