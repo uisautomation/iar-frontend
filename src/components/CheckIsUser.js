@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {withRouter} from "react-router-dom";
+import history from '../history'
 
 export const NOT_A_USER_PATH = '/not_a_user';
 
@@ -13,17 +13,12 @@ export const NOT_A_USER_PATH = '/not_a_user';
 class CheckIsUser extends Component {
 
   componentWillMount = () => {
-    const { inIARUsersGroup, history: {push, location: {pathname}} } = this.props;
+    const { inIARUsersGroup } = this.props;
+    const { push, location: { pathname } } = history;
 
     // only redirect to NOT_A_USER_PATH if they are not already on it
     if (!inIARUsersGroup && pathname !== NOT_A_USER_PATH) {
       push(NOT_A_USER_PATH);
-    }
-
-    // in case the user is still on NOT_A_USER_PATH when they haven't been given access
-    // and sign back in
-    if (inIARUsersGroup && pathname === NOT_A_USER_PATH) {
-      push('/');
     }
   };
 
@@ -32,7 +27,6 @@ class CheckIsUser extends Component {
 
 CheckIsUser.propTypes = {
   inIARUsersGroup : PropTypes.bool.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = ({ lookupApi: { self: { groups } } }) => ({
@@ -40,4 +34,4 @@ const mapStateToProps = ({ lookupApi: { self: { groups } } }) => ({
     !!groups.find((group) => (group.name === process.env.REACT_APP_IAR_USERS_GROUP))
 });
 
-export default connect(mapStateToProps)(withRouter(CheckIsUser));
+export default connect(mapStateToProps)(CheckIsUser);
