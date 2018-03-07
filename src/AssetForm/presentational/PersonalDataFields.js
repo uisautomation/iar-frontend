@@ -224,11 +224,11 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
         <Grid item xs={6}>
           <FormControl component="fieldset" fullWidth>
             <FormLabel component="legend">
-              How long do you keep each record inside of this asset for?
+              How long do you expect to keep each record in this asset?
             </FormLabel>
             <FormHelperText>
-              Please tell us realistically how long you intend to keep each individual record for. If you're not sure
-              how long records should be kept, and what to do with when you no longer need them; see the <a href="https://www.information-compliance.admin.cam.ac.uk/records-management" target="_blank" rel="noopener noreferrer">records management guidance</a>.
+              If you're not sure
+              how long records should be kept, and what to do when you no longer need them, see the <a href="https://www.information-compliance.admin.cam.ac.uk/records-management" target="_blank" rel="noopener noreferrer">records management guidance</a>.
             </FormHelperText>
             <DraftTextInput
               name="retention" component={RadioGroup}

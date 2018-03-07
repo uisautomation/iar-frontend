@@ -34,8 +34,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
           fullWidth
           label="Where is the asset stored?"
           helperText={
-            "For example, on a virtual machine, in a shared drive, in an office in your building. Please give us much detail as you can. " +
-            "Ask your computer officer if you're not sure."
+            "List all the places you store it — for example in Room 45, Greenwich House; on a server in West Cambridge; in  [name of team] Dropbox."
           }
         />
       </Grid>

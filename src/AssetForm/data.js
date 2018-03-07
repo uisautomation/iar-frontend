@@ -1,19 +1,19 @@
 export const DATA_SUBJECT_LABELS = [
-  {value: "staff", label: "Staff & applicants"},
-  {value: "students", label: "Students & applicants"},
-  {value: "alumni", label: "Alumni"},
+  {value: "staff", label: "Staff and applicants"},
+  {value: "students", label: "Students, applicants, including prospective applicants"},
+  {value: "alumni", label: "Alumni and supporters"},
   {value: "research", label: "Research participants"},
   {value: "patients", label: "Patients"},
-  {value: "supplier", label: "Suppliers"},
+  {value: "supplier", label: "Suppliers, collaborators and other professional contacts"},
   {value: "public", label: "Members of the public"},
 ];
 
 export const DATA_CATEGORY_LABELS = [
-  {value: 'education', label: "Education"},
+  {value: 'education', label: "Education records"},
   {value: 'racial', label: "Racial or ethnic origin"},
-  {value: 'employment', label: "Employment"},
+  {value: 'employment', label: "Employment records"},
   {value: 'political', label: "Political opinions"},
-  {value: 'financial', label: "Financial"},
+  {value: 'financial', label: "Financial details"},
   {value: 'unions', label: "Trade union membership"},
   {value: 'social', label: "Lifestyle and social circumstances"},
   {value: 'religious', label: "Religious or similar beliefs"},
@@ -25,7 +25,7 @@ export const DATA_CATEGORY_LABELS = [
   {value: 'genetic', label: "Genetic information"},
   {value: 'children', label: "Data about children 16"},
   {value: 'biometric', label: "Biometric information"},
-  {value: 'criminal', label: "Criminal proceedings"},
+  {value: 'criminal', label: "Criminal offences and proceedings"},
 ];
 
 export const RETENTION_LABELS = [
@@ -36,11 +36,11 @@ export const RETENTION_LABELS = [
 ];
 
 export const RISK_TYPE_LABELS = [
-  {value: 'financial', label: "The University would be exposed to financial loss by disclosing this information"},
-  {value: 'operational', label: "Damage or loss of this information would impact core day-to-day operations."},
-  {value: 'safety', label: "Staff or students would be exposed to personal danger if this information was disclosed."},
-  {value: 'compliance', label: "The University wouldn't be compliant with all the necessary laws and regulations related to holding this information."},
-  {value: 'reputational', label: "The University would receive significant negative publicity"},
+  {value: 'financial', label: "Financial loss or reduction of income for the University."},
+  {value: 'operational', label: "Day-to-day operations would be affected."},
+  {value: 'safety', label: "Personal danger to people identified by this information."},
+  {value: 'compliance', label: "The incident would have to be reported to the regulator."},
+  {value: 'reputational', label: "Significant negative publicity or high-profile criticism of the University."},
 ];
 
 export const DIGITAL_STORAGE_SECURITY_LABELS = [
@@ -51,10 +51,10 @@ export const DIGITAL_STORAGE_SECURITY_LABELS = [
 ];
 
 export const PAPER_STORAGE_SECURITY_LABELS = [
-  {value: 'locked_cabinet', label: "Locked filing cabinet"},
-  {value: 'safe', label: "Safe"},
-  {value: 'locked_room', label: "Locked room"},
   {value: 'locked_building', label: "Locked building"},
+  {value: 'locked_room', label: "Locked room"},
+  {value: 'locked_cabinet', label: "Locked filing cabinet"},
+  {value: 'safe', label: "Safe"},  
 ];
 
 export const PURPOSE_LABELS = [
