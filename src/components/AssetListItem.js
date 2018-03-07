@@ -19,8 +19,6 @@ import AssetStatus from './AssetStatus';
 import LookupInstitution from './LookupInstitution';
 import { withStyles } from 'material-ui/styles';
 
-import { canEditAsset } from '../permissions';
-
 const privateIconStyles = theme => ({
   privateIcon: {color: theme.customColors.mediumGrey}
 });
@@ -90,13 +88,14 @@ const assetListItemStyles = theme => ({
 });
 
 const AssetListItem = withStyles(assetListItemStyles)((
-  {confirmDelete, asset, history, classes, canEdit}
+  {confirmDelete, asset, history, classes}
 ) => {
   // parse "update at" date
   const updatedAt = new Date(asset.updated_at);
 
   const editAsset = () => {
     if(asset && asset.id && history) {
+      const canEdit = asset.allowed_methods && (asset.allowed_methods.indexOf('PUT') !== -1)
       history.push('/asset/' + asset.id + (canEdit ? '/edit' : ''));
     }
   };
@@ -133,7 +132,6 @@ AssetListItem.propTypes = {
   asset: PropTypes.object.isRequired,
   assetUrl: PropTypes.string.isRequired,
   confirmDelete: PropTypes.func.isRequired,
-  canEdit: PropTypes.bool.isRequired,
 };
 
 // Export unconnected version of component to aid testing.
@@ -143,7 +141,6 @@ const mapStateToProps = (state, { assetUrl }) => {
   const { assets: { assetsByUrl } } = state;
   return ({
     asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
-    canEdit: canEditAsset(state, assetUrl),
   });
 };
 
