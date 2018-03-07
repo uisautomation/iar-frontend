@@ -1,4 +1,5 @@
 import { getAsset, putAsset, postAsset } from './assetRegisterApi';
+import { sanitise } from '../../assets';
 
 export const SET_DRAFT = Symbol('SET_DRAFT');
 export const PATCH_DRAFT = Symbol('PATCH_DRAFT');
@@ -29,24 +30,13 @@ export const DEFAULT_ASSET = {
 /**
  * Load an existing asset into the draft. If the asset is present in the global assets.assetsByUrl
  * map then it is used directly, otherwise fetch the asset using the API. If the url is undefined
- * or null, start a new draft.
+ * or null, start a new draft using the optional second argument as a template.
  *
  * Implemented as a thunk action so requires the redux-thunk middleware.
  */
-export const fetchOrCreateDraft = (url = null) => (dispatch, getState) => {
+export const fetchOrCreateDraft = (url = null, draftAsset = DEFAULT_ASSET) => (dispatch, getState) => {
   // If no url was provided, start an empty draft.
   if(url === null) {
-    const draftAsset = { ...DEFAULT_ASSET };
-
-    // Attempt to pre-populate the department field from the signed in user's primary institution
-    const { lookupApi: { self } } = getState();
-    if(self) {
-      const { institutions } = self;
-      if(institutions && (institutions.length > 0)) {
-        draftAsset.department = institutions[0].instid;
-      }
-    }
-
     dispatch(setDraft(draftAsset));
     return;
   }
@@ -120,11 +110,14 @@ export const patchDraft = patch => ({
 export const saveDraft = () => (dispatch, getState) => {
   const { editAsset: { draft } } = getState();
 
+  // Make any fixes to the draft prior to saving
+  const sanitisedDraft = sanitise(draft);
+
   if(draft.url) {
     // asset has an existing URL so it should be PUT
-    return dispatch(putAsset(draft));
+    return dispatch(putAsset(sanitisedDraft));
   } else {
     // asset does not have an existing URL, so it should be POST-ed
-    return dispatch(postAsset(draft));
+    return dispatch(postAsset(sanitisedDraft));
   }
 };

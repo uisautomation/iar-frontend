@@ -71,7 +71,7 @@ const stateWithAssetFromAction = (state, action) => {
   const asset = action.payload;
   const assetsByUrl = new Map([
     ...state.assetsByUrl,
-    [asset.url, { asset, fetchedAt: new Date() }]
+    [asset.url, { asset, fetchedAt: new Date(), isLoading: false }]
   ]);
   return { ...state, assetsByUrl, url: asset.url };
 };

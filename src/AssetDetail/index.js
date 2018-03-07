@@ -12,4 +12,5 @@
  *
  */
 import AssetForm from './presentational/AssetForm';
-export default AssetForm;
+import AssetView from './presentational/AssetView';
+export { AssetForm, AssetView };

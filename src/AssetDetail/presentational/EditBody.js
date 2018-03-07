@@ -26,7 +26,7 @@ import StorageAndSecurityFields from './StorageAndSecurityFields';
  * Renders body inside a root component. By default this is Paper. Set the component prop to
  * override. Unrecognised props are spread to the root element.
  */
-const Body = ({ component: Component = Paper, classes, ...rest }) => (
+const EditBody = ({ component: Component = Paper, classes, ...rest }) => (
   <Component {...rest}>
     <div className={classes.loadingIndicatorContainer}>
       <LoadingDraftSensor
@@ -63,7 +63,7 @@ const Body = ({ component: Component = Paper, classes, ...rest }) => (
   </Component>
 );
 
-Body.propTypes = {
+EditBody.propTypes = {
   component: PropTypes.node,
   classes: PropTypes.object.isRequired,
 };
@@ -87,4 +87,4 @@ const styles = theme => ({
   hidden: { opacity: 0 }
 });
 
-export default withStyles(styles)(Body);
+export default withStyles(styles)(EditBody);
