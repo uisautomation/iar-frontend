@@ -68,6 +68,6 @@ export const PURPOSE_LABELS = [
   {value: 'governance_compliance', label: 'Governance/compliance'},
   {value: 'security', label: 'Security'},
   {value: 'marketing', label: 'Marketing'},
-  {value: 'public_engagement', label: 'Public engagement'},
-  {value: 'other', label: 'Other'},
+  {value: 'public_engagement', label: 'Communications/public engagement'},
+  {value: 'other', label: 'Other (please specify)'},
 ];
