@@ -60,7 +60,7 @@ export const getPeople = (crsid) => ({
  */
 export const getSelf = () => ({
   [RSAA]: {
-    endpoint: ENDPOINT_PEOPLE + '/token/self?fetch=all_insts',
+    endpoint: ENDPOINT_PEOPLE + '/token/self?fetch=all_insts,all_groups',
     method: 'GET',
     types: [PEOPLE_GET_SELF_REQUEST, PEOPLE_GET_SELF_SUCCESS, PEOPLE_GET_SELF_FAILURE]
   }
