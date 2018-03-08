@@ -32,7 +32,7 @@ export const createMockStore = (initialState = DEFAULT_INITIAL_STATE) => mockSto
   Helper function to render a component for testing. Wraps component in the necessary scaffolding and returns the
   TestInstance for checking.
  */
-const render = (component, {store, url} = {}) => {
+const render = (component, {store, url = '/'} = {}) => {
   if(!store) { store = createMockStore(DEFAULT_INITIAL_STATE); }
 
   // Make sure this hierarchy reflects that in App.js.

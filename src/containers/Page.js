@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { CheckIsUser, Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
-import {withRouter} from "react-router-dom";
-import {WaitForSelf} from "../waiting";
+import { withRouter } from "react-router-dom";
+import { WaitForSelf } from "../waiting";
 
 const styles = theme => ({
   appFrame: {
