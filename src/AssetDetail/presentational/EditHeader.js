@@ -32,14 +32,12 @@ export default withStyles(styles)(({ classes }) => (
       <NavigateBackButton component={HeaderButton} classes={{ root: classes.button }}>
         Cancel
       </NavigateBackButton>
-      <IfMethodAllowed method="PUT">
-        <SaveDraftButton
-          component={HeaderButton} color="default"
-          className={[classes.button, classes.saveButton].join(' ')}
-        >
-          Save entry
-        </SaveDraftButton>
-      </IfMethodAllowed>
+      <SaveDraftButton
+        component={HeaderButton} color="default"
+        className={[classes.button, classes.saveButton].join(' ')}
+      >
+        Save entry
+      </SaveDraftButton>
     </div>
   </Header>
 ));
