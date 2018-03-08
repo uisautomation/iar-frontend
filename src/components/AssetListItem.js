@@ -50,6 +50,8 @@ class MoreMenu extends Component {
       onEdit = () => null,
       onTogglePrivacy = () => null,
       onDelete = () => null,
+      canDelete,
+      canEdit,
     } = this.props;
     const { anchorEl } = this.state;
 
@@ -59,15 +61,24 @@ class MoreMenu extends Component {
           <MoreVertIcon />
         </IconButton>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
-          <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
-            Edit
-          </MenuItem>
-          <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
-            Make {isPrivate ? 'Public' : 'Private'}
-          </MenuItem>
-          <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
-            Delete
-          </MenuItem>
+          {
+            canEdit ?
+              <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
+                Edit
+              </MenuItem> : null
+          }
+          {
+            canEdit ?
+              <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
+                Make {isPrivate ? 'Public' : 'Private'}
+              </MenuItem> : null
+          }
+          {
+            canDelete ?
+              <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
+                Delete
+              </MenuItem> : null
+          }
         </Menu>
       </div>
     );
@@ -76,6 +87,7 @@ class MoreMenu extends Component {
 
 MoreMenu.propTypes = {
   isPrivate: PropTypes.bool,
+  canDelete: PropTypes.bool.isRequired,
   onEdit: PropTypes.func,
   onTogglePrivacy: PropTypes.func,
   onDelete: PropTypes.func,
@@ -102,6 +114,11 @@ const AssetListItem = withStyles(assetListItemStyles)((
 
   const EditCell = ({ children }) => <TableCell onClick={editAsset}>{ children }</TableCell>;
 
+  const canDelete =
+    Boolean(asset.allowed_methods) && (asset.allowed_methods.indexOf('DELETE') !== -1);
+  const canEdit =
+    Boolean(asset.allowed_methods) && (asset.allowed_methods.indexOf('PUT') !== -1);
+
   return (
     <TableRow className={classes.entryRow}>
       <EditCell>{asset.name ? asset.name : asset.id}</EditCell>
@@ -119,11 +136,17 @@ const AssetListItem = withStyles(assetListItemStyles)((
           <span><FormattedRelative value={updatedAt} /></span>
         </Tooltip>
       </EditCell>
-      <TableCell><MoreMenu
-        isPrivate={asset.private}
-        onEdit={editAsset}
-        onDelete={() => confirmDelete(asset.url)}
-      /></TableCell>
+      <TableCell>{
+        // if we cannot edit or delete the asset, there is no point in showing the menu
+        (canDelete || canEdit) ?
+          <MoreMenu
+            isPrivate={asset.private}
+            canDelete={canDelete}
+            canEdit={canEdit}
+            onEdit={editAsset}
+            onDelete={() => confirmDelete(asset.url)}
+          /> : null
+      }</TableCell>
     </TableRow>
   );
 });
