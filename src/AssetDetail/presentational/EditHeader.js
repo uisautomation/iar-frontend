@@ -12,9 +12,9 @@ import SaveDraftButton from '../containers/SaveDraftButton';
 import DeleteEntryButton from '../containers/DeleteEntryButton';
 import PageTitle from '../containers/PageTitle';
 
-import DraftIsExistingAsset from '../../draft/DraftIsExistingAsset';
-
 import Header, { styles, HeaderButton } from './Header';
+
+import { IfMethodAllowed } from '../../draft';
 
 // Header for edit view
 export default withStyles(styles)(({ classes }) => (
@@ -24,14 +24,11 @@ export default withStyles(styles)(({ classes }) => (
     </Typography>
 
     <div className={classes.buttonGroup}>
-      <DraftIsExistingAsset>{ isExistingAsset =>
-        isExistingAsset
-        ? (
-          <DeleteEntryButton component={HeaderButton} className={classes.button}>
-            <DeleteIcon className={classes.leftIcon} /> Delete entry
-          </DeleteEntryButton>
-        ) : null
-      }</DraftIsExistingAsset>
+      <IfMethodAllowed method="DELETE">
+        <DeleteEntryButton component={HeaderButton} className={classes.button}>
+          <DeleteIcon className={classes.leftIcon} /> Delete entry
+        </DeleteEntryButton>
+      </IfMethodAllowed>
       <NavigateBackButton component={HeaderButton} classes={{ root: classes.button }}>
         Cancel
       </NavigateBackButton>

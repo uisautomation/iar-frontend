@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
-import Table, { TableBody } from 'material-ui/Table';
+import { Router } from 'react-router-dom';
+import createHistory from "history/createMemoryHistory"
+import Table, { TableBody, TableCell } from 'material-ui/Table';
 import AssetListItem from './AssetListItem';
 import { ASSETS_LIST_SUCCESS } from '../redux/actions/assetRegisterApi';
 import reducer from '../redux/reducers';
@@ -26,25 +28,72 @@ const stateWithAssetFixture = (
   return reducer(state, action);
 };
 
-test('Asset list should show asset name if present', () => {
-  const asset = { ...DEFAULT_ASSET_FIXTURE };
-  const store = createMockStore(stateWithAssetFixture({ asset }));
+describe('AssetListItem', () => {
+  let mockHistory;
 
-  const component = <Container><AssetListItem assetUrl={asset.url} /></Container>
-  const testInstance = render(component, { url: '/', store });
+  beforeEach(() => {
+    mockHistory = createHistory();
+    mockHistory.push = jest.fn(mockHistory.push);
+    mockHistory.pop = jest.fn(mockHistory.pop);
+    mockHistory.replace = jest.fn(mockHistory.replace);
+  });
 
-  // Look for an element with a text child with the asset name
-  expect(testInstance.find(element => element.props.children == [asset.name])).toBeDefined();
-});
+  test('should show asset name if present', () => {
+    const asset = { ...DEFAULT_ASSET_FIXTURE };
+    const store = createMockStore(stateWithAssetFixture({ asset }));
 
-test('Asset list should show asset id if name not present', () => {
-  const asset = { ...DEFAULT_ASSET_FIXTURE };
-  delete asset.name;
-  const store = createMockStore(stateWithAssetFixture({ asset }));
+    const component = <Container><AssetListItem assetUrl={asset.url} /></Container>
+    const testInstance = render(component, { url: '/', store });
 
-  const component = <Container><AssetListItem assetUrl={asset.url} /></Container>
-  const testInstance = render(component, { url: '/', store });
+    // Look for an element with a text child with the asset name
+    expect(testInstance.find(element => element.props.children == [asset.name])).toBeDefined();
+  });
 
-  // Look for an element with a text child with the asset id
-  expect(testInstance.find(element => element.props.children == [asset.id])).toBeDefined();
+  test('should show asset id if name not present', () => {
+    const asset = { ...DEFAULT_ASSET_FIXTURE };
+    delete asset.name;
+    const store = createMockStore(stateWithAssetFixture({ asset }));
+
+    const component = <Container><AssetListItem assetUrl={asset.url} /></Container>
+    const testInstance = render(component, { url: '/', store });
+
+    // Look for an element with a text child with the asset id
+    expect(testInstance.find(element => element.props.children == [asset.id])).toBeDefined();
+  });
+
+  test('should link to edit view if asset is editable', () => {
+    const asset = { ...DEFAULT_ASSET_FIXTURE, allowed_methods: ['PUT', 'PATCH'] };
+    const store = createMockStore(stateWithAssetFixture({ asset }));
+
+    const component = <Container><AssetListItem assetUrl={asset.url} /></Container>;
+    const router = ({ children, ...props }) => (
+      <Router {...props} history={mockHistory}>{ children }</Router>
+    );
+    const testInstance = render(component, { url: '/', store, router });
+
+    // Click the first table cell
+    const onClick = testInstance.findByType(AssetListItem)
+      .findAllByType(TableCell)[0].props.onClick;
+    onClick();
+
+    expect(mockHistory.push).toHaveBeenCalledWith('/asset/' + asset.id + '/edit');
+  });
+
+  test('should link to read-only view if asset is not editable', () => {
+    const asset = { ...DEFAULT_ASSET_FIXTURE, allowed_methods: null };
+    const store = createMockStore(stateWithAssetFixture({ asset }));
+
+    const component = <Container><AssetListItem assetUrl={asset.url} /></Container>;
+    const router = ({ children, ...props }) => (
+      <Router {...props} history={mockHistory}>{ children }</Router>
+    );
+    const testInstance = render(component, { url: '/', store, router });
+
+    // Click the first table cell
+    const onClick = testInstance.findByType(AssetListItem)
+      .findAllByType(TableCell)[0].props.onClick;
+    onClick();
+
+    expect(mockHistory.push).toHaveBeenCalledWith('/asset/' + asset.id);
+  });
 });
