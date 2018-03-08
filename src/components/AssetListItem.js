@@ -19,8 +19,6 @@ import AssetStatus from './AssetStatus';
 import LookupInstitution from './LookupInstitution';
 import { withStyles } from 'material-ui/styles';
 
-import { canEditAsset } from '../permissions';
-
 const privateIconStyles = theme => ({
   privateIcon: {color: theme.customColors.mediumGrey}
 });
@@ -52,6 +50,8 @@ class MoreMenu extends Component {
       onEdit = () => null,
       onTogglePrivacy = () => null,
       onDelete = () => null,
+      canDelete,
+      canEdit,
     } = this.props;
     const { anchorEl } = this.state;
 
@@ -61,15 +61,24 @@ class MoreMenu extends Component {
           <MoreVertIcon />
         </IconButton>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
-          <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
-            Edit
-          </MenuItem>
-          <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
-            Make {isPrivate ? 'Public' : 'Private'}
-          </MenuItem>
-          <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
-            Delete
-          </MenuItem>
+          {
+            canEdit ?
+              <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
+                Edit
+              </MenuItem> : null
+          }
+          {
+            canEdit ?
+              <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
+                Make {isPrivate ? 'Public' : 'Private'}
+              </MenuItem> : null
+          }
+          {
+            canDelete ?
+              <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
+                Delete
+              </MenuItem> : null
+          }
         </Menu>
       </div>
     );
@@ -78,6 +87,7 @@ class MoreMenu extends Component {
 
 MoreMenu.propTypes = {
   isPrivate: PropTypes.bool,
+  canDelete: PropTypes.bool.isRequired,
   onEdit: PropTypes.func,
   onTogglePrivacy: PropTypes.func,
   onDelete: PropTypes.func,
@@ -90,18 +100,24 @@ const assetListItemStyles = theme => ({
 });
 
 const AssetListItem = withStyles(assetListItemStyles)((
-  {confirmDelete, asset, history, classes, canEdit}
+  {confirmDelete, asset, history, classes}
 ) => {
   // parse "update at" date
   const updatedAt = new Date(asset.updated_at);
 
   const editAsset = () => {
     if(asset && asset.id && history) {
+      const canEdit = asset.allowed_methods && (asset.allowed_methods.indexOf('PUT') !== -1)
       history.push('/asset/' + asset.id + (canEdit ? '/edit' : ''));
     }
   };
 
   const EditCell = ({ children }) => <TableCell onClick={editAsset}>{ children }</TableCell>;
+
+  const canDelete =
+    Boolean(asset.allowed_methods) && (asset.allowed_methods.indexOf('DELETE') !== -1);
+  const canEdit =
+    Boolean(asset.allowed_methods) && (asset.allowed_methods.indexOf('PUT') !== -1);
 
   return (
     <TableRow className={classes.entryRow}>
@@ -120,11 +136,17 @@ const AssetListItem = withStyles(assetListItemStyles)((
           <span><FormattedRelative value={updatedAt} /></span>
         </Tooltip>
       </EditCell>
-      <TableCell><MoreMenu
-        isPrivate={asset.private}
-        onEdit={editAsset}
-        onDelete={() => confirmDelete(asset.url)}
-      /></TableCell>
+      <TableCell>{
+        // if we cannot edit or delete the asset, there is no point in showing the menu
+        (canDelete || canEdit) ?
+          <MoreMenu
+            isPrivate={asset.private}
+            canDelete={canDelete}
+            canEdit={canEdit}
+            onEdit={editAsset}
+            onDelete={() => confirmDelete(asset.url)}
+          /> : null
+      }</TableCell>
     </TableRow>
   );
 });
@@ -133,7 +155,6 @@ AssetListItem.propTypes = {
   asset: PropTypes.object.isRequired,
   assetUrl: PropTypes.string.isRequired,
   confirmDelete: PropTypes.func.isRequired,
-  canEdit: PropTypes.bool.isRequired,
 };
 
 // Export unconnected version of component to aid testing.
@@ -143,7 +164,6 @@ const mapStateToProps = (state, { assetUrl }) => {
   const { assets: { assetsByUrl } } = state;
   return ({
     asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
-    canEdit: canEditAsset(state, assetUrl),
   });
 };
 
