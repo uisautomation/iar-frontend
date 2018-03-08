@@ -23,12 +23,27 @@ class AssetList extends Component {
     if(!fetchedAt) {
       // If there is currently a sort query set by the user, use that otherwise update the query
       // with a default sort.
-      const { query, match : {params: {filter}} } = this.props;
+      const { query, match : {params: {filter}}, location } = this.props;
       const { sort: { field } } = query;
+
+      // HACK: allow ?q=<....> to be added to URLs to enable search feature
+      // This HACK is intended to aid the UX team in searching through entries to evaluate how
+      // people are getting on adding entries. It makes use of URLSearchParams which is not
+      // supported on IE11 and also exposes functionality which has not been fully baked so, once
+      // UX are done, this needs to be removed.
+      let search = null;
+      if(location.search && (location.search !== '')) {
+        // there was some query string added to the URL, parse it
+        const parsedSearch = new URLSearchParams(location.search);
+
+        // if there is a q=<...> parameter, extract it and set the search
+        if(parsedSearch.has('q')) { search = parsedSearch.get('q'); }
+      }
+
       if(field !== null) {
-        this.getAssetsFilteredByDept(query, filter);
+        this.getAssetsFilteredByDept({ ...query, search }, filter);
       } else {
-        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY }, filter);
+        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY, search }, filter);
       }
     }
   }
