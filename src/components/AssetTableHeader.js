@@ -78,7 +78,7 @@ const tooltipTextStyle = {
 const TooltipText = withStyles(tooltipTextStyle)(({ title, children, classes }) => (
   <Tooltip title={<div style={{width: '16em'}}>{ children }</div>}>
     <div className={classes.label}>
-      { title }<HelpOutlineIcon className={classes.icon} fontSize={true} />
+      { title }<HelpOutlineIcon className={classes.icon} />
     </div>
   </Tooltip>
 ));
