@@ -1,7 +1,9 @@
+import React from 'react';
 import { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import history from '../history'
+import { WaitForSelf } from "../waiting";
 
 export const NOT_A_USER_PATH = '/not_a_user';
 
@@ -10,7 +12,7 @@ export const NOT_A_USER_PATH = '/not_a_user';
  * Specifically it checks if the user is in the REACT_APP_IAR_USERS_GROUP. If they aren't,
  * the user is redirected to a page explaining why they can't access the system.
  */
-class CheckIsUser extends Component {
+class UnconnectedCheckIsUser extends Component {
 
   componentWillMount = () => {
     const { inIARUsersGroup } = this.props;
@@ -25,7 +27,7 @@ class CheckIsUser extends Component {
   render = () => null;
 }
 
-CheckIsUser.propTypes = {
+UnconnectedCheckIsUser.propTypes = {
   inIARUsersGroup : PropTypes.bool.isRequired,
 };
 
@@ -34,4 +36,9 @@ const mapStateToProps = ({ lookupApi: { self: { groups } } }) => ({
     !!groups.find((group) => (group.name === process.env.REACT_APP_IAR_USERS_GROUP))
 });
 
-export default connect(mapStateToProps)(CheckIsUser);
+const CheckIsUser = connect(mapStateToProps)(UnconnectedCheckIsUser);
+
+// Wrap exported CheckIsUser in WaitForSelf
+export default props => (
+  <WaitForSelf><CheckIsUser{...props} /></WaitForSelf>
+);

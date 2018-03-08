@@ -7,7 +7,6 @@ import { withStyles } from 'material-ui/styles';
 import { CheckIsUser, Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
 import { withRouter } from "react-router-dom";
-import { WaitForSelf } from "../waiting";
 
 const styles = theme => ({
   appFrame: {
@@ -30,15 +29,12 @@ const styles = theme => ({
   },
 });
 
-// checks that the user has been configured as a user of the application
-const checkIsUser = <WaitForSelf><CheckIsUser/></WaitForSelf>;
-
 const FullPage = withStyles(styles)(({ children, classes }) => (
   <div className={classes.appFrame}>
     <div className={classes.pageContent}>
       { children }
     </div>
-    {checkIsUser}
+    <CheckIsUser/>
   </div>
 ));
 
@@ -51,7 +47,7 @@ const SidebarPage = withRouter(withStyles(styles)(({ children, classes, location
     <div className={classes.pageContentWithSidebar}>
       { children }
     </div>
-    {checkIsUser}
+    <CheckIsUser/>
   </div>
 )));
 
