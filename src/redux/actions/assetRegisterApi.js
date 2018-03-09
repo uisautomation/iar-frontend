@@ -182,6 +182,10 @@ export const getAsset = (url) => ({
 
 /**
  * Update an asset. Takes an asset resource object. The asset url must be non-null.
+ *
+ * Returns a thunk function and hence requires redux-thunk-middleware. The value returned from
+ * dispatching this action is a promise which is resolved with the ..._SUCCESS or ..._FAILURE
+ * action dispatched by the redux-api-middleware.
  */
 export const putAsset = asset => dispatch => (
   dispatch({
@@ -209,6 +213,10 @@ export const putAsset = asset => dispatch => (
 
 /**
  * Create an asset. Takes an asset resource object.
+ *
+ * Returns a thunk function and hence requires redux-thunk-middleware. The value returned from
+ * dispatching this action is a promise which is resolved with the ..._SUCCESS or ..._FAILURE
+ * action dispatched by the redux-api-middleware.
  */
 export const postAsset = asset => dispatch => (
   dispatch({
