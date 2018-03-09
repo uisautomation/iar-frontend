@@ -18,8 +18,8 @@ export const content =
     and then sign back into the application.
   </p>
   <p>
-    <Button>
-      <LogoutLink>Sign out</LogoutLink>
+    <Button variant='raised' type='Button' color={'primary'} component={LogoutLink}>
+      Sign out
     </Button>
   </p>
 </div>;
