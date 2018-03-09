@@ -45,6 +45,35 @@ const theme = createMuiTheme({
     assetTableHover,
     appBarBackground,
   },
+  overrides: {
+    // the following overrides are a HACK to effectively set the default colour of switch, checkbox
+    // and radio controls rather than have to set "color='primary'" on each and every instance
+    MuiSwitch: {
+      checkedSecondary: {
+        color: coreGreen,
+        '& + $bar': {
+          backgroundColor: coreGreen,
+        },
+      },
+    },
+    MuiCheckbox: {
+      checkedSecondary: {
+        color: coreGreen,
+      },
+    },
+    MuiRadio: {
+      checkedSecondary: {
+        color: coreGreen,
+      },
+    },
+
+    // Ensure that form helper text doesn't change the colour of links.
+    MuiFormHelperText: {
+      root: {
+        '& a': { color: 'inherit' },
+      },
+    },
+  },
   drawerWidth: 280,
   customMixins: {
     formSection: {
