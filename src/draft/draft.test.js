@@ -16,7 +16,7 @@ describe('withDraft', () => {
     const Component = withDraft(mapDraftToProps)(() => null);
     render(<Component />, { store });
     expect(mapDraftToProps.mock.calls[0][0]).toEqual({
-      draft: draftSymbol, isLoading: false, isLive: true
+      draft: draftSymbol, isLoading: false, isLive: true, isModified: false,
     });
     expect(mapDraftToProps.mock.calls[0][1]).toEqual({ });
     expect(typeof mapDraftToProps.mock.calls[0][2].fetchOrCreateDraft).toBe('function');

@@ -1,9 +1,11 @@
 import { getAsset, putAsset, postAsset } from './assetRegisterApi';
+import { sanitise } from '../../assets';
 
 export const SET_DRAFT = 'SET_DRAFT';
 export const PATCH_DRAFT = 'PATCH_DRAFT';
 export const FETCH_DRAFT_REQUEST = 'FETCH_DRAFT_REQUEST';
 export const FETCH_DRAFT_SUCCESS = 'FETCH_DRAFT_SUCCESS';
+export const SAVE_DRAFT_SUCCESS = 'SAVE_DRAFT_SUCCESS';
 
 // Default values for a new asset
 export const DEFAULT_ASSET = {
@@ -109,11 +111,20 @@ export const patchDraft = patch => ({
 export const saveDraft = () => (dispatch, getState) => {
   const { editAsset: { draft } } = getState();
 
-  if(draft.url) {
-    // asset has an existing URL so it should be PUT
-    return dispatch(putAsset(draft));
-  } else {
-    // asset does not have an existing URL, so it should be POST-ed
-    return dispatch(postAsset(draft));
-  }
+  // Make any fixes to the draft prior to saving
+  const sanitisedDraft = sanitise(draft);
+
+  // Depending on whether draft.url is set, PUT or POST the asset saving the resulting promise.
+  const savePromise = dispatch(
+    draft.url ? putAsset(sanitisedDraft) : postAsset(sanitisedDraft)
+  );
+
+  return savePromise.then(action => {
+    const { error } = action;
+
+    // if save was successful, dispatch an action to indicate that the draft was saved
+    if(!error) { dispatch({ type: SAVE_DRAFT_SUCCESS }); }
+
+    return action;
+  });
 };

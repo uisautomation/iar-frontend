@@ -1,11 +1,12 @@
 import React from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { LoginRequiredRoute } from '../components';
 
 import AssetList from './AssetList';
 import { AssetForm, AssetView } from '../AssetDetail';
 import Static from './Static';
 import NotFoundPage from './NotFoundPage';
+import RedirectToMyDeptAssets from './RedirectToMyDeptAssets';
 
 /**
  * A container component which renders the appropriate route given the current location.
@@ -22,7 +23,7 @@ const AppRoutes = () => (
     <LoginRequiredRoute path="/feedback" exact component={() => <Static page='feedback' />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />
-    <Redirect from='/' exact to='/assets' />
+    <LoginRequiredRoute path="/" exact component={RedirectToMyDeptAssets} />
 
     { /* Catch all route for "not found" */ }
     <Route path="*" component={NotFoundPage} />
