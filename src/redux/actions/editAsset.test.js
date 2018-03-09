@@ -23,7 +23,7 @@ jest.mock('../../assets', () => {
 import globalReducer from '../reducers';
 import { DEFAULT_INITIAL_STATE } from '../../testutils';
 import {
-  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS,
+  SET_DRAFT, PATCH_DRAFT, FETCH_DRAFT_REQUEST, FETCH_DRAFT_SUCCESS, SAVE_DRAFT_SUCCESS,
   fetchOrCreateDraft, saveDraft, DEFAULT_ASSET
 } from './editAsset';
 
@@ -136,7 +136,7 @@ describe('saveDraft', () => {
     });
 
     // mock the dispatch function
-    dispatch = jest.fn();
+    dispatch = jest.fn(value => Promise.resolve(value));
   });
 
   test('is a thunk', () => {
@@ -165,6 +165,12 @@ describe('saveDraft', () => {
       saveDraft()(dispatch, getState);
       expect(putAsset).toHaveBeenCalledWith(sanitisedDraft);
     });
+
+    test('dispatches a SAVE_DRAFT_SUCCESS after', () => {
+      saveDraft()(dispatch, getState).then(() => {
+        expect(dispatch).toHaveBeenLastCalledWith({ type: SAVE_DRAFT_SUCCESS });
+      });
+    });
   });
 
   describe('when given draft with no URL', () => {
@@ -179,6 +185,12 @@ describe('saveDraft', () => {
       sanitise.mockImplementationOnce(() => sanitisedDraft);
       saveDraft()(dispatch, getState);
       expect(postAsset).toHaveBeenCalledWith(sanitisedDraft);
+    });
+
+    test('dispatches SAVE_DRAFT_SUCCESS afterwards', () => {
+      saveDraft()(dispatch, getState).then(() => {
+        expect(dispatch).toHaveBeenLastCalledWith({ type: SAVE_DRAFT_SUCCESS });
+      });
     });
   });
 });
