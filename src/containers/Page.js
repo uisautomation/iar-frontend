@@ -4,9 +4,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { Sidebar } from '../components';
+import { CheckIsUser, Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 const styles = theme => ({
   appFrame: {
@@ -29,12 +29,12 @@ const styles = theme => ({
   },
 });
 
-
 const FullPage = withStyles(styles)(({ children, classes }) => (
   <div className={classes.appFrame}>
     <div className={classes.pageContent}>
       { children }
     </div>
+    <CheckIsUser/>
   </div>
 ));
 
@@ -47,6 +47,7 @@ const SidebarPage = withRouter(withStyles(styles)(({ children, classes, location
     <div className={classes.pageContentWithSidebar}>
       { children }
     </div>
+    <CheckIsUser/>
   </div>
 )));
 
