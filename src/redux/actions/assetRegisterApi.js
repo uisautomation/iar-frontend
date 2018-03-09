@@ -182,62 +182,36 @@ export const getAsset = (url) => ({
 
 /**
  * Update an asset. Takes an asset resource object. The asset url must be non-null.
- *
- * Returns a thunk function and hence requires redux-thunk-middleware. The value returned from
- * dispatching this action is a promise which is resolved with the ..._SUCCESS or ..._FAILURE
- * action dispatched by the redux-api-middleware.
  */
-export const putAsset = asset => dispatch => (
-  dispatch({
-    [RSAA]: {
-      endpoint: asset.url,
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(asset),
-      types: [
-        { type: ASSET_PUT_REQUEST, meta: { url: asset.url, asset } },
-          // body added for testing TODO: find a better way of checking body
-        { type: ASSET_PUT_SUCCESS, meta: { url: asset.url } },
-        { type: ASSET_PUT_FAILURE, meta: { url: asset.url } },
-      ]
-    }
-  }).then(action => {
-    // After the PUT action has been dispatched, the promise is resolved with the result. If
-    // successful, the error property is undefined, otherwise it is true. Only re-fetch the asset
-    // if the PUT succeeded.
-    const { error } = action;
-    if(!error) { return dispatch(getAsset(asset.url)); }
-    return action;
-  })
-);
+export const putAsset = asset => ({
+  [RSAA]: {
+    endpoint: asset.url,
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(asset),
+    types: [
+      { type: ASSET_PUT_REQUEST, meta: { url: asset.url, asset } },
+        // body added for testing TODO: find a better way of checking body
+      { type: ASSET_PUT_SUCCESS, meta: { url: asset.url } },
+      { type: ASSET_PUT_FAILURE, meta: { url: asset.url } },
+    ]
+  }
+});
 
 /**
  * Create an asset. Takes an asset resource object.
- *
- * Returns a thunk function and hence requires redux-thunk-middleware. The value returned from
- * dispatching this action is a promise which is resolved with the ..._SUCCESS or ..._FAILURE
- * action dispatched by the redux-api-middleware.
  */
-export const postAsset = asset => dispatch => (
-  dispatch({
-    [RSAA]: {
-      endpoint: ASSETS_URL,
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(asset),
-      types: [
-        { type: ASSET_POST_REQUEST, meta: { url: ASSETS_URL , asset } },
-          // body added for testing TODO: find a better way of checking body
-        { type: ASSET_POST_SUCCESS, meta: { url: ASSETS_URL } },
-        { type: ASSET_POST_FAILURE, meta: { url: ASSETS_URL } },
-      ]
-    }
-  }).then(action => {
-    // After the POST action has been dispatched, the promise is resolved with the result. If
-    // successful, the error property is undefined, otherwise it is true. Only re-fetch the asset
-    // if the POST succeeded.
-    const { error, payload: { url } } = action;
-    if(!error) { return dispatch(getAsset(url)); }
-    return action;
-  })
-);
+export const postAsset = asset => ({
+  [RSAA]: {
+    endpoint: ASSETS_URL,
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(asset),
+    types: [
+      { type: ASSET_POST_REQUEST, meta: { url: ASSETS_URL , asset } },
+        // body added for testing TODO: find a better way of checking body
+      { type: ASSET_POST_SUCCESS, meta: { url: ASSETS_URL } },
+      { type: ASSET_POST_FAILURE, meta: { url: ASSETS_URL } },
+    ]
+  }
+});
