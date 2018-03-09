@@ -17,14 +17,20 @@ const pages = { help, feedback };
 
 const styles = theme => ({
   paper: { padding: '16px 24px', margin: '60px 120px' },
-  staticAppBar: {backgroundColor: theme.customColors.appBarBackground}
+  staticAppBar: {
+    backgroundColor: theme.customColors.appBarBackground,
+    paddingLeft: theme.drawerWidth,
+  },
+  content: {
+    paddingTop: theme.spacing.unit * 8,
+  },
 });
 
 /*
   Renders the app bar of the IAR app's static pages.
  */
 const StaticHeader = withStyles(styles)(({ title, classes }) => (
-  <AppBar position="static" className={classes.staticAppBar}>
+  <AppBar position="fixed" className={classes.staticAppBar}>
     <Toolbar>
       <Typography variant="title" color="inherit">
         { title }
@@ -44,13 +50,15 @@ const Static = ({ page, classes }) => {
     <Page>
       <div>
         <StaticHeader title={title} />
-        <Paper className={classes.paper}>
-          <Grid container justify='center'>
-            <Grid item xs={12} sm={10} md={8} lg={6} >
-              <Typography component='div'>{ content }</Typography>
+        <div className={classes.content}>
+          <Paper className={classes.paper}>
+            <Grid container justify='center'>
+              <Grid item xs={12} sm={10} md={8} lg={6} >
+                <Typography component='div'>{ content }</Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        </Paper>
+          </Paper>
+        </div>
       </div>
     </Page>
   );

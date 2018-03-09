@@ -50,6 +50,8 @@ class MoreMenu extends Component {
       onEdit = () => null,
       onTogglePrivacy = () => null,
       onDelete = () => null,
+      canDelete,
+      canEdit,
     } = this.props;
     const { anchorEl } = this.state;
 
@@ -59,15 +61,24 @@ class MoreMenu extends Component {
           <MoreVertIcon />
         </IconButton>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose}>
-          <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
-            Edit
-          </MenuItem>
-          <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
-            Make {isPrivate ? 'Public' : 'Private'}
-          </MenuItem>
-          <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
-            Delete
-          </MenuItem>
+          {
+            canEdit ?
+              <MenuItem onClick={() => { onEdit(); this.handleClose(); }}>
+                Edit
+              </MenuItem> : null
+          }
+          {
+            canEdit ?
+              <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
+                Make {isPrivate ? 'Public' : 'Private'}
+              </MenuItem> : null
+          }
+          {
+            canDelete ?
+              <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
+                Delete
+              </MenuItem> : null
+          }
         </Menu>
       </div>
     );
@@ -76,6 +87,7 @@ class MoreMenu extends Component {
 
 MoreMenu.propTypes = {
   isPrivate: PropTypes.bool,
+  canDelete: PropTypes.bool.isRequired,
   onEdit: PropTypes.func,
   onTogglePrivacy: PropTypes.func,
   onDelete: PropTypes.func,
@@ -87,17 +99,25 @@ const assetListItemStyles = theme => ({
   }
 });
 
-const AssetListItem = withStyles(assetListItemStyles)(({confirmDelete, asset, history, classes}) => {
+const AssetListItem = withStyles(assetListItemStyles)((
+  {confirmDelete, asset, history, classes}
+) => {
   // parse "update at" date
   const updatedAt = new Date(asset.updated_at);
 
   const editAsset = () => {
     if(asset && asset.id && history) {
-      history.push('/asset/' + asset.id);
+      const canEdit = asset.allowed_methods && (asset.allowed_methods.indexOf('PUT') !== -1)
+      history.push('/asset/' + asset.id + (canEdit ? '/edit' : ''));
     }
   };
 
   const EditCell = ({ children }) => <TableCell onClick={editAsset}>{ children }</TableCell>;
+
+  const canDelete =
+    Boolean(asset.allowed_methods) && (asset.allowed_methods.indexOf('DELETE') !== -1);
+  const canEdit =
+    Boolean(asset.allowed_methods) && (asset.allowed_methods.indexOf('PUT') !== -1);
 
   return (
     <TableRow className={classes.entryRow}>
@@ -116,11 +136,17 @@ const AssetListItem = withStyles(assetListItemStyles)(({confirmDelete, asset, hi
           <span><FormattedRelative value={updatedAt} /></span>
         </Tooltip>
       </EditCell>
-      <TableCell><MoreMenu
-        isPrivate={asset.private}
-        onEdit={editAsset}
-        onDelete={() => confirmDelete(asset.url)}
-      /></TableCell>
+      <TableCell>{
+        // if we cannot edit or delete the asset, there is no point in showing the menu
+        (canDelete || canEdit) ?
+          <MoreMenu
+            isPrivate={asset.private}
+            canDelete={canDelete}
+            canEdit={canEdit}
+            onEdit={editAsset}
+            onDelete={() => confirmDelete(asset.url)}
+          /> : null
+      }</TableCell>
     </TableRow>
   );
 });
@@ -134,9 +160,12 @@ AssetListItem.propTypes = {
 // Export unconnected version of component to aid testing.
 export const UnconnectedAssetListItem = AssetListItem;
 
-const mapStateToProps = ({ assets: { assetsByUrl } }, { assetUrl }) => ({
-  asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
-});
+const mapStateToProps = (state, { assetUrl }) => {
+  const { assets: { assetsByUrl } } = state;
+  return ({
+    asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
+  });
+};
 
 const mapDispatchToProps = { confirmDelete };
 

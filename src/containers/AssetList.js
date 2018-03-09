@@ -5,10 +5,9 @@ import AssetTable from '../components/AssetTable';
 import Page from '../containers/Page';
 import GetMoreAssets from '../components/GetMoreAssets';
 import { withRouter } from 'react-router'
+import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
-
-import '../style/App.css';
 
 // Default query to use if none has previously been set by the user.
 export const DEFAULT_QUERY = {
@@ -26,12 +25,27 @@ class AssetList extends Component {
     if(!fetchedAt) {
       // If there is currently a sort query set by the user, use that otherwise update the query
       // with a default sort.
-      const { query, match : {params: {filter}} } = this.props;
+      const { query, match : {params: {filter}}, location } = this.props;
       const { sort: { field } } = query;
+
+      // HACK: allow ?q=<....> to be added to URLs to enable search feature
+      // This HACK is intended to aid the UX team in searching through entries to evaluate how
+      // people are getting on adding entries. It makes use of URLSearchParams which is not
+      // supported on IE11 and also exposes functionality which has not been fully baked so, once
+      // UX are done, this needs to be removed.
+      let search = null;
+      if(location.search && (location.search !== '')) {
+        // there was some query string added to the URL, parse it
+        const parsedSearch = new URLSearchParams(location.search);
+
+        // if there is a q=<...> parameter, extract it and set the search
+        if(parsedSearch.has('q')) { search = parsedSearch.get('q'); }
+      }
+
       if(field !== null) {
-        this.getAssetsFilteredByDept(query, filter);
+        this.getAssetsFilteredByDept({ ...query, search }, filter);
       } else {
-        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY }, filter);
+        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY, search }, filter);
       }
     }
   }
@@ -60,13 +74,15 @@ class AssetList extends Component {
   }
 
   render() {
-    const { institution } = this.props;
+    const { institution, classes } = this.props;
     return (
       <Page>
         <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
 
         {/* Table of currently loaded assets. */}
-        <AssetTable />
+        <div className={classes.content}>
+          <AssetTable />
+        </div>
 
         <div style={{textAlign: 'center'}}>
           {/* When this component becomes visible more assets are loaded to populate the table. */}
@@ -92,4 +108,12 @@ const mapStateToProps = ({assets: {fetchedAt, query}, lookupApi: {self}}, {match
 
 const mapDispatchToProps = { getAssets };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AssetList));
+const styles = theme => ({
+  content: {
+    paddingTop: theme.spacing.unit * 8,
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  withStyles(styles)(withRouter(AssetList))
+);

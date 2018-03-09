@@ -4,12 +4,20 @@ import '../test/mocks';
 import React from 'react';
 import { AppBar, Typography } from 'material-ui';
 import {createMockStore, DEFAULT_INITIAL_STATE, render} from '../testutils';
+import { populatedState } from '../test/fixtures';
 import AppRoutes from './AppRoutes';
 import NotFoundPage from './NotFoundPage';
 
 const appBarTitle = testInstance => (
   testInstance.findByType(AppBar).findByType(Typography).props.children
 );
+
+let store;
+
+beforeEach(() => {
+  // Create a store and state populated with mock assets
+  store = createMockStore(populatedState);
+});
 
 /**
  * Simple unit test which assert that routes generate pages with the correct titles.
@@ -21,34 +29,40 @@ test('can render /help', () => {
   expect(appBarTitle(testInstance)).toBe('Help')
 });
 
-test('can render /assets/UIS', () => {
+test('can render /assets/INSTA', () => {
   const self = {
     institutions: [
-      {instid: 'UIS', name: 'University Information Services'}
+      {instid: 'INSTA', name: 'Dept of A'}
     ]
   };
   const testInstance = render(<AppRoutes/>, {
-    url: '/assets/UIS',
-    store: createMockStore({...DEFAULT_INITIAL_STATE, lookupApi: {self}})
+    url: '/assets/INSTA',
+    store: createMockStore({
+      ...populatedState,
+      lookupApi: {
+        ...populatedState.lookupApi,
+        self
+      }
+    })
   });
 
-  expect(appBarTitle(testInstance)).toBe('Assets: University Information Services')
+  expect(appBarTitle(testInstance)).toBe('Assets: Dept of A')
 });
 
-test('can render /assets/all', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/assets/all'});
+test('can render /assets', () => {
+  const testInstance = render(<AppRoutes/>, {url: '/assets', store });
 
   expect(appBarTitle(testInstance)).toBe('Assets: All departments')
 });
 
-test('/ redirects to /assets/all', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/'});
+test('/ redirects to /assets/INSTA', () => {
+  const testInstance = render(<AppRoutes/>, {url: '/', store });
 
-  expect(appBarTitle(testInstance)).toBe('Assets: All departments')
+  expect(appBarTitle(testInstance)).toBe('Assets: Dept of A')
 });
 
-test('can render /asset/create', () => {
-  const testInstance = render(<AppRoutes/>, {url: '/asset/create'});
+test('can render /asset/', () => {
+  const testInstance = render(<AppRoutes/>, {url: '/asset/', store});
 
   // FIXME: fix up this test?
   //expect(appBarTitle(testInstance)).toBe('Create new asset')
