@@ -1,13 +1,11 @@
 import React, { Component } from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
-import AssetListHeader from '../components/AssetListHeader';
-import AssetTable from '../components/AssetTable';
 import Page from '../containers/Page';
-import GetMoreAssets from '../components/GetMoreAssets';
 import { withRouter } from 'react-router'
 import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
+import { AssetListHeader, AssetTable, GetMoreAssets } from "../components";
 
 // Default query to use if none has previously been set by the user.
 export const DEFAULT_QUERY = {
@@ -77,7 +75,7 @@ class AssetList extends Component {
     const { institution, classes } = this.props;
     return (
       <Page>
-        <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All departments')} />
+        <AssetListHeader title={'Assets: ' + (institution ? institution.name : 'All institutions')} />
 
         {/* Table of currently loaded assets. */}
         <div className={classes.content}>

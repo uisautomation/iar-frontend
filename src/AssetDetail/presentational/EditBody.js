@@ -52,7 +52,7 @@ const EditBody = ({ component: Component = Paper, classes, ...rest }) => (
         <RiskFields className={classes.formSection} />
       </Section>
 
-      <Section title="Storage & security" indicator={<StorageCompleteIndicator />}>
+      <Section title="Storage and security" indicator={<StorageCompleteIndicator />}>
         <StorageAndSecurityFields className={classes.formSection} />
       </Section>
 

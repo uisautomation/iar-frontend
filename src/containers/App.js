@@ -1,12 +1,14 @@
 import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import { MuiThemeProvider } from 'material-ui/styles';
 import { IntlProvider } from 'react-intl';
-import { DeleteConfirmationDialog, FetchSelf, ScrollToTop, Snackbar } from '../components';
+import history from '../history'
+import {
+  DeleteConfirmationDialog, FetchLookupInstitutions, FetchSelf, ScrollToTop, Snackbar
+} from '../components';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
-import FetchLookupInstitutions from '../components/FetchLookupInstitutions';
 import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
 
@@ -22,7 +24,7 @@ const App = ({ store }) => (
     <IntlProvider locale={navigator.language}>
       <ReduxProvider store={ store }>
         <div>
-          <Router basename={basename}>
+          <Router basename={basename} history={history}>
             <ScrollToTop>
               <AppRoutes />
             </ScrollToTop>

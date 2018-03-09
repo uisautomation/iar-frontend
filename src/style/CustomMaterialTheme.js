@@ -48,7 +48,7 @@ const theme = createMuiTheme({
   drawerWidth: 280,
   customMixins: {
     formSection: {
-      fontFamily: ['RobotoMono', 'monospace'],
+      fontFamily: ['Roboto Mono', 'monospace'],
       minHeight: 48,
       height: 48, // required due to IE11 bug
       display: 'flex',

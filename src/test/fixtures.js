@@ -22,6 +22,9 @@ export const populatedState = {
       institutions: [
         { instid: 'INSTA', name: 'Dept of A' },
         { instid: 'INSTB', name: 'Office of B'},
+      ],
+      groups: [
+        { name: process.env.REACT_APP_IAR_USERS_GROUP }
       ]
     },
     selfLoading: false,

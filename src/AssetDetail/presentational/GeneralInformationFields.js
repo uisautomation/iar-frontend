@@ -44,7 +44,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           component={OwnInstitutionField}
           required
           fullWidth
-          label="Asset department"
+          label="Asset institution"
         />
       </Grid>
       <Grid item xs={6} />
@@ -102,7 +102,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           name="private"
           component={FormControlLabel}
           control={<Switch />}
-          label="Make this record private to your department"
+          label="Make this entry private to your institution"
         />
       </Grid>
       <Grid item xs={6} />

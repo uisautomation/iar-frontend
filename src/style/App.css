@@ -12,6 +12,11 @@
   text-decoration: none;
 }
 
+.static-page a[role=button] {
+  color: #ffffff;
+  font-weight: 500;
+}
+
 .static-page h1, .static-page h2, .static-page h3, .static-page h4, .static-page h5 {
   color: #00B1C1;
   font-weight: 300;

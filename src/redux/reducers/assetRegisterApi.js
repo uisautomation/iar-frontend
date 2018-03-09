@@ -72,7 +72,7 @@ const stateWithAssetFromAction = (state, action) => {
   const asset = action.payload;
   const assetsByUrl = state.assetsByUrl.set(
     asset.url, { asset, fetchedAt: new Date(), isLoading: false });
-  return { ...state, assetsByUrl, url: asset.url };
+  return { ...state, assetsByUrl };
 };
 
 // Utility function to reset asset list in state

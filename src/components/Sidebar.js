@@ -2,9 +2,7 @@ import React from 'react'
 import { withStyles } from 'material-ui/styles';
 
 import LogoutLink from './LogoutLink';
-import Divider from 'material-ui/Divider';
-import Toolbar from 'material-ui/Toolbar';
-import { List, ListItem } from 'material-ui';
+import { Divider, List, ListItem, Toolbar } from 'material-ui';
 import SidebarNavLink from './SidebarNavLink';
 import Logo from '../images/cambridgeuniversity_logo.svg';
 import {connect} from "react-redux";
@@ -15,7 +13,7 @@ const styles = theme => ({
   camLogo: { width: '145px', height: '30px', paddingTop: '10px' },
   tagLine: { fontSize: 12 },
   logoToolbar: { flexDirection:'column', alignItems: 'flex-start', paddingLeft: theme.spacing.unit * 2 },
-  assetHeading: { padding: '12px 16px' }
+  assetHeading: { padding: '8px 16px', textTransform: 'uppercase', fontSize: 12, fontWeight: 800, opacity: 0.4, letterSpacing: '0.2px' }
 });
 
 /**
@@ -32,7 +30,7 @@ const Sidebar = ({ classes, institutions, pathname }) => (
       <Divider />
 
       <List component='nav'>
-        <ListItem className={classes.assetHeading}>Assets:</ListItem>
+        <ListItem className={classes.assetHeading}>Institution</ListItem>
         {
           /* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */
           institutions.map(({ instid, name }) => (
@@ -40,7 +38,7 @@ const Sidebar = ({ classes, institutions, pathname }) => (
           ))
         }
         {/* TODO if you don't pass pathname here then "by department" Sidebar items don't re-render and item selection isn't updated */}
-        <SidebarNavLink to='/assets' label='All departments' className={classes.nested} pathname={pathname} />
+        <SidebarNavLink to='/assets' label='All institutions' className={classes.nested} pathname={pathname} />
         <SidebarNavLink to='/help' label='Help' />
         <SidebarNavLink to='/feedback' label='Feedback' />
         <SidebarNavLink component={LogoutLink} label='Sign out' />
