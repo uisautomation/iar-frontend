@@ -1,5 +1,10 @@
-import { RSAA } from 'redux-api-middleware';
-import { getAssets, Direction } from './assetRegisterApi';
+import { isRSAA, RSAA } from 'redux-api-middleware';
+import {
+  getAssets, Direction, putAsset, postAsset,
+  ASSET_GET_SUCCESS,
+  ASSET_PUT_SUCCESS, ASSET_PUT_FAILURE,
+  ASSET_POST_SUCCESS, ASSET_POST_FAILURE,
+} from './assetRegisterApi';
 import splitUrl from "../../test/splitUrl";
 
 // call getAssets() with the passed arguments, calls splitUrl, checks the baseUrl is the assets
