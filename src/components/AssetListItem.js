@@ -93,6 +93,8 @@ const assetListItemStyles = theme => ({
 const AssetListItem = withStyles(assetListItemStyles)((
   {confirmDelete, asset, history, classes}
 ) => {
+  if(!asset) { return null; }
+
   // parse "update at" date
   const updatedAt = new Date(asset.updated_at);
 
@@ -143,7 +145,7 @@ const AssetListItem = withStyles(assetListItemStyles)((
 });
 
 AssetListItem.propTypes = {
-  asset: PropTypes.object.isRequired,
+  asset: PropTypes.object,
   assetUrl: PropTypes.string.isRequired,
   confirmDelete: PropTypes.func.isRequired,
 };

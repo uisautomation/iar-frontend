@@ -5,6 +5,7 @@ import {
   ASSET_PUT_SUCCESS,
   ASSET_POST_SUCCESS
 } from '../actions/assetRegisterApi';
+import { Map } from 'immutable';
 
 /**
  * State managed by the asset API reducers.
@@ -62,17 +63,15 @@ export const initialState = {
   //
   // The asset resource may be a "summary" resource with only the url field set if the asset is
   // currently being loaded.
-  assetsByUrl: new Map(),
+  assetsByUrl: Map(),
 };
 
 // Utility function to add asset from the action payload into the assetsByUrl map. Takes state as
 // a first parameter
 const stateWithAssetFromAction = (state, action) => {
   const asset = action.payload;
-  const assetsByUrl = new Map([
-    ...state.assetsByUrl,
-    [asset.url, { asset, fetchedAt: new Date(), isLoading: false }]
-  ]);
+  const assetsByUrl = state.assetsByUrl.set(
+    asset.url, { asset, fetchedAt: new Date(), isLoading: false });
   return { ...state, assetsByUrl };
 };
 
@@ -107,13 +106,9 @@ export default (state = initialState, action) => {
       ];
 
       // construct new mapping of urls -> assets
-      const assetsByUrl = new Map([
-        // iterate over the original mapping
-        ...state.assetsByUrl,
-
-        // and then iterate over the list of new objects
-        ...results.map(asset => [asset.url, { asset, fetchedAt: new Date() }]),
-      ]);
+      const assetsByUrl = state.assetsByUrl.concat(
+        results.map(asset => [asset.url, { asset, fetchedAt: new Date() }])
+      );
 
       return {
         ...state, ...query ? { query } : { },
@@ -139,7 +134,9 @@ export default (state = initialState, action) => {
     case ASSET_GET_REQUEST: {
       // Mark the requested asset as loading
       const { url } = action.meta;
-      const assetsByUrl = new Map([...state.assetsByUrl, [url, { asset: { url }, isLoading: true }]]);
+      const assetsByUrl = state.assetsByUrl.set(
+        url, { asset: { url }, isLoading: true }
+      );
       return { ...state, assetsByUrl };
     }
 
@@ -155,8 +152,7 @@ export default (state = initialState, action) => {
     case ASSET_GET_FAILURE: {
       // Remove the asset which was being requested from assetsByUrl.
       const { url } = action.meta;
-      const assetsByUrl = new Map([...state.assetsByUrl]);
-      assetsByUrl.delete(url);
+      const assetsByUrl = state.assetsByUrl.delete(url);
       return { ...state, assetsByUrl };
     }
 

@@ -37,7 +37,7 @@ const testComplete = (func, component, funcName, componentName) => {
     });
 
     test('passes draft to ' + funcName, () => {
-      const draft = Symbol('MOCK_DRAFT');
+      const draft = 'MOCK_DRAFT';
       const state = { ...initialState, editAsset: { ...initialState.editAsset, draft } };
       const store = createMockStore(state);
       const testInstance = render(component, { store });
