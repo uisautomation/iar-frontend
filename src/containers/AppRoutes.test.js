@@ -52,7 +52,7 @@ test('can render /assets/INSTA', () => {
 test('can render /assets', () => {
   const testInstance = render(<AppRoutes/>, {url: '/assets', store });
 
-  expect(appBarTitle(testInstance)).toBe('Assets: All departments')
+  expect(appBarTitle(testInstance)).toBe('Assets: All institutions')
 });
 
 test('/ redirects to /assets/INSTA', () => {

@@ -10,6 +10,10 @@ export const content = (<div className="static-page">
 <h1>Help</h1>
 
 <section>
+  Read the guidance to find out which <a href="https://www.information-compliance.admin.cam.ac.uk/data-protection/information-asset-register-guidance-departmental-administrators" target="_blank" rel="noopener noreferrer">assets to include</a> in the IAR.
+</section>
+
+<section>
 <h2>Creating an asset entry</h2>
 
 <ol>
@@ -31,7 +35,7 @@ export const content = (<div className="static-page">
     <li>Confirm you're sure you want to delete the entry</li>
   </ol>
 
-  <p><strong>Method 2:</strong> The delete button inside of an entry</p>
+  <p><strong>Method 2:</strong> The delete button within an entry that your institution owns</p>
   <ol>
     <li>Select an entry from the asset entry table</li>
     <li>Select ‘Delete entry’ button from the top header</li>
@@ -44,9 +48,11 @@ export const content = (<div className="static-page">
 <section>
   <h2>Making an entry private or public</h2>
 
-  <p>Entries have the ability to be set to private or public in the register. By default, entries are public and viewable to anyone that has access to the register. These entries are read-only for anyone outside of the assigned institution. Setting an entry to private will hide it from others outside of your institution.</p>
-
-  <p>Entries can be set as private or public using the action button, located on the far right of the entry row in the table, or by using the switch in the editing form.</p>
+  <p>You can make an entry ‘private’ or ‘public’ in the register.</p>
+  <ul>
+    <li>Public - anyone with access to the register can view the entry.</li>
+    <li>Private - only people from the institution that owns the asset can view it.</li>
+  </ul>
 
   <p><i>Please note: an entry is just a record that an asset exists and a high-level description of its contents. Users outside your institution can read an entry when it's set to public, however this does not mean they can view the asset itself, or any of the data within it.</i></p>
 </section>
@@ -54,7 +60,7 @@ export const content = (<div className="static-page">
 <section>
   <h2>Giving additional people access to the register</h2>
 
-  <p>To request access to the register for somebody else (for example a computer officer), please contact the user-experience team at <a href="mailto:ux+iar@uis.cam.ac.uk?Subject=Access%20request%3A%20Information%20Asset%20Register">ux+iar@uis.cam.ac.uk</a> with the CRSid of the new user.</p>
+  <p>You can request access to the register for somebody else (for example a computer officer) by emailing the user-experience team at <a href="mailto:ux+iar@uis.cam.ac.uk?Subject=Access%20request%3A%20Information%20Asset%20Register">ux+iar@uis.cam.ac.uk</a> with the CRSid of the new user.</p>
 
 </section>
 

@@ -46,9 +46,7 @@ class MoreMenu extends Component {
 
   render() {
     const {
-      isPrivate = false,
       onEdit = () => null,
-      onTogglePrivacy = () => null,
       onDelete = () => null,
       canDelete,
       canEdit,
@@ -68,12 +66,6 @@ class MoreMenu extends Component {
               </MenuItem> : null
           }
           {
-            canEdit ?
-              <MenuItem onClick={() => { onTogglePrivacy(); this.handleClose(); }}>
-                Make {isPrivate ? 'Public' : 'Private'}
-              </MenuItem> : null
-          }
-          {
             canDelete ?
               <MenuItem onClick={() => { onDelete(); this.handleClose(); }}>
                 Delete
@@ -89,7 +81,6 @@ MoreMenu.propTypes = {
   isPrivate: PropTypes.bool,
   canDelete: PropTypes.bool.isRequired,
   onEdit: PropTypes.func,
-  onTogglePrivacy: PropTypes.func,
   onDelete: PropTypes.func,
 };
 

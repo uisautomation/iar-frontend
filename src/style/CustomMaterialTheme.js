@@ -48,7 +48,7 @@ const theme = createMuiTheme({
   drawerWidth: 280,
   customMixins: {
     formSection: {
-      fontFamily: ['RobotoMono', 'monospace'],
+      fontFamily: ['Roboto Mono', 'monospace'],
       minHeight: 48,
       display: 'flex',
       alignItems: 'center',
