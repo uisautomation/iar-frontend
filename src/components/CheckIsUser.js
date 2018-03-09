@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import history from '../history'
 import { WaitForSelf } from "../waiting";
 
-export const NOT_A_USER_PATH = '/not_a_user';
+export const NOT_A_USER_PATH = '/no_permission';
 
 /**
  * A component which checks that the user has been configured as a user of the application.

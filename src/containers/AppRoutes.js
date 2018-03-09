@@ -22,7 +22,7 @@ const AppRoutes = () => (
     <LoginRequiredRoute path="/asset/:assetId" exact component={AssetView} />
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
     <LoginRequiredRoute path="/feedback" exact component={() => <Static page='feedback' />}/>
-    <LoginRequiredRoute path={NOT_A_USER_PATH} exact component={() => <Static page='not_a_user' withSidebar={false} />}/>
+    <LoginRequiredRoute path={NOT_A_USER_PATH} exact component={() => <Static page='no_permission' withSidebar={false} />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />
     <LoginRequiredRoute path="/" exact component={RedirectToMyDeptAssets} />
