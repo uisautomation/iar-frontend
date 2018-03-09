@@ -6,6 +6,7 @@ import AssetList from './AssetList';
 import { AssetForm, AssetView } from '../AssetDetail';
 import Static from './Static';
 import NotFoundPage from './NotFoundPage';
+import {NOT_A_USER_PATH} from "../components/CheckIsUser";
 import RedirectToMyDeptAssets from './RedirectToMyDeptAssets';
 
 /**
@@ -21,6 +22,7 @@ const AppRoutes = () => (
     <LoginRequiredRoute path="/asset/:assetId" exact component={AssetView} />
     <LoginRequiredRoute path="/help" exact component={() => <Static page='help' />}/>
     <LoginRequiredRoute path="/feedback" exact component={() => <Static page='feedback' />}/>
+    <LoginRequiredRoute path={NOT_A_USER_PATH} exact component={() => <Static page='not_a_user' withSidebar={false} />}/>
 
     <Route path="/oauth2-callback" exact component={() => <div />} />
     <LoginRequiredRoute path="/" exact component={RedirectToMyDeptAssets} />
