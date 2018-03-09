@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 
+import PreventNavigationWhenDraftModified from '../../containers/PreventNavigationWhenDraftModified';
+
 import FetchOrCreateDraft from '../containers/FetchOrCreateDraft';
 
 import AssetPage from './AssetPage';
@@ -22,6 +24,8 @@ const AssetForm = ({ classes }) => (
       {/* When this component mounts, it checks the current route match and either begins a new draft
         * or loads an existing asset. */}
       <FetchOrCreateDraft />
+
+      <PreventNavigationWhenDraftModified />
     </AssetPage>
 );
 
