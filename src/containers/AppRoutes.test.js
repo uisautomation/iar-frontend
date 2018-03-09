@@ -30,18 +30,18 @@ test('can render /help', () => {
 });
 
 test('can render /assets/INSTA', () => {
-  const self = {
-    institutions: [
-      {instid: 'INSTA', name: 'Dept of A'}
-    ]
-  };
   const testInstance = render(<AppRoutes/>, {
     url: '/assets/INSTA',
     store: createMockStore({
       ...populatedState,
       lookupApi: {
         ...populatedState.lookupApi,
-        self
+        self: {
+          ...populatedState.lookupApi.self,
+          institutions: [
+            {instid: 'INSTA', name: 'Dept of A'}
+          ]
+        }
       }
     })
   });

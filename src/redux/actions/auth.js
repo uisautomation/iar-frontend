@@ -6,6 +6,7 @@
  * achieved.
  */
 import { login as implicitLogin, logout as implicitLogout } from 'redux-implicit-oauth2';
+import history from '../../history'
 
 // construct the OAuth2 redirect URL if not specified.
 const basename = process.env.REACT_APP_BASENAME || '/';
@@ -30,6 +31,11 @@ const config = {
 export const login = () => implicitLogin(config);
 
 /**
- * Log out from the application.
+ * Log out from the application and redirect to "/".
+ *
+ * Returns a function and requires the redux-thunk middleware.
  */
-export const logout = implicitLogout;
+export const logout = () => dispatch => {
+  dispatch(implicitLogout());
+  history.push('/');
+};

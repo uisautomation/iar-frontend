@@ -2,9 +2,7 @@ import React from 'react'
 import { withStyles } from 'material-ui/styles';
 
 import LogoutLink from './LogoutLink';
-import Divider from 'material-ui/Divider';
-import Toolbar from 'material-ui/Toolbar';
-import { List, ListItem } from 'material-ui';
+import { Divider, List, ListItem, Toolbar } from 'material-ui';
 import SidebarNavLink from './SidebarNavLink';
 import Logo from '../images/cambridgeuniversity_logo.svg';
 import {connect} from "react-redux";
