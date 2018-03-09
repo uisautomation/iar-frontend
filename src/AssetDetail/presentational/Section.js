@@ -50,12 +50,12 @@ const styles = theme => ({
     '&::before': {
       content: 'counter(form-section) "."',
       textAlign: 'right',
-      position: 'absolute',
-      left: 0,
-      width: theme.spacing.unit * 9,
+      display: 'inline-block',
+      width: theme.spacing.unit * 8,
+      paddingRight: theme.spacing.unit,
     },
 
-    paddingLeft: theme.spacing.unit * 10,
+    paddingLeft: theme.spacing.unit * 1,
     fontSize: 'inherit',
     fontWeight: 'inherit',
     margin: [[0, 0]],

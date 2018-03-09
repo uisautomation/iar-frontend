@@ -1,11 +1,11 @@
 import { getAsset, putAsset, postAsset } from './assetRegisterApi';
 import { sanitise } from '../../assets';
 
-export const SET_DRAFT = Symbol('SET_DRAFT');
-export const PATCH_DRAFT = Symbol('PATCH_DRAFT');
-export const FETCH_DRAFT_REQUEST = Symbol('FETCH_DRAFT_REQUEST');
-export const FETCH_DRAFT_SUCCESS = Symbol('FETCH_DRAFT_SUCCESS');
-export const SAVE_DRAFT_SUCCESS = Symbol('SAVE_DRAFT_SUCCESS');
+export const SET_DRAFT = 'SET_DRAFT';
+export const PATCH_DRAFT = 'PATCH_DRAFT';
+export const FETCH_DRAFT_REQUEST = 'FETCH_DRAFT_REQUEST';
+export const FETCH_DRAFT_SUCCESS = 'FETCH_DRAFT_SUCCESS';
+export const SAVE_DRAFT_SUCCESS = 'SAVE_DRAFT_SUCCESS';
 
 // Default values for a new asset
 export const DEFAULT_ASSET = {

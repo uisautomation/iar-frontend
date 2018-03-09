@@ -6,10 +6,9 @@ export default theme => ({
   },
 
   twoColumnLabel: {
-    flex: '0 1 calc(50% - ' + theme.spacing.unit * 6 + 'px)',
-    marginRight: theme.spacing.unit * 6,
+    flex: '0 1 50%',
+    marginRight: - theme.spacing.unit * 4,
     borderBottom: [['1px', 'solid', theme.palette.divider]],
-    paddingRigth: theme.spacing.unit * 3,
   },
 
   group: {
