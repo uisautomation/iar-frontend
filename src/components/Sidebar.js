@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 const styles = theme => ({
   drawerHeader: theme.mixins.toolbar,
   nested: { paddingLeft: theme.spacing.unit * 4 },
-  camLogo: { width: '145px', paddingTop: '10px'},
+  camLogo: { width: '145px', height: '30px', paddingTop: '10px' },
   tagLine: { fontSize: 12 },
   logoToolbar: { flexDirection:'column', alignItems: 'flex-start', paddingLeft: theme.spacing.unit * 2 },
   assetHeading: { padding: '8px 16px', textTransform: 'uppercase', fontSize: 12, fontWeight: 800, opacity: 0.4, letterSpacing: '0.2px' }

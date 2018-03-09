@@ -66,7 +66,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
                     } else {
                       values.delete('digital');
                     }
-                    return { [name]: [...values] };
+                    return { [name]: [...values.values()] };
                   }
                 }
               >
@@ -157,7 +157,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
                     } else {
                       values.delete('paper');
                     }
-                    return { [name]: [...values] };
+                    return { [name]: [...values.values()] };
                   }
                 }
               >
