@@ -72,6 +72,18 @@ describe('an asset', () => {
       delete asset[missingField];
       expectCompleteness(asset, {...ALL_COMPLETE, general: false, all: false});
     });
+
+    describe('with null ' + missingField, () => {
+      const asset = { ...COMPLETE_ASSET };
+      asset[missingField] = null;
+      expectCompleteness(asset, {...ALL_COMPLETE, general: false, all: false});
+    });
+
+    describe('with empty ' + missingField, () => {
+      const asset = { ...COMPLETE_ASSET };
+      asset[missingField] = '';
+      expectCompleteness(asset, {...ALL_COMPLETE, general: false, all: false});
+    });
   });
 });
 

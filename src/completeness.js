@@ -4,7 +4,7 @@
  */
 
 // Helper function for determining if a particular asset field has been filled in.
-const isNotEmpty = v => (typeof v !== 'undefined') && v !== null;
+const isNotEmpty = v => (typeof v !== 'undefined') && v !== null && v !== '';
 
 //
 // Functions to determine if an asset (or sections of said) are complete.
