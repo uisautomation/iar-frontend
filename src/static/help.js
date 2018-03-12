@@ -24,6 +24,17 @@ export const content = (<div className="static-page">
 </section>
 
 <section>
+<h3>When an asset entry covers more than one set of information</h3>
+
+<p>You can record details for more than one set of information within a single asset entry if those sets are used for the same purpose. Add details for either:</p>
+
+<ul>
+  <li>all the sets of information - in the sections where you can select multiple responses</li>
+  <li>only your most important set of information - where you must give a single response</li>
+</ul>
+</section>
+
+<section>
   <h2>Deleting an entry</h2>
 
   <p>There are two possible methods to delete an entry.</p>
@@ -42,7 +53,7 @@ export const content = (<div className="static-page">
     <li>Confirm you're sure you want to delete the entry</li>
   </ol>
 
-  <p><i>Please note: deleting an entry is permanent, so please only do so if you're sure you no longer need to keep an entry of the corresponding asset. Deleting an entry will not delete the asset itself.</i></p>
+  <p><i>Please note: deleting an entry is permanent, so only do so if you're sure you no longer need to keep an entry of the corresponding asset. Deleting an entry will not delete the asset itself.</i></p>
 </section>
 
 <section>
@@ -51,16 +62,17 @@ export const content = (<div className="static-page">
   <p>You can make an entry ‘private’ or ‘public’ in the register.</p>
   <ul>
     <li>Public - anyone with access to the register can view the entry.</li>
-    <li>Private - only people from the institution that owns the asset can view it.</li>
+    <li>Private - only people from the institution that owns the asset can view it. Central users of the IAR like the Information Compliance Office or UIS staff can
+also see private entries.</li>
   </ul>
 
-  <p><i>Please note: an entry is just a record that an asset exists and a high-level description of its contents. Users outside your institution can read an entry when it's set to public, however this does not mean they can view the asset itself, or any of the data within it.</i></p>
+  <p><i>Please note: an entry is just a record that an asset exists and a summary of its contents. Users outside your institution can read an entry when it's set to public, however this does not mean they can view the asset itself, or any of the data within it.</i></p>
 </section>
 
 <section>
   <h2>Giving additional people access to the register</h2>
 
-  <p>You can request access to the register for somebody else (for example a computer officer) by emailing the user-experience team at <a href="mailto:ux+iar@uis.cam.ac.uk?Subject=Access%20request%3A%20Information%20Asset%20Register">ux+iar@uis.cam.ac.uk</a> with the CRSid of the new user.</p>
+  <p>You can request access to the register for somebody else (for example a computer officer) by <a href="https://www.lookup.cam.ac.uk/group/uis-iar-admins/members?personOrder=inst_names&personMax=1000000" target="_blank" rel="noopener noreferrer">contacting an admin</a> from their institution.</p>
 
 </section>
 

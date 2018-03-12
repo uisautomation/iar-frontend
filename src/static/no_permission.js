@@ -15,7 +15,7 @@ export const content =
 
 </section>
   <p>
-    To request access please <a href="https://www.lookup.cam.ac.uk/group/uis-iar-admins/members" target="_blank" rel="noopener noreferrer">
+    To request access please <a href="https://www.lookup.cam.ac.uk/group/uis-iar-admins/members?personOrder=inst_names&personMax=1000000" target="_blank" rel="noopener noreferrer">
       contact an admin
     </a> from your institution.
   </p>
