@@ -36,7 +36,7 @@ test('AssetList can render', () => {
 
 test('AssetList sends a default query if none is set', () => {
   const store = createMockStore(populatedState);
-  render(<AppRoutes />, { store, url: '/assets/', store });
+  render(<AppRoutes />, { store, url: '/assets/' });
 
   // getAssets was called once
   expect(getAssets.mock.calls).toHaveLength(1);
@@ -59,18 +59,10 @@ test('AssetList respects the current query', () => {
   initialState.assets = { ...initialState.assets, query: initialQuery };
 
   const store = createMockStore(initialState);
-  render(<AppRoutes />, { store, url: '/assets/', store });
+  render(<AppRoutes />, { store, url: '/assets', store });
 
-  // getAssets was called once
-  expect(getAssets.mock.calls).toHaveLength(1);
-
-  // get single argument to getAssets
-  const [ [ query ] ] = getAssets.mock.calls;
-
-  // check query matches expected query
-  Object.getOwnPropertyNames(initialQuery).forEach(name => {
-    expect(query[name]).toEqual(initialQuery[name]);
-  });
+  // getAssets never called as the new query matches the old
+  expect(getAssets.mock.calls).toHaveLength(0);
 });
 
 // check that a department filter is set
