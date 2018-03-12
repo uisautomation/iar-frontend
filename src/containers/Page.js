@@ -18,14 +18,24 @@ const styles = theme => ({
   drawerPaper: {
     position: 'fixed',
     height: '100vh',
-    width: theme.drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+      width: theme.drawer.width.xs_sm,
+    },
+    [theme.breakpoints.up('md')]: {
+      width: theme.drawer.width.md_xl,
+    },
   },
   pageContent: {
     width: '100%',
   },
   pageContentWithSidebar: {
     width: '100%',
-    marginLeft: theme.drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.drawer.width.xs_sm,
+    },
+    [theme.breakpoints.up('md')]: {
+      marginLeft: theme.drawer.width.md_xl,
+    },
   },
 });
 

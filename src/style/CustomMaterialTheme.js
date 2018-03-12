@@ -74,7 +74,18 @@ const theme = createMuiTheme({
       },
     },
   },
-  drawerWidth: 280,
+  drawer: {
+    listItem: {
+      fontSize: {
+        md_xl: '1rem',
+        xs_sm: '0.9rem',
+      },
+    },
+    width: {
+      md_xl: 280,
+      xs_sm: 220,
+    },
+  },
   customMixins: {
     formSection: {
       fontFamily: ['Roboto Mono', 'monospace'],
