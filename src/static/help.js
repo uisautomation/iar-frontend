@@ -79,7 +79,7 @@ also see private entries.</li>
 <section>
   <h2>Get support using the register</h2>
 
-  <p>If you’re having problems viewing, adding or editing entries, please contact the user-experience team at <a href="mailto:ux+iar@uis.cam.ac.uk?Subject=Support%3A%20Information%20Asset%20Register">ux+iar@uis.cam.ac.uk</a></p>
+  <p>If you’re having problems, please contact the <a href="mailto:service-desk@uis.cam.ac.uk">service desk</a>.</p>
 
 </section>
 
