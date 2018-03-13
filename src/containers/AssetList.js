@@ -1,9 +1,10 @@
 import React, { Component } from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
-import Page from '../containers/Page';
 import { withRouter } from 'react-router'
 import { withStyles } from 'material-ui/styles';
 import { connect } from 'react-redux';
+import _ from "lodash";
+import Page from '../containers/Page';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 import { AssetListHeader, AssetTable, GetMoreAssets } from "../components";
 
@@ -15,60 +16,61 @@ export const DEFAULT_QUERY = {
 class AssetList extends Component {
 
   componentDidMount() {
-    const { fetchedAt } = this.props;
+    // Fetch an asset list. If there is currently a sort query set by the user, use that.
+    // Otherwise update the query with a default sort.
+    const { query, location } = this.props;
+    const { sort: { field } } = query;
 
-    // Fetch an asset list if one has not already been fetched. We detect an existing fetch by
-    // looking at the "fetchedAt" value on the asset list which should be non-NULL if a fetch
-    // happened.
-    if(!fetchedAt) {
-      // If there is currently a sort query set by the user, use that otherwise update the query
-      // with a default sort.
-      const { query, match : {params: {filter}}, location } = this.props;
-      const { sort: { field } } = query;
+    // HACK: allow ?q=<....> to be added to URLs to enable search feature
+    // This HACK is intended to aid the UX team in searching through entries to evaluate how
+    // people are getting on adding entries. It makes use of URLSearchParams which is not
+    // supported on IE11 and also exposes functionality which has not been fully baked so, once
+    // UX are done, this needs to be removed.
+    let search = null;
+    if(location.search && (location.search !== '')) {
+      // there was some query string added to the URL, parse it
+      const parsedSearch = new URLSearchParams(location.search);
 
-      // HACK: allow ?q=<....> to be added to URLs to enable search feature
-      // This HACK is intended to aid the UX team in searching through entries to evaluate how
-      // people are getting on adding entries. It makes use of URLSearchParams which is not
-      // supported on IE11 and also exposes functionality which has not been fully baked so, once
-      // UX are done, this needs to be removed.
-      let search = null;
-      if(location.search && (location.search !== '')) {
-        // there was some query string added to the URL, parse it
-        const parsedSearch = new URLSearchParams(location.search);
-
-        // if there is a q=<...> parameter, extract it and set the search
-        if(parsedSearch.has('q')) { search = parsedSearch.get('q'); }
-      }
-
-      if(field !== null) {
-        this.getAssetsFilteredByDept({ ...query, search }, filter);
-      } else {
-        this.getAssetsFilteredByDept({ ...query, ...DEFAULT_QUERY, search }, filter);
-      }
+      // if there is a q=<...> parameter, extract it and set the search
+      if(parsedSearch.has('q')) { search = parsedSearch.get('q'); }
     }
+
+    const newQuery = this.updateQueryWithDept({
+      ...query, ...(field === null ? DEFAULT_QUERY : {}), search
+    });
+    this.getAssets(query, newQuery);
   }
 
   /**
-   * If the department filter has changed then re-fetch the list.
+   * Apply the current department filter and then (attempt to) re-fetch the list.
    */
-  componentWillReceiveProps({match : {params: {filter: nextFilter}} }) {
-    const {match : {params: {filter}}, query} = this.props;
-    if (nextFilter !== filter) {
-      this.getAssetsFilteredByDept(query, nextFilter);
-    }
+  componentDidUpdate() {
+    const { query } = this.props;
+    this.getAssets(query, this.updateQueryWithDept(query));
   }
 
   /**
-   * Method to apply or remove a department filter to a getAssets() call.
+   * Updates the passed query with the current department defined in the url.
+   * Return's an updated copy.
    */
-  getAssetsFilteredByDept(query, filter = null) {
-    if (filter) {
-      query.filter = {...query.filter, department: filter}
+  updateQueryWithDept(query) {
+    const { match: { params: { filter: department } } } = this.props;
+    if (department) {
+      return { ...query, filter: { ...query.filter, department: department } };
     } else {
-      delete query.filter.department
+      // deletes the department field
+      const {department, ...filter} = query.filter;
+      return { ...query, filter: filter };
     }
+  }
 
-    this.props.getAssets(query);
+  /**
+   * Call getAssets() if the new query doesn't match the old one.
+   */
+  getAssets(oldQuery, newQuery) {
+    if (!_.isEqual(oldQuery, newQuery)) {
+      this.props.getAssets(newQuery);
+    }
   }
 
   render() {
