@@ -65,11 +65,14 @@ class AssetList extends Component {
   }
 
   /**
-   * Call getAssets() if the new query doesn't match the old one.
+   * Call getAssets() if the new query doesn't match the old one or if an asset list has not
+   * already been fetched.
    */
   getAssets(oldQuery, newQuery) {
-    if (!_.isEqual(oldQuery, newQuery)) {
-      this.props.getAssets(newQuery);
+    const { fetchedAt, isLoading, getAssets } = this.props;
+
+    if (!isLoading && (!fetchedAt || !_.isEqual(oldQuery, newQuery))) {
+      getAssets(newQuery);
     }
   }
 
@@ -99,11 +102,11 @@ AssetList.propTypes = {
   query: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({assets: {fetchedAt, query}, lookupApi: {self}}, {match : {params: {filter}}}) => {
+const mapStateToProps = ({assets: {fetchedAt, query, isLoading}, lookupApi: {self}}, {match : {params: {filter}}}) => {
   // map the institution selected by the filter - if any.
   const institutions = (self && self.institutions ? self.institutions : []);
   const institution = institutions.find(institution => institution.instid === filter);
-  return { fetchedAt, query, institution };
+  return { fetchedAt, isLoading, query, institution };
 };
 
 const mapDispatchToProps = { getAssets };
