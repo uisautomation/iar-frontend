@@ -15,7 +15,12 @@ const styles = theme => ({
   },
   appBar: {
     backgroundColor: theme.customColors.appBarBackground,
-    paddingLeft: theme.drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.drawer.width.xs_sm,
+    },
+    [theme.breakpoints.up('md')]: {
+      paddingLeft: theme.drawer.width.md_xl,
+    },
   },
 });
 

@@ -6,6 +6,14 @@ import { ListItem, ListItemText } from 'material-ui/List';
 
 const styles = theme => ({
   selected: { background: theme.palette.action.selected },
+  listItem: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: theme.drawer.listItem.fontSize.xs_sm,
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: theme.drawer.listItem.fontSize.md_xl,
+    },
+  }
 });
 
 /**
@@ -34,7 +42,7 @@ const SidebarNavLink = (
 
   return (
     <ListItem button component={component} to={to} className={newClassName} {...rest}>
-      <ListItemText primary={label} />
+      <ListItemText primary={label} className={classes.listItem} disableTypography={true} />
     </ListItem>
   );
 }
