@@ -18,7 +18,7 @@ class AssetList extends Component {
   componentDidMount() {
     // Fetch an asset list. If there is currently a sort query set by the user, use that.
     // Otherwise update the query with a default sort.
-    const { query, match : {params: {filter: department}}, location } = this.props;
+    const { query, location } = this.props;
     const { sort: { field } } = query;
 
     // HACK: allow ?q=<....> to be added to URLs to enable search feature
@@ -35,11 +35,10 @@ class AssetList extends Component {
       if(parsedSearch.has('q')) { search = parsedSearch.get('q'); }
     }
 
-    if (field !== null) {
-      this.getAssets(query, this.updateQueryWithDept({ ...query, search }));
-    } else {
-      this.getAssets(query, this.updateQueryWithDept({ ...query, ...DEFAULT_QUERY, search }));
-    }
+    const newQuery = this.updateQueryWithDept({
+      ...query, ...(field === null ? DEFAULT_QUERY : {}), search
+    });
+    this.getAssets(query, newQuery);
   }
 
   /**
@@ -55,9 +54,9 @@ class AssetList extends Component {
    * Return's an updated copy.
    */
   updateQueryWithDept(query) {
-    const { match : { params: { filter: department } } } = this.props;
+    const { match: { params: { filter: department } } } = this.props;
     if (department) {
-      return { ...query, filter: { ...query.filter, department: department } }
+      return { ...query, filter: { ...query.filter, department: department } };
     } else {
       // deletes the department field
       const {department, ...filter} = query.filter;
