@@ -10,6 +10,8 @@ export const DATA_SUBJECT_LABELS = [
 
 export const DATA_CATEGORY_LABELS = [
   {value: 'education', label: "Education records"},
+  {value: 'alumni', label: "Alumni records"},
+  {value: 'contact', label: "Basic contact details"},
   {value: 'racial', label: "Racial or ethnic origin"},
   {value: 'employment', label: "Employment records"},
   {value: 'political', label: "Political opinions"},
