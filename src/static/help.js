@@ -57,14 +57,13 @@ export const content = (<div className="static-page">
 </section>
 
 <section>
-  <h2>Making an entry private or public</h2>
+  <h2>Making an entry private</h2>
 
-  <p>You can make an entry ‘private’ or ‘public’ in the register.</p>
-  <ul>
-    <li>Public - anyone with access to the register can view the entry.</li>
-    <li>Private - only people from the institution that owns the asset can view it. Central users of the IAR like the Information Compliance Office or UIS staff can
-also see private entries.</li>
-  </ul>
+  <p>All entries in the register are public - visible to all users - by default.</p>
+  <p>You can make an entry ‘private’ - visible only to users who belong to your institution. The IAR uses Lookup to identify which institutions a user belongs to.
+</p>
+  <p>Central users of the IAR, for example the Information Compliance Office and some UIS staff, can also see private entries.
+</p>
 
   <p><i>Please note: an entry is just a record that an asset exists and a summary of its contents. Users outside your institution can read an entry when it's set to public, however this does not mean they can view the asset itself, or any of the data within it.</i></p>
 </section>
@@ -72,7 +71,7 @@ also see private entries.</li>
 <section>
   <h2>Giving additional people access to the register</h2>
 
-  <p>You can request access to the register for somebody else (for example a computer officer) by <a href="https://www.lookup.cam.ac.uk/group/uis-iar-admins/members?personOrder=inst_names&personMax=1000000" target="_blank" rel="noopener noreferrer">contacting an admin</a> from their institution.</p>
+  <p>You can request access to the register for somebody else (for example a computer officer) by <a href="https://www.lookup.cam.ac.uk/group/uis-iar-admins/members?personOrder=inst_names&personMax=1000000" target="_blank" rel="noopener noreferrer">contacting an administrator</a> from their institution.</p>
 
 </section>
 
