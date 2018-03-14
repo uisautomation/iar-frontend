@@ -1,6 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
+import config from '../../config';
 
-const ASSETS_URL = process.env.REACT_APP_ENDPOINT_ASSETS;
+export const ENDPOINT_ASSETS = config.assetRegisterEndpoint + 'assets/';
 
 export const ASSETS_LIST_REQUEST = 'ASSETS_LIST_REQUEST';
 export const ASSETS_LIST_SUCCESS = 'ASSETS_LIST_SUCCESS';
@@ -104,7 +105,7 @@ export const getAssets = (unsanitisedQuery = {}) => {
   }
 
   // Build the URL
-  const url = ASSETS_URL + (
+  const url = ENDPOINT_ASSETS + (
     (queryParts.length > 0)
     ? ('?' + queryParts.map(([key, value]) => key + '=' + encodeURIComponent(value)).join('&'))
     : ''
@@ -203,15 +204,15 @@ export const putAsset = asset => ({
  */
 export const postAsset = asset => ({
   [RSAA]: {
-    endpoint: ASSETS_URL,
+    endpoint: ENDPOINT_ASSETS,
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(asset),
     types: [
-      { type: ASSET_POST_REQUEST, meta: { url: ASSETS_URL , asset } },
+      { type: ASSET_POST_REQUEST, meta: { url: ENDPOINT_ASSETS , asset } },
         // body added for testing TODO: find a better way of checking body
-      { type: ASSET_POST_SUCCESS, meta: { url: ASSETS_URL } },
-      { type: ASSET_POST_FAILURE, meta: { url: ASSETS_URL } },
+      { type: ASSET_POST_SUCCESS, meta: { url: ENDPOINT_ASSETS } },
+      { type: ASSET_POST_FAILURE, meta: { url: ENDPOINT_ASSETS } },
     ]
   }
 });

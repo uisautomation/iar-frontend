@@ -12,9 +12,11 @@ import AppRoutes from './AppRoutes';
 import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
 
-// Allow configuration of basename via REACT_APP_BASENAME environment variable. Defaults to "/".
+import config from '../config';
+
+// Allow configuration of basename via config.basename variable. Defaults to "/".
 // Make sure to have leading *and* trailing slashes if you configure this setting.
-const basename = process.env.REACT_APP_BASENAME || '/';
+const basename = config.basename;
 
 /*
   IAR main app component.

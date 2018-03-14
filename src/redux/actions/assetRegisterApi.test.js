@@ -1,6 +1,7 @@
 import { isRSAA, RSAA } from 'redux-api-middleware';
 import {
   getAssets, Direction, putAsset, postAsset,
+  ENDPOINT_ASSETS,
   ASSET_GET_SUCCESS,
   ASSET_PUT_SUCCESS, ASSET_PUT_FAILURE,
   ASSET_POST_SUCCESS, ASSET_POST_FAILURE,
@@ -12,7 +13,7 @@ import splitUrl from "../../test/splitUrl";
 const getAssetsAndParse = (...args) => {
   const { [RSAA]: { endpoint = '' } } = getAssets(...args);
   const { baseUrl, queryItems } = splitUrl(endpoint);
-  expect(baseUrl).toBe(process.env.REACT_APP_ENDPOINT_ASSETS);
+  expect(baseUrl).toBe(ENDPOINT_ASSETS);
   return queryItems;
 };
 

@@ -65,3 +65,6 @@ coverage/
 
 # build files
 /build
+
+# local configuration
+public/config.local.js

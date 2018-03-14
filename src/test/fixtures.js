@@ -1,5 +1,7 @@
 import { Map } from 'immutable';
 import { DEFAULT_INITIAL_STATE as initialState } from '../testutils';
+import { ENDPOINT_ASSETS } from '../redux/actions/assetRegisterApi';
+import config from '../config';
 
 // A state populated with a logged in user and some assets.
 export const populatedState = {
@@ -24,7 +26,7 @@ export const populatedState = {
         { instid: 'INSTB', name: 'Office of B'},
       ],
       groups: [
-        { name: process.env.REACT_APP_IAR_USERS_GROUP }
+        { name: config.iarUsersLookupGroup }
       ]
     },
     selfLoading: false,
@@ -33,11 +35,11 @@ export const populatedState = {
     ...initialState.assets,
     assetsByUrl: new Map([
       [
-        process.env.REACT_APP_ENDPOINT_ASSETS + 'xxx/',
-        { asset: { url: process.env.REACT_APP_ENDPOINT_ASSETS + 'xxx/', department: 'INSTB' }, fetchedAt: new Date() }],
+        ENDPOINT_ASSETS + 'xxx/',
+        { asset: { url: ENDPOINT_ASSETS + 'xxx/', department: 'INSTB' }, fetchedAt: new Date() }],
       [
-        process.env.REACT_APP_ENDPOINT_ASSETS + 'yyy/',
-        { asset: { url: process.env.REACT_APP_ENDPOINT_ASSETS + 'yyy/', department: 'INSTC' }, fetchedAt: new Date() }],
+        ENDPOINT_ASSETS + 'yyy/',
+        { asset: { url: ENDPOINT_ASSETS + 'yyy/', department: 'INSTC' }, fetchedAt: new Date() }],
     ])
   }
 };
