@@ -7,6 +7,7 @@ import { withStyles } from 'material-ui/styles';
 import { CheckIsUser, Sidebar } from '../components';
 import Drawer from 'material-ui/Drawer';
 import { withRouter } from "react-router-dom";
+import withPageTracking from '../containers/withPageTracking';
 
 const styles = theme => ({
   appFrame: {
@@ -61,9 +62,9 @@ const SidebarPage = withRouter(withStyles(styles)(({ children, classes, location
   </div>
 )));
 
-const Page = ({ children, withSidebar }) => (
+const Page = withPageTracking(({ children, withSidebar }) => (
   withSidebar ? <SidebarPage children={children} /> : <FullPage children={children} />
-);
+));
 
 Page.propTypes = {
   withSidebar: PropTypes.bool
