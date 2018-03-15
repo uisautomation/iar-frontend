@@ -26,7 +26,7 @@ const privateIconStyles = theme => ({
 const PrivateIcon = withStyles(privateIconStyles)(({ isPrivate, classes }) => {
   // this has three return values since "isPrivate" may be null/not a Boolean
   if(isPrivate === true) { return <span className={classes.privateIcon}><Tooltip title='Private' ><VisibilityOffIcon /></Tooltip></span>; }
-  if(isPrivate === false) { return <span className={classes.privateIcon}><Tooltip title='Not Private'><VisibilityIcon /></Tooltip></span>; }
+  if(isPrivate === false) { return <span className={classes.privateIcon}><Tooltip title='Public'><VisibilityIcon /></Tooltip></span>; }
   return null;
 })
 
