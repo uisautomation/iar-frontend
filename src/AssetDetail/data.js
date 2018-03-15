@@ -20,6 +20,7 @@ export const DATA_CATEGORY_LABELS = [
   {value: 'alumni', label: "Alumni records"},
   {value: 'health', label: "Physical or mental health details"},
   {value: 'social', label: "Lifestyle and social circumstances"},
+  {value: 'religious', label: "Religious or similar beliefs"},
   {value: 'research', label: "Research data"},
   {value: 'sexual', label: "Sexual life and orientation"},
   {value: 'medical', label: "Medical records"},
