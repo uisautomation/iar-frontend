@@ -1,3 +1,4 @@
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getSelf } from '../redux/actions/lookupApi';
@@ -9,16 +10,26 @@ import { getSelf } from '../redux/actions/lookupApi';
  *
  * The fetching waits until auth.isLoggedIn becomes true.
  */
-const FetchSelf = ({ isLoggedIn, self, selfLoading, getSelf }) => {
+class FetchSelf extends Component {
 
-  // If we are signed in and we haven't retrieved (and aren't retrieving) the profile -
-  // then retrieve the profile.
-  if (isLoggedIn && !self && !selfLoading) {
-    getSelf();
-  }
+  componentDidMount = () => this.getSelf();
 
-  return null;
-};
+  componentDidUpdate = () => this.getSelf();
+
+  getSelf = () => {
+    // If we are signed in and we haven't retrieved (and aren't retrieving) the profile -
+    // then retrieve the profile.
+    const { isLoggedIn, self, selfLoading, getSelf } = this.props;
+    if (isLoggedIn && !self && !selfLoading) {
+      getSelf();
+    }
+  };
+
+  render = () => {
+    return null;
+  };
+}
+
 
 FetchSelf.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,

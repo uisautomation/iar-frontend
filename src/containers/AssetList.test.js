@@ -36,7 +36,7 @@ test('AssetList can render', () => {
 
 test('AssetList sends a default query if none is set', () => {
   const store = createMockStore(populatedState);
-  render(<AppRoutes />, { store, url: '/assets/', store });
+  render(<AppRoutes />, { store, url: '/assets/' });
 
   // getAssets was called once
   expect(getAssets.mock.calls).toHaveLength(1);
@@ -59,7 +59,7 @@ test('AssetList respects the current query', () => {
   initialState.assets = { ...initialState.assets, query: initialQuery };
 
   const store = createMockStore(initialState);
-  render(<AppRoutes />, { store, url: '/assets/', store });
+  render(<AppRoutes />, { store, url: '/assets', store });
 
   // getAssets was called once
   expect(getAssets.mock.calls).toHaveLength(1);
