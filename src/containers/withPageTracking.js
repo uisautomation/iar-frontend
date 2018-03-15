@@ -10,7 +10,7 @@ const withPageTracking = (WrappedComponent, pageTitle) => {
       // Analytics is added to the window object in index.html
       // A custom page title can be used if the route isn't obvious:
       // for example if a route has different content depending on the user's login state, this can be used to distinguish the two.
-      window.analytics.page(pageTitle);
+      if (window.analytics && window.analytics.page) { window.analytics.page(pageTitle); }
     }
 
     render = () => <WrappedComponent {...this.props} />
