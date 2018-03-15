@@ -9,23 +9,22 @@ export const DATA_SUBJECT_LABELS = [
 ];
 
 export const DATA_CATEGORY_LABELS = [
-  {value: 'education', label: "Education records"},
-  {value: 'alumni', label: "Alumni records"},
   {value: 'contact', label: "Basic contact details"},
   {value: 'racial', label: "Racial or ethnic origin"},
-  {value: 'employment', label: "Employment records"},
+  {value: 'education', label: "Education records"},
   {value: 'political', label: "Political opinions"},
-  {value: 'financial', label: "Financial details"},
+  {value: 'employment', label: "Employment records"},
   {value: 'unions', label: "Trade union membership"},
-  {value: 'social', label: "Lifestyle and social circumstances"},
-  {value: 'religious', label: "Religious or similar beliefs"},
+  {value: 'financial', label: "Financial details"},
   {value: 'visual', label: "Visual images"},
+  {value: 'alumni', label: "Alumni records"},
   {value: 'health', label: "Physical or mental health details"},
+  {value: 'social', label: "Lifestyle and social circumstances"},
   {value: 'research', label: "Research data"},
   {value: 'sexual', label: "Sexual life and orientation"},
   {value: 'medical', label: "Medical records"},
   {value: 'genetic', label: "Genetic information"},
-  {value: 'children', label: "Data about children 16"},
+  {value: 'children', label: "Data about children under 16"},
   {value: 'biometric', label: "Biometric information"},
   {value: 'criminal', label: "Criminal offences and proceedings"},
 ];
@@ -62,7 +61,8 @@ export const PAPER_STORAGE_SECURITY_LABELS = [
 
 export const PURPOSE_LABELS = [
   {value: 'teaching', label: 'Teaching'},
-  {value: 'research', label: 'Research'},
+  {value: 'research', label: 'Research (Academic)'},
+  {value: 'research_organisational', label: 'Research (Organisational)'},
   {value: 'student_administration', label: 'Student administration'},
   {value: 'staff_administration', label: 'Staff administration (HR)'},
   {value: 'alumni_supporter_administration', label: 'Alumni/supporter administration'},
