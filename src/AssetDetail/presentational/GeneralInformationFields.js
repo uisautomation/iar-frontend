@@ -32,7 +32,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           label="Asset name"
           helperText={
             "Give the asset a unique name so you can easily identify it, for example, " +
-            "'Visiting academics database'."
+            "'Visiting academics database'. If your institution has sub-divisions, or is part of the Academic Division you should reference that too, eg ‘(Student Registry) HR Records’."
           }
         />
       </Grid>
