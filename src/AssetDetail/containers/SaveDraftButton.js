@@ -50,7 +50,12 @@ SaveDraftButton.propTypes = {
 
 export default withRouter(
   connect(null, { snackbarOpen })(
-    withDraft((draftObject, ownProps, { saveDraft }) => ({ saveDraft }))(
+    withDraft(
+      ({ draft }, ownProps, { saveDraft }) => ({
+        disabled: (!draft) || (!draft.department) || (draft.department === ''),
+        saveDraft,
+      })
+    )(
       SaveDraftButton
     )
   )
