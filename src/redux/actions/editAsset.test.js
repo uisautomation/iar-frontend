@@ -128,7 +128,7 @@ describe('saveDraft', () => {
   let draft, getState, dispatch;
 
   beforeEach(() => {
-    draft = { ...DEFAULT_ASSET };
+    draft = { ...DEFAULT_ASSET, department: 'INSTA' };
 
     // mock up enough of the editAsset state for the actions to work.
     getState = () => ({
