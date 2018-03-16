@@ -1,11 +1,13 @@
 import { getAsset, putAsset, postAsset } from './assetRegisterApi';
 import { sanitise } from '../../assets';
+import { snackbarOpen } from './snackbar';
 
 export const SET_DRAFT = 'SET_DRAFT';
 export const PATCH_DRAFT = 'PATCH_DRAFT';
 export const FETCH_DRAFT_REQUEST = 'FETCH_DRAFT_REQUEST';
 export const FETCH_DRAFT_SUCCESS = 'FETCH_DRAFT_SUCCESS';
 export const SAVE_DRAFT_SUCCESS = 'SAVE_DRAFT_SUCCESS';
+export const SAVE_DRAFT_FAILURE = 'SAVE_DRAFT_FAILURE';
 
 // Default values for a new asset
 export const DEFAULT_ASSET = {
@@ -103,6 +105,9 @@ export const patchDraft = patch => ({
  *
  * REQUIRES that the editAsset state be under the editAsset property of the global state.
  *
+ * If the draft cannot be saved (i.e. if the department field is blank), return a promise which is
+ * resolved with an error.
+ *
  * The dispatched action returns a promise which is resolved with the dispatched action resulting
  * from the RSAA request.
  *
@@ -110,6 +115,15 @@ export const patchDraft = patch => ({
  */
 export const saveDraft = () => (dispatch, getState) => {
   const { editAsset: { draft } } = getState();
+
+  // Can this draft be saved?
+  if(!draft || !draft.department || draft.department === '') {
+    dispatch(snackbarOpen('Cannot save this entry; the institution field must not be blank.'));
+    return Promise.resolve({
+      type: SAVE_DRAFT_FAILURE,
+      error: true,
+    });
+  }
 
   // Make any fixes to the draft prior to saving
   const sanitisedDraft = sanitise(draft);
