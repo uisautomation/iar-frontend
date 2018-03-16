@@ -7,12 +7,14 @@ import AssetPage from './AssetPage';
 import ViewHeader from './ViewHeader';
 import ViewBody from './ViewBody';
 
+import { ENDPOINT_ASSETS } from '../../redux/actions/assetRegisterApi';
+
 describe('AssetView', () => {
   describe('with assets loaded', () => {
     let store, testInstance, asset, url;
     beforeEach(() => {
       store = createMockStore(populatedState);
-      url = process.env.REACT_APP_ENDPOINT_ASSETS + 'xxx/';
+      url = ENDPOINT_ASSETS + 'xxx/';
       asset = populatedState.assets.assetsByUrl.get(url).asset;
       expect(asset).toBeDefined();
       testInstance = render(<AppRoutes />, { url: '/asset/xxx', store });

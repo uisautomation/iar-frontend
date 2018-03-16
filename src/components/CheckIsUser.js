@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import history from '../history'
 import { WaitForSelf } from "../waiting";
 
+import config from '../config';
+
 export const NOT_A_USER_PATH = '/no_permission';
 
 /**
  * A component which checks that the user has been configured as a user of the application.
- * Specifically it checks if the user is in the REACT_APP_IAR_USERS_GROUP. If they aren't,
+ * Specifically it checks if the user is in the config.iarUsersLookupGroup. If they aren't,
  * the user is redirected to a page explaining why they can't access the system.
  */
 class UnconnectedCheckIsUser extends Component {
@@ -32,7 +34,7 @@ UnconnectedCheckIsUser.propTypes = {
 
 const mapStateToProps = ({ lookupApi: { self: { groups } } }) => ({
   inIARUsersGroup :
-    !!groups.find((group) => (group.name === process.env.REACT_APP_IAR_USERS_GROUP))
+    !!groups.find((group) => (group.name === config.iarUsersLookupGroup))
 });
 
 const CheckIsUser = connect(mapStateToProps)(UnconnectedCheckIsUser);

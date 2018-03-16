@@ -7,28 +7,24 @@
  */
 import { login as implicitLogin, logout as implicitLogout } from 'redux-implicit-oauth2';
 import history from '../../history'
-
-// construct the OAuth2 redirect URL if not specified.
-const basename = process.env.REACT_APP_BASENAME || '/';
-const redirect =
-  process.env.REACT_APP_OAUTH_REDIRECT || window.location.origin + basename + 'oauth2-callback';
+import config from '../../config';
 
 /**
  * OAuth2 credentials configuration for the IAR frontend application.
  */
-const config = {
-  url: process.env.REACT_APP_OAUTH_ENDPOINT,
-  client: process.env.REACT_APP_OAUTH_CLIENT,
-  redirect: redirect,
-  scope: process.env.REACT_APP_OAUTH_SCOPES,
-  width: 640, // Width (in pixels) of login popup window.
-  height: 512 // Height (in pixels) of login popup window.
+const oauth2Config = {
+  url: config.oauth2AuthEndpoint,
+  client: config.oauth2ClientId,
+  redirect: config.oauth2RedirectUrl,
+  scope: config.oauth2Scopes,
+  width: config.oauth2PopupWidth, // Width (in pixels) of login popup window.
+  height: config.oauth2PopupHeight, // Height (in pixels) of login popup window.
 };
 
 /**
  * Initialise login to application.
  */
-export const login = () => implicitLogin(config);
+export const login = () => implicitLogin(oauth2Config);
 
 /**
  * Log out from the application and redirect to "/".

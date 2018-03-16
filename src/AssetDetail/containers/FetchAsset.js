@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { getAsset } from '../../redux/actions/assetRegisterApi';
+import { getAsset, ENDPOINT_ASSETS } from '../../redux/actions/assetRegisterApi';
 
 /**
  * A component which examines the current matched route and fetches the matching asset. Takes a
@@ -52,7 +52,7 @@ const mapStateToProps = (state, ownProps) => {
   const { match: { params: { assetId } } } = ownProps;
 
   // Construct asset URL and try to retrieve asset record object from state.
-  const url = process.env.REACT_APP_ENDPOINT_ASSETS + assetId + '/';
+  const url = ENDPOINT_ASSETS + assetId + '/';
 
   return {
     url: url,
