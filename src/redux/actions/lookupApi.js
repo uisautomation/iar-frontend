@@ -1,4 +1,5 @@
 import { RSAA } from 'redux-api-middleware';
+import config from '../../config';
 
 export const PEOPLE_LIST_REQUEST = 'PEOPLE_LIST_REQUEST';
 export const PEOPLE_LIST_SUCCESS = 'PEOPLE_LIST_SUCCESS';
@@ -17,8 +18,8 @@ export const INSTITUTIONS_LIST_REQUEST = 'INSTITUTIONS_LIST_REQUEST';
 export const INSTITUTIONS_LIST_SUCCESS = 'INSTITUTIONS_LIST_SUCCESS';
 export const INSTITUTIONS_LIST_FAILURE = 'INSTITUTIONS_LIST_FAILURE';
 
-export const ENDPOINT_PEOPLE = process.env.REACT_APP_ENDPOINT_LOOKUP + 'people';
-export const ENDPOINT_INSTUTITIONS = process.env.REACT_APP_ENDPOINT_LOOKUP + 'institutions';
+export const ENDPOINT_PEOPLE = config.lookupEndpoint + 'people';
+export const ENDPOINT_INSTUTITIONS = config.lookupEndpoint + 'institutions';
 
 /**
  * Fetch a list of people.

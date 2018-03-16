@@ -8,6 +8,8 @@ import { populatedState } from '../test/fixtures';
 import AppRoutes from './AppRoutes';
 import NotFoundPage from './NotFoundPage';
 
+import { ENDPOINT_ASSETS } from '../redux/actions/assetRegisterApi';
+
 const appBarTitle = testInstance => (
   testInstance.findByType(AppBar).findByType(Typography).props.children
 );
@@ -71,7 +73,7 @@ test('can render /asset/', () => {
 test('can render /asset/e20f4cd4-9f97-4829-8178-476c7a67eb97', () => {
 
   const assetsByUrl = new Map([[
-    process.env.REACT_APP_ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {
+    ENDPOINT_ASSETS + 'e20f4cd4-9f97-4829-8178-476c7a67eb97/', {
       asset: {name: 'Super Secret Medical Data'}
     }
   ]]);
