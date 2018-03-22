@@ -19,8 +19,8 @@ class FetchSelf extends Component {
   getSelf = () => {
     // If we are signed in and we haven't retrieved (and aren't retrieving) the profile -
     // then retrieve the profile.
-    const { isLoggedIn, self, selfLoading, getSelf } = this.props;
-    if (isLoggedIn && !self && !selfLoading) {
+    const { shouldFetch, getSelf } = this.props;
+    if (shouldFetch) {
       getSelf();
     }
   };
@@ -32,14 +32,19 @@ class FetchSelf extends Component {
 
 
 FetchSelf.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  self: PropTypes.object,
-  selfLoading: PropTypes.bool.isRequired,
+  shouldFetch: PropTypes.bool.isRequired,
   getSelf: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { self, selfLoading } }) => ({
-  isLoggedIn, self, selfLoading
+const mapStateToProps = (
+  { auth: { isLoggedIn }, lookupApi: { self, selfLoading, selfRequestedAt } }
+) => ({
+  // The logic here is that we should only try to fetch the current user's profile if:
+  // 1) They are logged in, and
+  // 2) The profile is not currently fetched, and
+  // 3) There is not currently a request in flight, and
+  // 4) There had not previously been a request which failed
+  shouldFetch: isLoggedIn && !self && !selfLoading && !selfRequestedAt
 });
 
 const mapDispatchToProps = { getSelf };

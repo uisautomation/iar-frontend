@@ -95,6 +95,16 @@ test("the selfLoading flag is set", () => {
   expect(nextState.selfLoading).toBe(true);
 });
 
+// check that the selfLoading flag is set when the self is requested
+test("the selfRequestedAt flag is set", () => {
+
+  const nextState = reducer(initialState, {type: PEOPLE_GET_SELF_REQUEST});
+
+  expect(nextState.self).toBeNull();
+  expect(nextState.selfRequestedAt).toBeDefined()
+  expect(nextState.selfRequestedAt).not.toBeNull();
+});
+
 // check that the authenticated user's profile is set in self
 test("the authenticated user's profile is set in self", () => {
 

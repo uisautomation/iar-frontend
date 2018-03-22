@@ -59,16 +59,19 @@ export default (state = initialState, action) => {
 
     case PEOPLE_GET_SELF_REQUEST:
       // use an empty object is indicate loading
-      return { ...state, selfLoading: true };
+      return { ...state, selfLoading: true, selfRequestedAt: new Date() };
 
     case PEOPLE_GET_SELF_RESET:
-    case PEOPLE_GET_SELF_FAILURE:
-      // reset self in case of reset and failure.
-      return { ...state, self: null, selfLoading: false };
+      // reset self in case of reset
+      return { ...state, self: null, selfLoading: false, selfRequestedAt: null };
 
     case PEOPLE_GET_SELF_SUCCESS:
       // Add the person to the peopleByCrsid map
       return { ...state, self: action.payload, selfLoading: false};
+
+    case PEOPLE_GET_SELF_FAILURE:
+      // reset self in case of failure
+      return { ...state, self: null, selfLoading: false };
 
     case INSTITUTIONS_LIST_REQUEST:
       // An institution request is in flight.
