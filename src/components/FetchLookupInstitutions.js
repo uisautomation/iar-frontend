@@ -9,26 +9,28 @@ import { listInstitutions } from '../redux/actions/lookupApi';
  *
  * The fetching waits until auth.isLoggedIn becomes true.
  */
-const FetchLookupInstitutions = ({ isLoggedIn, institutionsWereFetched, listInstitutions }) => {
+const FetchLookupInstitutions = ({ shouldFetch, listInstitutions }) => {
   // The component renders to null but, as a side-effect of rendering, it will cause a fetch of
   // institutions is they have not currently been fetched and isLoggedIn becomes true.
 
-  if(isLoggedIn && !institutionsWereFetched) { listInstitutions(); }
+  if(shouldFetch) { listInstitutions(); }
 
   return null;
 }
 
 FetchLookupInstitutions.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  institutionsWereFetched: PropTypes.bool.isRequired,
+  shouldFetch: PropTypes.bool.isRequired,
   listInstitutions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ auth: { isLoggedIn }, lookupApi: { institutions } }) => ({
-  isLoggedIn,
-  // we break this out as a separate prop so that any extra information which gets added to the
-  // institutions state in future does not cause unnecessary re-renders.
-  institutionsWereFetched: institutions.fetchedAt !== null,
+  // We should try to fetch the institutions list if:
+  // 1) We're actually logged in, and
+  // 2) A request is not currently in flight, and
+  // 3) We have not yet fetched a list, and
+  // 4) We have not yet *requested* a list.
+  shouldFetch:
+    isLoggedIn && !institutions.isLoading && !institutions.fetchedAt && !institutions.requestedAt
 });
 
 const mapDispatchToProps = { listInstitutions };
