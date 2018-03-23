@@ -22,6 +22,9 @@ export const initialState = {
   // the authenticated user's profile
   self: null,
 
+  // If non-NULL, a JS Date object indicating when the user's profile was last requested.
+  selfRequestedAt: null,
+
   // whether or not the authenticated user's profile is being loaded
   selfLoading: false,
 
