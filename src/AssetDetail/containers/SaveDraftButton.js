@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 
 import { snackbarOpen } from '../../redux/actions/snackbar';
+import { navigate } from "../../previous";
 
 /**
  * A button which saves the current draft. Wraps Button by default, override by specifying the
@@ -19,26 +20,24 @@ import { snackbarOpen } from '../../redux/actions/snackbar';
  */
 const SaveDraftButton = (
   {
-    component: Component = Button, children,
-    snackbarOpen, saveDraft, dispatch,
-    staticContext, history, match, location,
-    ...rest
+    component: Component = Button, children, snackbarOpen, saveDraft, history, location,
+    match, staticContext, ...rest
   }
-) => (
-  <Component
+) => {
+  return <Component
     onClick={
-      () => saveDraft().then(({ error, payload }) => {
-        if(!error) {
+      () => saveDraft().then(({error, payload}) => {
+        if (!error) {
           snackbarOpen('"' + (payload.name ? payload.name : payload.id) + '" saved.');
-          history.goBack();
+          navigate(history, location)();
         }
       })
     }
     {...rest}
   >
-    { children }
+    {children}
   </Component>
-);
+};
 
 SaveDraftButton.propTypes = {
   ...Button.propTypes,
