@@ -18,11 +18,11 @@ export const navigate = ({ push }, { search }) => {
  *
  * @param url url to modify
  * @param department INSTID of department or null.
- * @returns modified url
+ * @returns {*} modified url
  */
 export const encode_search = (url, department) => {
   if (department) {
-    const delim = Object.keys(parseUrl(url).query).length == 0 ? '?' : '&';
+    const delim = Object.keys(parseUrl(url).query).length === 0 ? '?' : '&';
     const previous = encodeURI('/assets/' + department);
     return url + delim + stringify({previous: previous});
   }
