@@ -1,13 +1,13 @@
-import { parse, stringify } from "query-string";
+import { parse, parseUrl, stringify } from "query-string";
 
 /**
- * A closure returning a function that navigates to a location stored in the 'previous' query
- * param or the "All institutions" asset list, if there is none.
+ * This function navigates to a location stored in the 'previous' query param or the
+ * "All institutions" asset list, if there is none.
  *
  * @param push history.push()
  * @param search location.search
  */
-export const navigate = ({ push }, { search }) => () => {
+export const navigate = ({ push }, { search }) => {
   const { previous } = parse(search);
   push(previous ? previous : '/assets');
 };
@@ -22,7 +22,7 @@ export const navigate = ({ push }, { search }) => () => {
  */
 export const encode_search = (url, department) => {
   if (department) {
-    const delim = Object.keys(parse(url)).length ? '?' : '&';
+    const delim = Object.keys(parseUrl(url).query).length == 0 ? '?' : '&';
     const previous = encodeURI('/assets/' + department);
     return url + delim + stringify({previous: previous});
   }

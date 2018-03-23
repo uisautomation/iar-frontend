@@ -18,7 +18,7 @@ const NavigateBackButton = ({
   // We swallow the extra props from connect and withRouter to avoid broadcasting them to the root.
   history, location, component: Component, match, staticContext, ...rest
 }) => (
-  <Component {...rest} onClick={navigate(history, location)} />
+  <Component {...rest} onClick={() => {navigate(history, location)}} />
 );
 
 NavigateBackButton.propTypes = {

@@ -25,7 +25,7 @@ const DeleteEntryButton = (
     onClick={() => confirmDelete(url).then(
       userApprovedRequest => {
         if (userApprovedRequest) {
-          navigate(history, location)();
+          navigate(history, location);
         }
       }
     )}

@@ -29,7 +29,7 @@ const SaveDraftButton = (
       () => saveDraft().then(({error, payload}) => {
         if (!error) {
           snackbarOpen('"' + (payload.name ? payload.name : payload.id) + '" saved.');
-          navigate(history, location)();
+          navigate(history, location);
         }
       })
     }
