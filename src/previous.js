@@ -1,4 +1,4 @@
-import { parse, parseUrl, stringify } from "query-string";
+import { parse, stringify } from 'qs';
 
 /**
  * This function navigates to a location stored in the 'previous' query param or the
@@ -8,8 +8,17 @@ import { parse, parseUrl, stringify } from "query-string";
  * @param search location.search
  */
 export const navigate = ({ push }, { search }) => {
-  const { previous } = parse(search);
+  const { previous } = parse(search, { ignoreQueryPrefix: true });
   push(previous ? previous : '/assets');
+};
+
+/**
+ * Uses the DOM to parse the search part of a url.
+ */
+const get_search = (url) => {
+    const a = document.createElement('a');
+    a.href = url;
+    return a.search;
 };
 
 /**
@@ -22,7 +31,8 @@ export const navigate = ({ push }, { search }) => {
  */
 export const encode_search = (url, department) => {
   if (department) {
-    const delim = Object.keys(parseUrl(url).query).length === 0 ? '?' : '&';
+    const params = parse(get_search(url), { ignoreQueryPrefix: true });
+    const delim = Object.keys(params).length === 0 ? '?' : '&';
     const previous = encodeURI('/assets/' + department);
     return url + delim + stringify({previous: previous});
   }
