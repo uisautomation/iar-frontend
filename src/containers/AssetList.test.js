@@ -56,7 +56,7 @@ test('AssetList respects the current query', () => {
     ...initialState.assets.query,
     sort: { field: 'name', direction: Direction.descending }
   };
-  initialState.assets = { ...initialState.assets, query: initialQuery };
+  initialState.assets = { ...initialState.assets, query: initialQuery, fetchedAt: new Date() };
 
   const store = createMockStore(initialState);
   render(<AppRoutes />, { store, url: '/assets', store });

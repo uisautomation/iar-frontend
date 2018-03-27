@@ -7,7 +7,7 @@ import { withDraft } from '../../draft';
 import Button from 'material-ui/Button';
 
 import { confirmDelete } from '../../redux/actions/deleteConfirmation';
-import { navigate } from "../../previous";
+import { navigate as navigate_to_previous } from "../../previous";
 
 /**
  * A container component which passes an onClick prop to a wrapped component which will delete the
@@ -25,7 +25,7 @@ const DeleteEntryButton = (
     onClick={() => confirmDelete(url).then(
       userApprovedRequest => {
         if (userApprovedRequest) {
-          navigate(history, location);
+          navigate_to_previous(history, location);
         }
       }
     )}

@@ -11,7 +11,7 @@ import { FormattedRelative, FormattedDate, FormattedTime } from 'react-intl';
 import AssetStatus from './AssetStatus';
 import LookupInstitution from './LookupInstitution';
 import { withStyles } from 'material-ui/styles';
-import { encode_search } from "../previous";
+import { encode_search as encode_search_with_previous } from "../previous";
 
 const privateIconStyles = theme => ({
   privateIcon: {color: theme.customColors.mediumGrey}
@@ -95,7 +95,7 @@ const AssetListItem = withStyles(assetListItemStyles)((
   const editAsset = () => {
     if(asset && asset.id && history) {
       const canEdit = asset.allowed_methods && (asset.allowed_methods.indexOf('PUT') !== -1);
-      history.push(encode_search('/asset/' + asset.id + (canEdit ? '/edit' : ''), filter));
+      history.push(encode_search_with_previous('/asset/' + asset.id + (canEdit ? '/edit' : ''), filter));
     }
   };
 

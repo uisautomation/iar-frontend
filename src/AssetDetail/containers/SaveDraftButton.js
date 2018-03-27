@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 
 import { snackbarOpen } from '../../redux/actions/snackbar';
-import { navigate } from "../../previous";
+import { navigate as navigate_to_previous } from "../../previous";
 
 /**
  * A button which saves the current draft. Wraps Button by default, override by specifying the
@@ -29,7 +29,7 @@ const SaveDraftButton = (
       () => saveDraft().then(({error, payload}) => {
         if (!error) {
           snackbarOpen('"' + (payload.name ? payload.name : payload.id) + '" saved.');
-          navigate(history, location);
+          navigate_to_previous(history, location);
         }
       })
     }

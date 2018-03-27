@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { navigate } from "../previous";
+import { navigate as navigate_to_previous } from "../previous";
 
 export const BackIconButton = props => (
   <IconButton color="inherit" aria-label="Go back" {...props}>
@@ -18,7 +18,7 @@ const NavigateBackButton = ({
   // We swallow the extra props from connect and withRouter to avoid broadcasting them to the root.
   history, location, component: Component, match, staticContext, ...rest
 }) => (
-  <Component {...rest} onClick={() => {navigate(history, location)}} />
+  <Component {...rest} onClick={() => {navigate_to_previous(history, location)}} />
 );
 
 NavigateBackButton.propTypes = {
