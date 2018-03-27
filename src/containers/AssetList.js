@@ -38,7 +38,7 @@ class AssetList extends Component {
     const newQuery = this.updateQueryWithDept({
       ...query, ...(field === null ? DEFAULT_QUERY : {}), search
     });
-    this.getAssets(query, newQuery);
+    this.getAssetsIfChanged(query, newQuery);
   }
 
   /**
@@ -46,7 +46,7 @@ class AssetList extends Component {
    */
   componentDidUpdate() {
     const { query } = this.props;
-    this.getAssets(query, this.updateQueryWithDept(query));
+    this.getAssetsIfChanged(query, this.updateQueryWithDept(query));
   }
 
   /**
@@ -67,9 +67,10 @@ class AssetList extends Component {
   /**
    * Call getAssets() if the new query doesn't match the old one.
    */
-  getAssets(oldQuery, newQuery) {
-    if (!_.isEqual(oldQuery, newQuery)) {
-      this.props.getAssets(newQuery);
+  getAssetsIfChanged(oldQuery, newQuery) {
+    const {getAssets, fetchedOrLoading } = this.props;
+    if (!_.isEqual(oldQuery, newQuery) || !fetchedOrLoading) {
+      getAssets(newQuery);
     }
   }
 
@@ -99,11 +100,14 @@ AssetList.propTypes = {
   query: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({assets: {fetchedAt, query}, lookupApi: {self}}, {match : {params: {filter}}}) => {
+const mapStateToProps = ({assets: {fetchedAt, isLoading, query}, lookupApi: {self}}, {match : {params: {filter}}}) => {
   // map the institution selected by the filter - if any.
   const institutions = (self && self.institutions ? self.institutions : []);
-  const institution = institutions.find(institution => institution.instid === filter);
-  return { fetchedAt, query, institution };
+  return {
+    query,
+    institution: institutions.find(institution => institution.instid === filter),
+    fetchedOrLoading: fetchedAt || isLoading,
+  };
 };
 
 const mapDispatchToProps = { getAssets };
