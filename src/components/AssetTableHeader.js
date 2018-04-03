@@ -6,6 +6,8 @@ import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 import { TableRow, TableCell, TableSortLabel, TableHead } from 'material-ui/Table';
 import Tooltip from 'material-ui/Tooltip';
 import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
+import { LinearProgress } from 'material-ui/Progress';
+import Fade from 'material-ui/transitions/Fade';
 
 // A map from sort directions to values for the "direction" prop of TableSortLabel.
 const directionDescriptions = new Map([
@@ -83,12 +85,20 @@ const TooltipText = withStyles(tooltipTextStyle)(({ title, children, classes }) 
   </Tooltip>
 ));
 
+// An indeterminate linear progress indicator which is ownly shown when there is an asset list
+// request in flight.
+const LoadingIndicator = connect(({ assets: { isLoading } }) => ({ isLoading }))(
+  ({ isLoading }) => (
+    <Fade in={isLoading}><LinearProgress /></Fade>
+  )
+);
+
 /**
  * A component which provides the header row for the asset table. Heading titles can be used to
  * change sort order.
  *
  */
-export const AssetTableHeader = () => (
+export const AssetTableHeader = ({ classes }) => (
   <TableHead>
     <TableRow>
       <SortCell style={{width: '50%'}} field='name' label='Name' />
@@ -107,7 +117,32 @@ export const AssetTableHeader = () => (
       <SortCell style={{width: 8*13}} field='updated_at' label='Last edited' />
       <TableCell style={{width: 8*4}}>&nbsp;</TableCell>
     </TableRow>
+    <TableRow className={classes.loadingRow}>
+      <TableCell colSpan={6} className={classes.loadingCell}>
+        <div className={classes.loadingContainer}>
+          <LoadingIndicator />
+        </div>
+      </TableCell>
+    </TableRow>
   </TableHead>
 );
 
-export default AssetTableHeader;
+AssetTableHeader.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+const styles = theme => ({
+  loadingCell: {
+    height: 0, position: 'relative', margin: 0, padding: 0, border: 'none',
+  },
+
+  loadingRow: {
+    height: 0, margin: 0, padding: 0, border: 'none',
+  },
+
+  loadingContainer: {
+    position: 'absolute', top: 0, left: 0, width: '100%',
+  },
+});
+
+export default withStyles(styles)(AssetTableHeader);
