@@ -7,6 +7,7 @@ import { withDraft } from '../../draft';
 
 import { WaitForSelf } from '../../waiting';
 
+import { ENDPOINT_ASSETS } from '../../redux/actions/assetRegisterApi';
 import { DEFAULT_ASSET } from '../../redux/actions/editAsset';
 
 /**
@@ -41,7 +42,7 @@ class FetchOrCreateDraft extends Component {
 
     // construct URL for asset or null if we're creating a new asset. We know if we're creating
     // new asset because the assetId will be undefined.
-    const url = assetId ? process.env.REACT_APP_ENDPOINT_ASSETS + assetId + '/' : null;
+    const url = assetId ? ENDPOINT_ASSETS + assetId + '/' : null;
 
     // pass this URL (or null) to fetchOrCreateDraft to populate a new draft
     fetchOrCreateDraft(url, template);

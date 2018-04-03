@@ -2,6 +2,7 @@ import React from 'react'
 import LoginButton from '../components/LoginButton';
 import Logo from '../images/cambridgeuniversity_logo.svg';
 import { withStyles } from 'material-ui/styles';
+import withPageTracking from '../containers/withPageTracking';
 
 const styles = theme => ({
   heroContent: {
@@ -81,4 +82,4 @@ const LoginPage = ({classes}) => (
   </div>
 );
 
-export default withStyles(styles)(LoginPage);
+export default withStyles(styles)(withPageTracking(LoginPage, "Login page"));

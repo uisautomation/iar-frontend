@@ -3,7 +3,8 @@ import { Map } from 'immutable';
 import reducer, { initialState } from './lookupApi';
 import {
   PEOPLE_GET_SELF_REQUEST, PEOPLE_GET_SELF_SUCCESS, PEOPLE_GET_SUCCESS,
-  PEOPLE_LIST_SUCCESS, INSTITUTIONS_LIST_SUCCESS
+  PEOPLE_LIST_SUCCESS,
+  INSTITUTIONS_LIST_REQUEST, INSTITUTIONS_LIST_SUCCESS, INSTITUTIONS_LIST_FAILURE
 } from '../actions/lookupApi';
 
 // test that the state is correctly initialised.
@@ -94,6 +95,16 @@ test("the selfLoading flag is set", () => {
   expect(nextState.selfLoading).toBe(true);
 });
 
+// check that the selfLoading flag is set when the self is requested
+test("the selfRequestedAt flag is set", () => {
+
+  const nextState = reducer(initialState, {type: PEOPLE_GET_SELF_REQUEST});
+
+  expect(nextState.self).toBeNull();
+  expect(nextState.selfRequestedAt).toBeDefined()
+  expect(nextState.selfRequestedAt).not.toBeNull();
+});
+
 // check that the authenticated user's profile is set in self
 test("the authenticated user's profile is set in self", () => {
 
@@ -119,7 +130,10 @@ test("the authenticated user's profile is set in self", () => {
 });
 
 test('institutions are copied from institution list success action', () => {
-  const initialState = reducer(undefined, { type: 'not-an-action' });
+  const initialState = reducer(undefined, { type: INSTITUTIONS_LIST_REQUEST });
+  expect(initialState.institutions.requestedAt).toBeDefined();
+  expect(initialState.institutions.requestedAt).not.toBeNull();
+  expect(initialState.institutions.isLoading).toBe(true);
   expect(initialState.institutions.fetchedAt).toBeNull();
   expect(initialState.institutions.byInstid.get('AAA')).toBeUndefined();
 
@@ -133,9 +147,51 @@ test('institutions are copied from institution list success action', () => {
 
   const nextState = reducer(initialState, action);
 
+  expect(nextState.institutions.requestedAt).toBeDefined();
+  expect(nextState.institutions.requestedAt).not.toBeNull();
+  expect(nextState.institutions.isLoading).toBe(false);
+  expect(nextState.institutions.fetchedAt).toBeDefined();
   expect(nextState.institutions.fetchedAt).not.toBeNull();
+  expect(nextState.institutions.errorPayload).toBeNull();
   expect(nextState.institutions.byInstid.get('AAA')).toEqual({ instid: 'AAA', name: 'Dept of A' });
   expect(nextState.institutions.byInstid.get('BBB')).toEqual({ instid: 'BBB', name: 'Dept of B' });
+});
+
+test('requestedAt is updated when institutions are requested', () => {
+  const initialState = reducer(undefined, { type: 'not-an-action' });
+  expect(initialState.institutions.fetchedAt).toBeNull();
+  expect(initialState.institutions.byInstid.get('AAA')).toBeUndefined();
+
+  const action = {
+    type: INSTITUTIONS_LIST_REQUEST,
+  };
+
+  const nextState = reducer(initialState, action);
+
+  expect(nextState.institutions.requestedAt).toBeDefined();
+  expect(nextState.institutions.requestedAt).not.toBeNull();
+});
+
+test('failure is logged on institution list failure action', () => {
+  const initialState = reducer(undefined, { type: INSTITUTIONS_LIST_REQUEST });
+  expect(initialState.institutions.requestedAt).toBeDefined();
+  expect(initialState.institutions.requestedAt).not.toBeNull();
+  expect(initialState.institutions.isLoading).toBe(true);
+  expect(initialState.institutions.fetchedAt).toBeNull();
+  expect(initialState.institutions.byInstid.get('AAA')).toBeUndefined();
+
+  const action = {
+    type: INSTITUTIONS_LIST_FAILURE,
+    payload: { error: 'some message' },
+  };
+
+  const nextState = reducer(initialState, action);
+
+  expect(nextState.institutions.requestedAt).toBeDefined();
+  expect(nextState.institutions.requestedAt).not.toBeNull();
+  expect(nextState.institutions.isLoading).toBe(false);
+  expect(nextState.institutions.fetchedAt).toBeNull();
+  expect(nextState.institutions.errorPayload).toEqual(action.payload);
 });
 
 test('byInstid is an immutable map after update', () => {

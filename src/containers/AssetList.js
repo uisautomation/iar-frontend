@@ -65,7 +65,8 @@ class AssetList extends Component {
   }
 
   /**
-   * Call getAssets() if the new query doesn't match the old one.
+   * Call getAssets() if the new query doesn't match the old one or if an asset list has not
+   * already been fetched.
    */
   getAssetsIfChanged(oldQuery, newQuery) {
     const {getAssets, fetchedOrLoading } = this.props;

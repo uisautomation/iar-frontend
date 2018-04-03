@@ -40,15 +40,30 @@ developer UI at http://localhost:8080/ui.
 
 ## App configuration
 
-Default application configuration is in the `.env file`.
-This can be overridden locally by placing config in a `.env.local` file.
-Note that you must re-run `npm start` for config to take effect.
-Also note all vars names **must** be frefixed with `REACT_APP_`.
-See the [documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-development-environment-variables-in-env) for more information.
+*Build time* configuration is in the [.env](.env) file.
+This can be overridden locally by placing values in a `.env.local` file.
+Note that you must re-run `npm start` for build time configuration to take
+effect. Also note all vars names **must** be frefixed with `REACT_APP_`.  See
+the
+[documentation](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-development-environment-variables-in-env)
+for more information.
 
-Settings which are not included in the [shipped .env file](.env) but which may
-also be of use are:
+*Run time* configuration is specified by setting the
+``window.reactAppConfiguration`` variable. The recommended way to do this is
+outlined in the [.env](.env):
 
-* **REACT_APP_BASENAME**: basename of app if not served from the web server
-    root. Make sure to include trailing and leading slashes.
-* **REACT_APP_OAUTH_REDIRECT**: redirect URL passed to OAuth2 server.
+1. Add the ``REACT_APP_INDEX_HTML_HEAD`` build-time configuration value to
+   ``.env.local`` so that ``<script src="/config.local.js">`` is inserted into
+   the [index.html](public/index.html) file.
+2. Copy the [configuration template](templates/config.in.js) to
+   ``public/config.local.js``.
+3. Add any local configuration to ``public/config.local.js``.
+
+Although you need to re-run ``npm start`` after changing
+``REACT_APP_INDEX_HTML_HEAD``, changes to run-time configuration will
+take effect on the next reload. Both ``.env.local`` and
+``public/config.local.js`` are added to [.gitignore](.gitignore) so that they
+are not inadvertently checked into source control.
+
+**NOTE:** In the test suite, configuration is loaded from [a special
+module](src/test/config.js) since index.html is not parsed when running tests.

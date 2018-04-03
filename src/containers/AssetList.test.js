@@ -61,8 +61,16 @@ test('AssetList respects the current query', () => {
   const store = createMockStore(initialState);
   render(<AppRoutes />, { store, url: '/assets', store });
 
-  // getAssets never called as the new query matches the old
-  expect(getAssets.mock.calls).toHaveLength(0);
+  // getAssets was called once
+  expect(getAssets.mock.calls).toHaveLength(1);
+
+  // get single argument to getAssets
+  const [ [ query ] ] = getAssets.mock.calls;
+
+  // check query matches expected query
+  Object.getOwnPropertyNames(initialQuery).forEach(name => {
+    expect(query[name]).toEqual(initialQuery[name]);
+  });
 });
 
 // check that a department filter is set

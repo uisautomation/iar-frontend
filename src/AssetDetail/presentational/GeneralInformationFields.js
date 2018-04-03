@@ -32,7 +32,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           label="Asset name"
           helperText={
             "Give the asset a unique name so you can easily identify it, for example, " +
-            "'Visiting academics database'."
+            "'Visiting academics database'. If your institution has sub-divisions, or is part of the Academic Division you should reference that too, eg ‘(Student Registry) HR Records’."
           }
         />
       </Grid>
@@ -56,7 +56,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
           required
           fullWidth
           select
-          label="Asset purpose"
+          label="Asset primary purpose"
           helperText={
             // HACK: non-breaking space character, used to make sure the space of helper text is
             // taken up to avoid the section resizing when owner and purpose_other field comes and
@@ -89,10 +89,6 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
             required
             fullWidth
             label="Other purpose"
-            helperText={
-              "For example, 'To keep a record of current and former staff and salaries for HR " +
-              "purposes.'"
-            }
           />
         </ShowOnlyWhenDraftFieldIs>
       </Grid>

@@ -16,6 +16,7 @@ export default ({ getState, dispatch }) => next => action => {
   return next(action).then((action_) => {
     if (action_.error && action_.payload) {
       dispatch(snackbarOpen(action_.payload.name + ' - ' + action_.payload.message));
+      if (window.analytics && window.analytics.track){ window.analytics.track("Net error: " + action_.payload.name, action_) };
     }
     return action_;
   });

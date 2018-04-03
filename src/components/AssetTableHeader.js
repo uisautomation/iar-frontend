@@ -100,9 +100,8 @@ export const AssetTableHeader = () => (
       }/>
       <SortCell style={{width: '50%'}} field='department' label='Institution' />
       <SortCell style={{width: 8*3}} field='private' label={
-        <TooltipText title="Private">
-          Private marks whether the entry should be hidden from users outside of the entry's
-          assigned department.
+        <TooltipText title="Privacy">
+          Only members of your institution can see 'Private' entries. Everyone can see 'Public' entries.
         </TooltipText>
       }/>
       <SortCell style={{width: 8*13}} field='updated_at' label='Last edited' />
