@@ -126,7 +126,7 @@ export const getAssets = (unsanitisedQuery = {}) => {
 
 /**
  * Request more assets from the API. If URL corresponds to the "next" or "previous" URLs, the list
- * of assets and asset summaries are exteded, otherwise they are replaced.
+ * of assets and asset summaries are extended, otherwise they are replaced.
  */
 export const getMoreAssets = (url) => ({
   [RSAA]: {
