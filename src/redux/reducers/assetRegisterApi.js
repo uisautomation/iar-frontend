@@ -19,6 +19,11 @@ export const initialState = {
   // they do not modify the next or previous URLs.
   isLoading: false,
 
+  // Boolean indicating if the request currently in flight will extend the summary list as opposed
+  // to replacing it. That is to say, this is true if and only if the requested URL is the next or
+  // previous URL.
+  isExtendingSummaries: false,
+
   // A JavaScript Date object with the last time a fetch resulted in this state being updated.
   fetchedAt: null,
 
@@ -86,7 +91,13 @@ export default (state = initialState, action) => {
     case ASSETS_LIST_REQUEST: {
       // Extract url and query used to fetch this request from action metadata
       const { url, query } = action.meta;
-      return { ...state, ...query ? { query } : { }, url, isLoading: true };
+      return {
+        ...state,
+        ...query ? { query } : { },
+        url,
+        isLoading: true,
+        isExtendingSummaries: (url === state.next) || (url === state.previous)
+      };
     }
 
     case ASSETS_LIST_SUCCESS: {
