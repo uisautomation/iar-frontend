@@ -1,4 +1,4 @@
-import { parse, stringify } from 'qs';
+const { URLSearchParams, URL } = require('url');
 
 /**
  * This function navigates to a location stored in the 'previous' query param or the
@@ -8,33 +8,25 @@ import { parse, stringify } from 'qs';
  * @param search location.search
  */
 export const navigate = ({ push }, { search }) => {
-  const { previous } = parse(search, { ignoreQueryPrefix: true });
+  const previous = (new URLSearchParams(search)).get('previous');
   push(previous ? previous : '/assets');
-};
-
-/**
- * Uses the DOM to parse the search part of a url.
- */
-const get_search = (url) => {
-    const a = document.createElement('a');
-    a.href = url;
-    return a.search;
 };
 
 /**
  * If there is a department, then this function adds a 'previous' query param to the given url
  * of the department's assert list url.
  *
- * @param url url to modify
+ * @param pathname pathname to modify
  * @param department INSTID of department or null.
  * @returns {*} modified url
  */
-export const encode_search = (url, department) => {
+export const encode_search = (pathname, department) => {
   if (department) {
-    const params = parse(get_search(url), { ignoreQueryPrefix: true });
-    const delim = Object.keys(params).length === 0 ? '?' : '&';
-    const previous = encodeURI('/assets/' + department);
-    return url + delim + stringify({previous: previous});
+    const url = new URL(pathname, 'http://invalid');
+
+    const params = new URLSearchParams(url.search);
+    params.append('previous', encodeURI('/assets/' + department));
+    return url.pathname + '?' + params.toString();
   }
-  return url;
+  return pathname;
 };
