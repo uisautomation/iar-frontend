@@ -1,6 +1,13 @@
 import React from 'react';
 import { encode_search, navigate } from "./previous";
 
+// polyfill URLSearchParams & URL for the test suite
+if (!window.URLSearchParams) {
+  const url = require('url');
+  window.URLSearchParams = url.URLSearchParams;
+  window.URL = url.URL;
+}
+
 test('encode_search behaves as expected', () => {
   const url_fixture = "/asset/a8b19985-99b2-4aad-ab4e-194b894905c2/edit";
 

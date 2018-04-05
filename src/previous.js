@@ -1,5 +1,3 @@
-const { URLSearchParams, URL } = require('url');
-
 /**
  * This function navigates to a location stored in the 'previous' query param or the
  * "All institutions" asset list, if there is none.
@@ -8,7 +6,7 @@ const { URLSearchParams, URL } = require('url');
  * @param search location.search
  */
 export const navigate = ({ push }, { search }) => {
-  const previous = (new URLSearchParams(search)).get('previous');
+  const previous = (new window.URLSearchParams(search)).get('previous');
   push(previous ? previous : '/assets');
 };
 
@@ -22,9 +20,9 @@ export const navigate = ({ push }, { search }) => {
  */
 export const encode_search = (pathname, department) => {
   if (department) {
-    const url = new URL(pathname, 'http://invalid');
+    const url = new window.URL(pathname, 'http://invalid');
 
-    const params = new URLSearchParams(url.search);
+    const params = new window.URLSearchParams(url.search);
     params.append('previous', encodeURI('/assets/' + department));
     return url.pathname + '?' + params.toString();
   }
