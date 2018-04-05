@@ -117,8 +117,8 @@ export const AssetTableHeader = ({ classes }) => (
       <SortCell style={{width: 8*13}} field='updated_at' label='Last edited' />
       <TableCell style={{width: 8*4}}>&nbsp;</TableCell>
     </TableRow>
-    <TableRow className={classes.loadingRow}>
-      <TableCell colSpan={6} className={classes.loadingCell}>
+    <TableRow className={classes.loadingContainerRow}>
+      <TableCell colSpan={6} className={classes.loadingContainerCell}>
         <div className={classes.loadingContainer}>
           <LoadingIndicator />
         </div>
@@ -132,11 +132,11 @@ AssetTableHeader.propTypes = {
 };
 
 const styles = theme => ({
-  loadingCell: {
+  loadingContainerCell: {
     height: 0, position: 'relative', margin: 0, padding: 0, border: 'none',
   },
 
-  loadingRow: {
+  loadingContainerRow: {
     height: 0, margin: 0, padding: 0, border: 'none',
   },
 
