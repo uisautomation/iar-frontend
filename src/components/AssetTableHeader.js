@@ -6,8 +6,7 @@ import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 import { TableRow, TableCell, TableSortLabel, TableHead } from 'material-ui/Table';
 import Tooltip from 'material-ui/Tooltip';
 import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
-import { LinearProgress } from 'material-ui/Progress';
-import Fade from 'material-ui/transitions/Fade';
+import LoadingIndicator from '../containers/LoadingIndicator';
 
 // A map from sort directions to values for the "direction" prop of TableSortLabel.
 const directionDescriptions = new Map([
@@ -84,14 +83,6 @@ const TooltipText = withStyles(tooltipTextStyle)(({ title, children, classes }) 
     </div>
   </Tooltip>
 ));
-
-// An indeterminate linear progress indicator which is ownly shown when there is an asset list
-// request in flight.
-const LoadingIndicator = connect(({ assets: { isLoading } }) => ({ isLoading }))(
-  ({ isLoading }) => (
-    <Fade in={isLoading}><LinearProgress /></Fade>
-  )
-);
 
 /**
  * A component which provides the header row for the asset table. Heading titles can be used to
