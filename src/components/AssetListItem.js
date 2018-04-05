@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import { confirmDelete } from '../redux/actions/deleteConfirmation';
-
-import {TableRow, TableCell} from 'material-ui/Table';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
-// import Menu, { MenuItem } from 'material-ui/Menu';
-import IconButton from 'material-ui/IconButton';
-import VisibilityIcon from 'material-ui-icons/Visibility';
-import VisibilityOffIcon from 'material-ui-icons/VisibilityOff';
-import Tooltip from 'material-ui/Tooltip';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import {
+  MoreVert as MoreVertIcon, Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon
+} from 'material-ui-icons';
+import {TableRow, TableCell, IconButton, Tooltip, Menu, MenuItem} from 'material-ui';
 import { FormattedRelative, FormattedDate, FormattedTime } from 'react-intl';
 import AssetStatus from './AssetStatus';
 import LookupInstitution from './LookupInstitution';
 import { withStyles } from 'material-ui/styles';
+import { encode_search as encode_search_with_previous } from "../previous";
 
 const privateIconStyles = theme => ({
   privateIcon: {color: theme.customColors.mediumGrey}
@@ -28,7 +22,7 @@ const PrivateIcon = withStyles(privateIconStyles)(({ isPrivate, classes }) => {
   if(isPrivate === true) { return <span className={classes.privateIcon}><Tooltip title='Private' ><VisibilityOffIcon /></Tooltip></span>; }
   if(isPrivate === false) { return <span className={classes.privateIcon}><Tooltip title='Public'><VisibilityIcon /></Tooltip></span>; }
   return null;
-})
+});
 
 
 class MoreMenu extends Component {
@@ -75,7 +69,7 @@ class MoreMenu extends Component {
       </div>
     );
   }
-};
+}
 
 MoreMenu.propTypes = {
   isPrivate: PropTypes.bool,
@@ -91,7 +85,7 @@ const assetListItemStyles = theme => ({
 });
 
 const AssetListItem = withStyles(assetListItemStyles)((
-  {confirmDelete, asset, history, classes}
+  {confirmDelete, asset, history, match : { params: { filter } }, classes}
 ) => {
   if(!asset) { return null; }
 
@@ -100,8 +94,8 @@ const AssetListItem = withStyles(assetListItemStyles)((
 
   const editAsset = () => {
     if(asset && asset.id && history) {
-      const canEdit = asset.allowed_methods && (asset.allowed_methods.indexOf('PUT') !== -1)
-      history.push('/asset/' + asset.id + (canEdit ? '/edit' : ''));
+      const canEdit = asset.allowed_methods && (asset.allowed_methods.indexOf('PUT') !== -1);
+      history.push(encode_search_with_previous('/asset/' + asset.id + (canEdit ? '/edit' : ''), filter));
     }
   };
 
@@ -150,11 +144,7 @@ AssetListItem.propTypes = {
   confirmDelete: PropTypes.func.isRequired,
 };
 
-// Export unconnected version of component to aid testing.
-export const UnconnectedAssetListItem = AssetListItem;
-
-const mapStateToProps = (state, { assetUrl }) => {
-  const { assets: { assetsByUrl } } = state;
+const mapStateToProps = ({ assets: { assetsByUrl } }, { assetUrl }) => {
   return ({
     asset: assetsByUrl.has(assetUrl) ? assetsByUrl.get(assetUrl).asset : null,
   });

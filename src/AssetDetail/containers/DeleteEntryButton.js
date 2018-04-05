@@ -7,6 +7,7 @@ import { withDraft } from '../../draft';
 import Button from 'material-ui/Button';
 
 import { confirmDelete } from '../../redux/actions/deleteConfirmation';
+import { navigate as navigate_to_previous } from "../../previous";
 
 /**
  * A container component which passes an onClick prop to a wrapped component which will delete the
@@ -17,12 +18,16 @@ import { confirmDelete } from '../../redux/actions/deleteConfirmation';
  * Unrecognised props are spread to the root element.
  */
 const DeleteEntryButton = (
-  { component: Component = Button, url, confirmDelete,
-    history, match, location, staticContext, children, ...rest }
+  { component: Component = Button, url, confirmDelete, history, location, children,
+    match, staticContext, ...rest }
 ) => (
   <Component
     onClick={() => confirmDelete(url).then(
-      userApprovedRequest => { if(userApprovedRequest) { history.goBack(); } }
+      userApprovedRequest => {
+        if (userApprovedRequest) {
+          navigate_to_previous(history, location);
+        }
+      }
     )}
     {...rest}
   >{

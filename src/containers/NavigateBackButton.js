@@ -6,7 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import ArrowBack from 'material-ui-icons/ArrowBack';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import {connect} from "react-redux";
+import { navigate as navigate_to_previous } from "../previous";
 
 export const BackIconButton = props => (
   <IconButton color="inherit" aria-label="Go back" {...props}>
@@ -14,39 +14,19 @@ export const BackIconButton = props => (
   </IconButton>
 );
 
-const UnconnectedNavigateBackButton = (
-  {
-    // we swallow the extra props from connect and withRouter to avoid broadcasting them to the
-    // root
-    match, history, location, staticContext, dispatch,
-    component: Component, goBack, ...rest
-  }
-) => (
-  <Component {...rest} onClick={goBack} />
+const NavigateBackButton = ({
+  // We swallow the extra props from connect and withRouter to avoid broadcasting them to the root.
+  history, location, component: Component, match, staticContext, ...rest
+}) => (
+  <Component {...rest} onClick={() => {navigate_to_previous(history, location)}} />
 );
 
-UnconnectedNavigateBackButton.propTypes = {
-  goBack: PropTypes.func.isRequired,
+NavigateBackButton.propTypes = {
   component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 };
 
-UnconnectedNavigateBackButton.defaultProps = {
+NavigateBackButton.defaultProps = {
   component: BackIconButton,
-}
-
-const mapStateToProps = ({ assets: { fetchedAt }}, { history } ) => {
-
-  // closure to implement a safe history.goBack()
-  const goBack = () => {
-    if (fetchedAt) {
-      // only go back if an asset list has previously been visited
-      history.goBack();
-    } else {
-      history.push('/');
-    }
-  };
-
-  return { goBack }
 };
 
 /**
@@ -57,6 +37,4 @@ const mapStateToProps = ({ assets: { fetchedAt }}, { history } ) => {
  * Unrecognised props are spread to the wrapped component.
  *
  */
-const NavigateBackButton = withRouter(connect(mapStateToProps)(UnconnectedNavigateBackButton));
-
-export default NavigateBackButton;
+export default withRouter(NavigateBackButton)
