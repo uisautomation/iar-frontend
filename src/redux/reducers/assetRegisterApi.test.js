@@ -1,6 +1,6 @@
 import reducer, { initialState } from './assetRegisterApi';
 import {
-  ASSETS_LIST_SUCCESS, ASSETS_DELETE_SUCCESS,
+  ASSETS_LIST_REQUEST, ASSETS_LIST_SUCCESS, ASSETS_DELETE_SUCCESS,
   ASSET_PUT_SUCCESS, ASSET_POST_SUCCESS,
   resetAssets,
 } from '../actions/assetRegisterApi';
@@ -80,4 +80,22 @@ test('Explicit reset of summary state', () => {
   expect(nextState.next).toBeNull();
   expect(nextState.previous).toBeNull();
   expect(nextState.fetchedAt).toBeNull();
+});
+
+test('Requesting "next" URL sets isExtendingSummaries', () => {
+  const action = { type: ASSETS_LIST_REQUEST, meta: { url: stateWithAssets.next } };
+  const nextState = reducer(stateWithAssets, action);
+  expect(nextState.isExtendingSummaries).toBe(true);
+});
+
+test('Requesting "previous" URL sets isExtendingSummaries', () => {
+  const action = { type: ASSETS_LIST_REQUEST, meta: { url: stateWithAssets.previous } };
+  const nextState = reducer(stateWithAssets, action);
+  expect(nextState.isExtendingSummaries).toBe(true);
+});
+
+test('Requesting neither "next" nor "previous" URL clears isExtendingSummaries', () => {
+  const action = { type: ASSETS_LIST_REQUEST, meta: { url: stateWithAssets.next + '/not/next' } };
+  const nextState = reducer(stateWithAssets, action);
+  expect(nextState.isExtendingSummaries).toBe(false);
 });

@@ -11,6 +11,16 @@ import AssetListItem from './AssetListItem';
 const styles = theme => ({
   assetTableBody: {
     position: 'relative',
+    transition: [
+      theme.transitions.create('opacity'),
+    ],
+
+    // IE11 does not correctly render opacity transitions as it does not apply the opacity to the
+    // td:after pseudo-element(!) Rather than re-work the entire CSS trickery required to get a box
+    // shadow on the table, just deny IE11 users the eye-candy of a fading table body.
+    '@media all and (-ms-high-contrast: none), (-ms-high-contrast: active)': {
+      transition: '',
+    },
 
     '& td': {
       position: 'relative',
@@ -23,13 +33,28 @@ const styles = theme => ({
       boxShadow: theme.shadows[1],
     },
   },
+
+  replacing: {
+    opacity: 0,
+  },
+
+  notReplacing: {
+    opacity: 1,
+  },
 });
 
 /**
  * A table of assets.
  */
-export const UnconnectedAssetTableBody = ({ summaries, isLoading = false, classes }) => (
-  <TableBody className={classes.assetTableBody}>
+export const UnconnectedAssetTableBody = ({
+  summaries, isLoading = false, isReplacing = false, classes
+}) => (
+  <TableBody className={
+    [
+      classes.assetTableBody,
+      isReplacing ? classes.replacing : classes.notReplacing,
+    ].join(' ')
+  }>
     {
       // Display a "no assets" row if there is no loading happening and there are no assets.
       ((summaries.length === 0) && !isLoading) ? <ZeroAssetsRow /> : null
@@ -41,6 +66,7 @@ export const UnconnectedAssetTableBody = ({ summaries, isLoading = false, classe
 UnconnectedAssetTableBody.propTypes = {
   summaries: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool,
+  isReplacing: PropTypes.bool,
 };
 
 /**
@@ -54,8 +80,11 @@ export const ZeroAssetsRow = () => (
   </TableRow>
 );
 
-const mapStateToProps = ({ assets: { summaries, isLoading } }) => ({
-  summaries, isLoading
+const mapStateToProps = ({ assets: { summaries, isLoading, isExtendingSummaries } }) => ({
+  summaries, isLoading,
+  // a flag which indicates if there is a request in flight which will *replace* rather than extend
+  // the current list of asset entries
+  isReplacing: isLoading && !isExtendingSummaries
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(UnconnectedAssetTableBody));

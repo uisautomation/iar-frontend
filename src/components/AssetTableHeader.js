@@ -6,6 +6,7 @@ import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
 import { TableRow, TableCell, TableSortLabel, TableHead } from 'material-ui/Table';
 import Tooltip from 'material-ui/Tooltip';
 import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
+import LoadingIndicator from '../containers/LoadingIndicator';
 
 // A map from sort directions to values for the "direction" prop of TableSortLabel.
 const directionDescriptions = new Map([
@@ -88,7 +89,7 @@ const TooltipText = withStyles(tooltipTextStyle)(({ title, children, classes }) 
  * change sort order.
  *
  */
-export const AssetTableHeader = () => (
+export const AssetTableHeader = ({ classes }) => (
   <TableHead>
     <TableRow>
       <SortCell style={{width: '50%'}} field='name' label='Name' />
@@ -107,7 +108,32 @@ export const AssetTableHeader = () => (
       <SortCell style={{width: 8*13}} field='updated_at' label='Last edited' />
       <TableCell style={{width: 8*4}}>&nbsp;</TableCell>
     </TableRow>
+    <TableRow className={classes.loadingContainerRow}>
+      <TableCell colSpan={6} className={classes.loadingContainerCell}>
+        <div className={classes.loadingContainer}>
+          <LoadingIndicator />
+        </div>
+      </TableCell>
+    </TableRow>
   </TableHead>
 );
 
-export default AssetTableHeader;
+AssetTableHeader.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+const styles = theme => ({
+  loadingContainerCell: {
+    height: 0, position: 'relative', margin: 0, padding: 0, border: 'none',
+  },
+
+  loadingContainerRow: {
+    height: 0, margin: 0, padding: 0, border: 'none',
+  },
+
+  loadingContainer: {
+    position: 'absolute', top: 0, left: 0, width: '100%',
+  },
+});
+
+export default withStyles(styles)(AssetTableHeader);
