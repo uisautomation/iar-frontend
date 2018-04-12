@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html><body><script>
+  (window.opener ? window.opener : window.parent).postMessage({
+    'type': 'oauth2Callback',
+    'location': {
+      'pathname': location.pathname, 'query': location.query,
+      'hash': location.hash
+    }
+  }, '*');
+</script></body></html>
