@@ -41,7 +41,7 @@ const config = {
 // If it hasn't previously been set, set the rdirect URL for OAuth2 implicit flow. We set it here
 // because "basename" may have been overridden by the reactAppConfiguration object.
 if(!config.oauth2RedirectUrl) {
-  config.oauth2RedirectUrl = window.location.origin + config.basename + 'oauth2-callback';
+  config.oauth2RedirectUrl = window.location.origin + config.basename + 'oauth2-callback.html';
 }
 
 export default config;

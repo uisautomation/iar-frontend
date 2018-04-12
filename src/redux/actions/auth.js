@@ -1,30 +1,38 @@
 /**
  * Redux actions for authenticating and authorising current user.
  *
- * These are relatively thin wrappers around redux-implicit-oauth2's actions. They're put here to
- * decouple the login/logout logic from having to know the mechanism by which login and logout are
- * achieved.
  */
-import { login as implicitLogin, logout as implicitLogout } from 'redux-implicit-oauth2';
 import history from '../../history'
-import config from '../../config';
+import { login as authLogin } from '../../auth';
 
-/**
- * OAuth2 credentials configuration for the IAR frontend application.
- */
-const oauth2Config = {
-  url: config.oauth2AuthEndpoint,
-  client: config.oauth2ClientId,
-  redirect: config.oauth2RedirectUrl,
-  scope: config.oauth2Scopes,
-  width: config.oauth2PopupWidth, // Width (in pixels) of login popup window.
-  height: config.oauth2PopupHeight, // Height (in pixels) of login popup window.
-};
+// Action types
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
 
 /**
  * Initialise login to application.
+ *
+ * Takes an optional options object as passed to auth.login(). Returns a thunk function which
+ * returns a promise resolved with the result of dispatching a LOGIN_SUCCESS or LOGIN_FAILURE
+ * action.
+ *
+ * Returns a function and requires the redux-thunk middleware.
  */
-export const login = () => implicitLogin(oauth2Config);
+export const login = options => dispatch => {
+  dispatch({ type: LOGIN_REQUEST });
+
+  return authLogin(options)
+    .then(token => dispatch({
+      type: LOGIN_SUCCESS,
+      payload: { token },
+    }))
+    .catch(error => dispatch({
+      type: LOGIN_FAILURE,
+      payload: { error },
+    }));
+}
 
 /**
  * Log out from the application and redirect to "/".
@@ -32,6 +40,6 @@ export const login = () => implicitLogin(oauth2Config);
  * Returns a function and requires the redux-thunk middleware.
  */
 export const logout = () => dispatch => {
-  dispatch(implicitLogout());
+  dispatch({ type: LOGOUT });
   history.push('/');
 };

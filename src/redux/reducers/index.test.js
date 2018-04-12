@@ -11,7 +11,7 @@ jest.mock('redux', () => {
 
 import { combineReducers } from 'redux';
 import wrappedReducers, { reducers } from './index';
-import { LOGOUT } from 'redux-implicit-oauth2';
+import { LOGOUT } from '../actions/auth';
 
 const mockReducers = combineReducers();
 
