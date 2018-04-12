@@ -9,6 +9,7 @@ import {
 } from '../components';
 import PropTypes from 'prop-types';
 import AppRoutes from './AppRoutes';
+import TokenTimeout from './TokenTimeout';
 import theme from '../style/CustomMaterialTheme';
 import '../style/App.css';
 
@@ -35,6 +36,7 @@ const App = ({ store }) => (
           <Snackbar />
           <FetchSelf />
           <FetchLookupInstitutions />
+          <TokenTimeout />
         </div>
       </ReduxProvider>
     </IntlProvider>
