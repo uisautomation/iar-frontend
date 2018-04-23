@@ -31,7 +31,7 @@ const TIMEOUT_HEAD_ROOM = 120e3; // milliseconds
  *
  * An example test protocol to check token timeout behaviour in development would be as follows:
  *
- * 1. Edit TIMEOUT_HEAD_ROOM to be 280e3. In development the access token lifetime if 5 minutes and
+ * 1. Edit TIMEOUT_HEAD_ROOM to be 280e3. In development the access token lifetime is 5 minutes and
  *    so this head room means that a new token should be fetched every 20 seconds.
  *
  * 2. To test token timeout behaviour, open http://localhost:8090/logout in another tab. This will
