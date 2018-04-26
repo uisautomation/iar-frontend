@@ -34,6 +34,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
             "Give the asset a unique name so you can easily identify it, for example, " +
             "'Visiting academics database'. If your institution has sub-divisions, or is part of the Academic Division you should reference that too, eg ‘(Student Registry) HR Records’."
           }
+          inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
         />
       </Grid>
       <Grid item xs={6} />
@@ -63,6 +64,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
             // goes.
             "\xa0"
           }
+          inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
         >
           {PURPOSE_LABELS.map(({ value, label }) => (
             <MenuItem key={value} value={value}>{ label }</MenuItem>
