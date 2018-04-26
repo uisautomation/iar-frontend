@@ -10,7 +10,7 @@ export default (state = initialState, action) => {
     case SNACKBAR_OPEN:
       return { ...state, isOpen: true, message: action.payload.message };
     case SNACKBAR_CLOSE:
-      return { ...state, isOpen: false, message: '' };
+      return { ...state, isOpen: false };
     default:
       return state;
   }

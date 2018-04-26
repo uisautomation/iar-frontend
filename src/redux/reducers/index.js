@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import { authReducer as auth } from 'redux-implicit-oauth2';
+import auth from './auth';
 import assets from './assetRegisterApi';
 import deleteConfirmation from './deleteConfirmation';
 import snackbar from './snackbar';
 import lookupApi from './lookupApi';
 import editAsset from './editAsset';
 
-import { LOGOUT } from 'redux-implicit-oauth2';
+import { LOGOUT } from '../actions/auth';
 
 /**
  * Combine all reducers used in the application together into one reducer.
