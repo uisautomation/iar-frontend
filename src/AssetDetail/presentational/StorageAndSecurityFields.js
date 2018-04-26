@@ -36,6 +36,7 @@ const StorageAndSecurityFields = ({ component: Component = 'div', classes, ...re
           helperText={
             "List all the places you store it — for example in Room 45, Greenwich House; on a server in West Cambridge; in  [name of team] Dropbox."
           }
+          inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
         />
       </Grid>
       <Grid item xs={6} />

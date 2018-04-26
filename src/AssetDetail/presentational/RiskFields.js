@@ -57,6 +57,7 @@ const RiskFields = ({ component: Component = 'div', classes, ...rest }) => (
           multiline
           label="Supporting information"
           helperText="Please tell us a bit more detail about why these risks exist and how it could impact your institution or the University"
+          inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
         />
       </Grid>
     </Grid>
