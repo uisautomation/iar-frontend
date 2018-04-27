@@ -91,6 +91,7 @@ const GeneralInformationFields = ({ component: Component = 'div', classes, ...re
             required
             fullWidth
             label="Other purpose"
+            inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
           />
         </ShowOnlyWhenDraftFieldIs>
       </Grid>
