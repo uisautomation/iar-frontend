@@ -165,6 +165,7 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
               fullWidth
               label="Who is it shared with outside the University?"
               helperText="This could be a company or individual."
+              inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
             />
           </ShowOnlyWhenDraftFieldIs>
         </Grid>
@@ -216,6 +217,7 @@ const PersonalDataFields = ({ component: Component = 'div', classes, ...rest }) 
               fullWidth
               label="Who is it shared with outside of the EEA?"
               helperText="This could be a company or individual."
+              inputProps={{maxlength: 240}}  // HACK: until 400 handling is better
             />
           </ShowOnlyWhenDraftFieldIs>
         </Grid>
