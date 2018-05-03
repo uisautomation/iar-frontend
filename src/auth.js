@@ -36,37 +36,81 @@ export const login = ({ prompt=true } = {}) => {
   });
 
   return new Promise((resolve, reject) => {
-    // if non-null, a function which clears up the resources created by the login
-    let cleanUp = null;
+    // We have a two pronged attack here to listen for a response from the OAuth2 endpoint. We both
+    // listen for a message posted from oauth2-callback.html and poll the popup/iframe for its
+    // location. We have to do this two pronged attack because IE11, empirically, seems reluctant
+    // to allow postMessage to the same origin after all the OAuth2 redirects.
 
-    // Register an event listener which listens for the next message event and then unregisters
-    // itself.
-    const messageEventListener = event => {
-      if(!event || !event.data || event.data.type !== 'oauth2Callback') { return; }
+    // if non-null, the current timeout being used to listen for a new location
+    let locationPollTimeout = null;
 
-      // state has to be in the location hash for this to be meant for us
-      const uri = event.data.location;
-      if(!uri || !uri.hash || (uri.hash.indexOf(state) === -1)) { return; }
+    // We create a postMessage listener, messageEventListener, which listens for a location object
+    // posted by oauth2-callback.html. At the same time, we launch a timer to directly examine the
+    // location of the window/iframe. When either of these has a Location-like object we can
+    // examine to get the credentials, they pass it to the following function which clears up all
+    // the resources and resolves/rejects this Promise as appropriate.
+    //
+    // This function returns false if the location was not processed.
+    const handleLocation = location => {
+      // The state has to be in the location hash for this to be meant for us.
+      if(!location || !location.hash || (location.hash.indexOf(state) === -1)) { return false; }
 
+      // Clear up any polling timeout, un-register the poll timeout and close/remove the
+      // window/IFrame.
+      if(locationPollTimeout !== null) {
+        window.clearTimeout(locationPollTimeout);
+        locationPollTimeout = null;
+      }
       window.removeEventListener('message', messageEventListener);
-
-      // Clean up any UI elements
-      cleanUp();
+      authContainer.dispose();
 
       // Parse the redirect URL content and resolve or reject the promise as appropriate.
-      auth.token.getToken(uri).then(resolve).catch(reject);
+      auth.token.getToken(location).then(resolve).catch(reject);
+
+      // Signal that the location object was processed.
+      return true;
+    }
+
+    // Register an event listener which listens for the next message event.
+    const messageEventListener = event => {
+      if(!event || !event.data || event.data.type !== 'oauth2Callback') { return; }
+      handleLocation(event.data.location);
     };
     window.addEventListener('message', messageEventListener);
 
-    if(prompt) {
-      const newWindow = openPopup(
+    // Open an IFrame or window to perform the authorisation flow. We open an IFrame if we're
+    // requesting a promptless login and a window otherwise.
+    const authContainer = prompt ?
+      openPopup(
         auth.token.getUri(), 'iar-sign-in', config.oauth2PopupWidth, config.oauth2PopupHeight
-      );
-      cleanUp = () => { newWindow.close(); }
-    } else {
-      const newFrame = openIFrame(auth.token.getUri());
-      cleanUp = () => { newFrame.remove(); }
-    }
+      ) :
+      openIFrame(auth.token.getUri());
+
+    // Register a timer to poll the opened window/IFrame for its location.
+    const locationPollCallback = () => {
+      let containerLocation;
+      try {
+        // Extract the hash, host, search and path from the location. We extract them explicitly
+        // here so that cross-origin permission denied errors can be caught and handled. The
+        // various values are then re-constituted so they may be passed to handleLocation().
+        const { hash, host, search, path } = authContainer.getLocation();
+        containerLocation = { hash, host, search, path };
+      } catch(err) {
+        // Silently swallow errors retrieving the parameters in production. In development, it's
+        // useful to see them.
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(err);
+        }
+      }
+
+      // Try to process the location.
+      if(handleLocation(containerLocation)) { return; }
+
+      // Set a timeout to call ourselves again. This happens 1) if the try/catch above caught an
+      // error of 2) if handleLocation() returned a falsy value.
+      locationPollTimeout = window.setTimeout(locationPollCallback, 500);
+    };
+    locationPollCallback();
   });
 };
 
@@ -84,20 +128,41 @@ const generateState = function(length = 32) {
 };
 
 /**
- * Open a hidden iframe pointing to the passed URL. Return the new iframe DOM element.
+ * Open a hidden iframe pointing to the passed URL. Returns an object with the following content:
+ *
+ *  {
+ *    element: the new iframe DOM element
+ *    dispose: a function which will remove the created IFrame from the DOM
+ *    getLocation: a function which returns a Location object for the opened IFrame
+ *  }
+ *
+ * This object is intentionally similar to that returned by openPopup() so that common properties
+ * it may be used interchangeably.
  */
 const openIFrame = url => {
   const iframe = document.createElement('iframe');
   iframe.setAttribute('src', url)
   iframe.style.display = 'none';
   document.body.appendChild(iframe);
-  return iframe;
+  return {
+    element: iframe,
+    dispose: () => iframe.remove(),
+    getLocation: () => iframe.contentWindow.location,
+  };
 };
 
 /**
- * Open a popup window on the passed URL with a given name, width and height.
+ * Open a popup window on the passed URL with a given name, width and height. Returns an object
+ * with the following content:
  *
- * Returns the new window object.
+ *  {
+ *    window: the new window object
+ *    dispose: a function which will close the opened window
+ *    getLocation: a function which returns the opened window's Location object
+ *  }
+ *
+ * This object is intentionally similar to that returned by openIFrame() so that common properties
+ * may be used interchangeably.
  */
 const openPopup = (url, name, width, height) => {
   const SETTINGS =
@@ -113,5 +178,11 @@ const openPopup = (url, name, width, height) => {
       return `width=${width},height=${height},top=${top},left=${left}`
   }
 
-  return window.open(url, name, `${SETTINGS},${getPopupDimensions(width, height)}`);
+  const win = window.open(url, name, `${SETTINGS},${getPopupDimensions(width, height)}`);
+
+  return {
+    window: win,
+    dispose: () => win.close(),
+    getLocation: () => win.location,
+  };
 };
