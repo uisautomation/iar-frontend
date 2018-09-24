@@ -1,5 +1,6 @@
 # iar-frontend
 [![Build Status](https://travis-ci.org/uisautomation/iar-frontend.svg?branch=master)](https://travis-ci.org/uisautomation/iar-frontend)
+[<img src="https://marker.io/vendor/img/logo/browserstack-logo.svg" height="20">](https://www.browserstack.com/)
 
 Frontend for IAR web application. Bootstrapped with Create React App.
 
