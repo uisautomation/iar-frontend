@@ -6,7 +6,7 @@
     "autosuggest-highlight": "^3.1.1",
     "client-oauth2": "^4.2.0",
     "immutable": "^3.8.2",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.11",
     "material-ui": "^1.0.0-beta.36",
     "material-ui-icons": "^1.0.0-beta.36",
     "prop-types": "^15.6.1",
