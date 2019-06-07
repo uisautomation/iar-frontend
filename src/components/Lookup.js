@@ -4,8 +4,8 @@
  * and the full name is displayed as the selected value.
  */
 import React, {Component} from 'react'
-import {Chip, MenuItem, Paper, TextField} from 'material-ui';
-import { withStyles } from 'material-ui/styles';
+import {Chip, MenuItem, Paper, TextField} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import Autosuggest from 'react-autosuggest';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';

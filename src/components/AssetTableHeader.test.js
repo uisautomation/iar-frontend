@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
-import Table, { TableHead, TableRow, TableSortLabel } from 'material-ui/Table';
+import Table, { TableHead, TableRow, TableSortLabel } from '@material-ui/core/Table';
 import { Direction } from '../redux/actions/assetRegisterApi';
 import { SortCell, getNextQuery } from './AssetTableHeader';
 

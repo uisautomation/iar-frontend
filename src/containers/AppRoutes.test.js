@@ -2,7 +2,7 @@
 import '../test/mocks';
 
 import React from 'react';
-import { AppBar, Typography } from 'material-ui';
+import { AppBar, Typography } from '@material-ui/core';
 import {createMockStore, DEFAULT_INITIAL_STATE, render} from '../testutils';
 import { populatedState } from '../test/fixtures';
 import AppRoutes from './AppRoutes';

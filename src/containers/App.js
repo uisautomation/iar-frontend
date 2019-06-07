@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux';
 import { Router } from 'react-router-dom'
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { IntlProvider } from 'react-intl';
 import history from '../history'
 import {

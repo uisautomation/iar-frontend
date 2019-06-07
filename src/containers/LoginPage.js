@@ -1,7 +1,7 @@
 import React from 'react'
 import LoginButton from '../components/LoginButton';
 import Logo from '../images/cambridgeuniversity_logo.svg';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import withPageTracking from '../containers/withPageTracking';
 
 const styles = theme => ({

@@ -1,18 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Grid from 'material-ui/Grid';
+import Grid from '@material-ui/core/Grid';
 import {
   FormLabel,
   FormGroup,
   FormControl,
   FormControlLabel,
   FormHelperText,
-} from 'material-ui/Form';
-import Radio, { RadioGroup } from 'material-ui/Radio';
-import Checkbox from 'material-ui/Checkbox';
-import TextField from 'material-ui/TextField';
+} from '@material-ui/core';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Checkbox from '@material-ui/core/Checkbox';
+import TextField from '@material-ui/core/TextField';
 
 import Collapse from '../containers/Collapse';
 import DraftInput, { DraftTextInput, DraftArrayCheckboxInput } from '../../draft/DraftInput';

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { withDraft } from '../../draft';
 
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 
 import { snackbarOpen } from '../../redux/actions/snackbar';
 import { navigate as navigate_to_previous } from "../../previous";

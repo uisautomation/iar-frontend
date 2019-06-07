@@ -1,5 +1,5 @@
 import React from 'react';
-import MuiSnackbar from 'material-ui/Snackbar';
+import MuiSnackbar from '@material-ui/core/Snackbar';
 import { connect } from 'react-redux';
 import { snackbarClose } from '../redux/actions/snackbar';
 

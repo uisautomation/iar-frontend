@@ -1,8 +1,8 @@
 import React from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { TableBody, TableCell, TableRow } from 'material-ui/Table';
+import { TableBody, TableCell, TableRow } from '@material-ui/core';
 import AssetListItem from './AssetListItem';
 
 // There is much discussion here on how to have tbody box-shadows actually appear. This solution is

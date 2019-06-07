@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 
 import NavigateBackButton from '../../containers/NavigateBackButton';
 

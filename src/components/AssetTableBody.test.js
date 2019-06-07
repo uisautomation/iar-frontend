@@ -2,7 +2,7 @@ import '../test/mocks';
 
 import React from 'react';
 import AssetListItem from './AssetListItem';
-import Table from 'material-ui/Table';
+import Table from '@material-ui/core/Table';
 import AssetTableBody, { ZeroAssetsRow } from './AssetTableBody';
 import { render, createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
 import { ASSETS_LIST_SUCCESS, ASSETS_LIST_REQUEST } from '../redux/actions/assetRegisterApi';

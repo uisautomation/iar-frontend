@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { MenuItem } from 'material-ui/Menu';
-import { TextField } from 'material-ui';
+import { MenuItem } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 /**
  * A higher-order component wrapping TextField from material-ui which has the form of a select box

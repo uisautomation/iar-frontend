@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Grid from 'material-ui/Grid';
-import { FormLabel, FormControl } from 'material-ui/Form';
-import { InputLabel } from 'material-ui/Input';
+import Grid from '@material-ui/core/Grid';
+import { FormLabel, FormControl } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
 
 import DisplayOnlyInput from './DisplayOnlyInput';
 

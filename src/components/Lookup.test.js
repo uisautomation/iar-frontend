@@ -1,7 +1,7 @@
 import React from 'react';
 import Autosuggest from 'react-autosuggest';
 import { Map } from 'immutable';
-import { Chip, TextField } from 'material-ui';
+import { Chip, TextField } from '@material-ui/core';
 import {render, createMockStore, DEFAULT_INITIAL_STATE, condition} from '../testutils';
 import Lookup from "./Lookup";
 import {PEOPLE_LIST_REQUEST} from "../redux/actions/lookupApi";

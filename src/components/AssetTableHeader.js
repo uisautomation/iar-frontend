@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { getAssets, Direction } from '../redux/actions/assetRegisterApi';
-import { TableRow, TableCell, TableSortLabel, TableHead } from 'material-ui/Table';
-import Tooltip from 'material-ui/Tooltip';
-import HelpOutlineIcon from 'material-ui-icons/HelpOutline';
+import { TableRow, TableCell, TableSortLabel, TableHead } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import LoadingIndicator from '../containers/LoadingIndicator';
 
 // A map from sort directions to values for the "direction" prop of TableSortLabel.

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import LogoutLink from "../components/LogoutLink";
-import { Button } from "material-ui";
+import { Button } from "@material-ui/core";
 
 export const title = "The Information Asset Register";
 

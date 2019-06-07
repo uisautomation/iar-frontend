@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Paper from 'material-ui/Paper';
-import { LinearProgress } from 'material-ui/Progress';
+import Paper from '@material-ui/core/Paper';
+import { LinearProgress } from '@material-ui/core';
 
 import LiveDraftSensor from '../containers/LiveDraftSensor';
 import LoadingDraftSensor from '../containers/LoadingDraftSensor';

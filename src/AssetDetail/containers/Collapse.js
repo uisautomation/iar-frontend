@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MaterialCollapse from 'material-ui/transitions/Collapse';
+import MaterialCollapse from '@material-ui/core/Collapse';
 import { withDraft } from '../../draft';
 
 /**

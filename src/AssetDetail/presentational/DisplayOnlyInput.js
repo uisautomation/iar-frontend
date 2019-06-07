@@ -1,6 +1,6 @@
 import React from 'react';
-import Input from 'material-ui/Input';
-import { withStyles } from 'material-ui/styles';
+import Input from '@material-ui/core/Input';
+import { withStyles } from '@material-ui/core/styles';
 
 // This was developed by inspecting the Material UI source directly. (This is, in fact, recommended
 // in the documentation!) It may, therefore, need changing as Material UI changes.
