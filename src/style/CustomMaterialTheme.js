@@ -1,4 +1,4 @@
-import { createMuiTheme } from 'material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const paleGreen = '#F1FBFC';
 const lightGreen = '#91B9A4';

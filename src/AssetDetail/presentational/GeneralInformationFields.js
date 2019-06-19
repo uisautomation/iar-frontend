@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import Grid from 'material-ui/Grid';
-import Switch from 'material-ui/Switch';
-import TextField from 'material-ui/TextField';
-import { FormControlLabel } from 'material-ui/Form';
-import MenuItem from 'material-ui/Menu/MenuItem';
+import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import { FormControlLabel } from '@material-ui/core';
+import MenuItem from '@material-ui/core/Menu';
 
 import Lookup from '../../components/Lookup'
 import OwnInstitutionField from '../../components/OwnInstitutionField';

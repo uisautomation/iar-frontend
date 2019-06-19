@@ -2,7 +2,7 @@ import React from 'react';
 import { render, createMockStore, DEFAULT_INITIAL_STATE } from '../testutils';
 import { Router } from 'react-router-dom';
 import createHistory from "history/createMemoryHistory"
-import Table, { TableBody, TableCell } from 'material-ui/Table';
+import Table, { TableBody, TableCell } from '@material-ui/core/Table';
 import AssetListItem from './AssetListItem';
 import { ASSETS_LIST_SUCCESS } from '../redux/actions/assetRegisterApi';
 import reducer from '../redux/reducers';

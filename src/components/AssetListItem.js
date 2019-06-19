@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { confirmDelete } from '../redux/actions/deleteConfirmation';
 import {
   MoreVert as MoreVertIcon, Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon
-} from 'material-ui-icons';
-import {TableRow, TableCell, IconButton, Tooltip, Menu, MenuItem} from 'material-ui';
+} from '@material-ui/icons';
+import {TableRow, TableCell, IconButton, Tooltip, Menu, MenuItem} from '@material-ui/core';
 import { FormattedRelative, FormattedDate, FormattedTime } from 'react-intl';
 import AssetStatus from './AssetStatus';
 import LookupInstitution from './LookupInstitution';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { encode_search as encode_search_with_previous } from "../previous";
 
 const privateIconStyles = theme => ({

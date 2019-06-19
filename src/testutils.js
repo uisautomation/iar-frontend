@@ -5,7 +5,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import TestRenderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './style/CustomMaterialTheme';
 import configureMockStore from 'redux-mock-store';
 import { middlewares } from './redux/enhancer';

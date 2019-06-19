@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Page from '../containers/Page';
-import { AppBar, Toolbar, Typography, Paper, Grid } from 'material-ui';
-import { withStyles } from 'material-ui/styles';
+import { AppBar, Toolbar, Typography, Paper, Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { pages } from '../static';
 
 const styles = theme => ({

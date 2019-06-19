@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withDraft } from '../../draft';
 
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 
 import { confirmDelete } from '../../redux/actions/deleteConfirmation';
 import { navigate as navigate_to_previous } from "../../previous";

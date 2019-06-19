@@ -2,8 +2,8 @@
  * Button to go back in router history programmatically
  */
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
-import ArrowBack from 'material-ui-icons/ArrowBack';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { navigate as navigate_to_previous } from "../previous";

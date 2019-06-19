@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, createMockStore, DEFAULT_INITIAL_STATE as initialState } from '../testutils';
 import InstitutionField from './InstitutionField';
-import { MenuItem } from 'material-ui/Menu';
-import { TextField } from 'material-ui';
+import { MenuItem } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 // A state with institutions populated
 const MOCK_STATE = {

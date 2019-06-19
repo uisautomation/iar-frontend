@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import Checkbox from 'material-ui/Checkbox';
+import { FormGroup, FormControlLabel } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
 
-import CheckIcon from 'material-ui-icons/Check';
+import CheckIcon from '@material-ui/icons/Check';
 
 import styles from '../styles';
 

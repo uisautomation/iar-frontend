@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
-import InProgressIcon from 'material-ui-icons/MoreHoriz';
-import CompleteIcon from 'material-ui-icons/Check';
+import InProgressIcon from '@material-ui/icons/MoreHoriz';
+import CompleteIcon from '@material-ui/icons/Check';
 
 const styles = theme => ({
   indicator: {

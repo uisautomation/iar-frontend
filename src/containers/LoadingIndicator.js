@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Fade from 'material-ui/transitions/Fade';
-import { LinearProgress } from 'material-ui/Progress';
+import Fade from '@material-ui/core/Fade';
+import { LinearProgress } from '@material-ui/core';
 
 // An indeterminate linear progress indicator which is ownly shown when there is an asset list
 // request in flight.

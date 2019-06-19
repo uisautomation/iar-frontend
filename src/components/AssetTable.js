@@ -1,7 +1,7 @@
 import React from 'react'; // used implicitly by JSX
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Table from 'material-ui/Table';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
 import AssetTableHeader from './AssetTableHeader';
 import AssetTableBody from './AssetTableBody';
 

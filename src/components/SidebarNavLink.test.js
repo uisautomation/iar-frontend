@@ -1,7 +1,7 @@
 import React from 'react';
 import SidebarNavLink from './SidebarNavLink';
 import { Link } from 'react-router-dom';
-import { ListItem } from 'material-ui/List';
+import { ListItem } from '@material-ui/core';
 import { render } from '../testutils';
 
 test('SidebarNavLink should render', () => {
